@@ -1,0 +1,17 @@
+package br.com.eds.api.eds.model.software;
+
+public enum TipoServicoSoftware {
+    INSTACACAO_WINDOWS,
+    INTALACAO_LINUX,
+    INTALACAO_MAC,
+    FORMATACA,
+    BACKUO,
+    OTIMIZACAO,
+    PROBLEMAS_VIRUS,
+    PACOTE_OFFICE,
+    SEGURANCA,
+    ATUALIZACAO_DRIVERS,
+    RECUPERACAO_MEMORIA,
+    ATUALIZACAO_SISTEMA,
+    MONTAGEM_MANUTENCAO_REDE
+}
