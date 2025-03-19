@@ -1,7 +1,6 @@
 package br.com.eds.api.eds.model.conserto;
-
-import br.com.eds.api.eds.model.cliente.Cliente;
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -11,16 +10,29 @@ public class Conserto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String descricaoProblema;
-    private Cliente cliente;
+    private String nomeCliente;
+    private String contatoCliente;
     private String tempoDeUso;
     @Enumerated(EnumType.STRING)
-    private FabricanteNotebook fabricanteNotebook;
+    private TipoProduto tipoAparelho;
     @Enumerated(EnumType.STRING)
-    private FabricanteMicroondas fabricanteMicroondas;
-    @Enumerated(EnumType.STRING)
-    private FabricanteTelevisao fabricanteTelevisao;
+    private Fabricante fabricante;
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataSolicitacao;
+//    @Enumerated(EnumType.STRING)
+//    private FabricanteNotebook fabricanteNotebook;
+//    @Enumerated(EnumType.STRING)
+//    private FabricanteMicroondas fabricanteMicroondas;
+//    @Enumerated(EnumType.STRING)
+//    private FabricanteTelevisao fabricanteTelevisao;
 
+
+    public Conserto(NovoConserto novoConserto){
+        this.dataSolicitacao = LocalDate.now();
+        this.nomeCliente = novoConserto.nomeCliente();
+        this.contatoCliente = novoConserto.contatoCliente();
+        this.descricaoProblema = novoConserto.descricaoProblema();
+    }
 
     public Long getId() {
         return id;
@@ -38,29 +50,29 @@ public class Conserto {
         this.dataSolicitacao = dataSolicitacao;
     }
 
-    public FabricanteTelevisao getFabricanteTelevisao() {
-        return fabricanteTelevisao;
-    }
+//    public FabricanteTelevisao getFabricanteTelevisao() {
+//        return fabricanteTelevisao;
+//    }
+//
+//    public void setFabricanteTelevisao(FabricanteTelevisao fabricanteTelevisao) {
+//        this.fabricanteTelevisao = fabricanteTelevisao;
+//    }
 
-    public void setFabricanteTelevisao(FabricanteTelevisao fabricanteTelevisao) {
-        this.fabricanteTelevisao = fabricanteTelevisao;
-    }
+//    public FabricanteMicroondas getFabricanteMicroondas() {
+//        return fabricanteMicroondas;
+//    }
+//
+//    public void setFabricanteMicroondas(FabricanteMicroondas fabricanteMicroondas) {
+//        this.fabricanteMicroondas = fabricanteMicroondas;
+//    }
 
-    public FabricanteMicroondas getFabricanteMicroondas() {
-        return fabricanteMicroondas;
-    }
-
-    public void setFabricanteMicroondas(FabricanteMicroondas fabricanteMicroondas) {
-        this.fabricanteMicroondas = fabricanteMicroondas;
-    }
-
-    public FabricanteNotebook getFabricanteNotebook() {
-        return fabricanteNotebook;
-    }
-
-    public void setFabricanteNotebook(FabricanteNotebook fabricanteNotebook) {
-        this.fabricanteNotebook = fabricanteNotebook;
-    }
+//    public FabricanteNotebook getFabricanteNotebook() {
+//        return fabricanteNotebook;
+//    }
+//
+//    public void setFabricanteNotebook(FabricanteNotebook fabricanteNotebook) {
+//        this.fabricanteNotebook = fabricanteNotebook;
+//    }
 
     public String getTempoDeUso() {
         return tempoDeUso;
@@ -70,12 +82,20 @@ public class Conserto {
         this.tempoDeUso = tempoDeUso;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public String getNomeCliente() {
+        return nomeCliente;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setNomeCliente(String nomeCliente) {
+        this.nomeCliente = nomeCliente;
+    }
+
+    public String getContatoCliente() {
+        return contatoCliente;
+    }
+
+    public void setContatoCliente(String contatoCliente) {
+        this.contatoCliente = contatoCliente;
     }
 
     public String getDescricaoProblema() {
@@ -84,5 +104,13 @@ public class Conserto {
 
     public void setDescricaoProblema(String descricaoProblema) {
         this.descricaoProblema = descricaoProblema;
+    }
+
+    public TipoProduto getTipoAparelho() {
+        return tipoAparelho;
+    }
+
+    public void setTipoAparelho(TipoProduto tipoAparelho) {
+        this.tipoAparelho = tipoAparelho;
     }
 }

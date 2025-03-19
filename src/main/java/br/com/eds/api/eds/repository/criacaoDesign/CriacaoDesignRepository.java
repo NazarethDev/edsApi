@@ -1,4 +1,4 @@
-package br.com.eds.api.eds.repository;
+package br.com.eds.api.eds.repository.criacaoDesign;
 
 import br.com.eds.api.eds.model.criacaoDesign.CriacaoDesign;
 import org.springframework.data.jpa.repository.JpaRepository;

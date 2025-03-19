@@ -2,6 +2,7 @@ package br.com.eds.api.eds.model.software;
 
 import br.com.eds.api.eds.model.cliente.Cliente;
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -16,6 +17,7 @@ public class Software {
     @Enumerated(EnumType.STRING)
     private TipoServicoSoftware servico;
     private Cliente cliente;
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataSolicitacao;
 
     public Long getId() {

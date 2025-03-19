@@ -1,32 +1,25 @@
 package br.com.eds.api.eds.model.criacaoDesign;
 
-import br.com.eds.api.eds.model.cliente.Cliente;
 import br.com.eds.api.eds.model.impressao.Impressao;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import br.com.eds.api.eds.model.impressao.NovaImpressao;
+import jakarta.persistence.*;
 
-import java.time.LocalDate;
 
 @Entity
-public class CriacaoDesign {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@DiscriminatorValue("CRIACAO_DESIGN")
+public class CriacaoDesign extends Impressao {
+
     private String ideiasDesign;
     private String arquivoReferencia;
-    private Impressao impressao;
-    private Cliente cliente;
-    private LocalDate dataSolicitacao;
 
-    public Long getId() {
-        return id;
+
+    public CriacaoDesign(NovaCriacaoDesign novaCriacaoDesign, NovaImpressao dadosImpressao, String caminhoArquivo) {
+        super(dadosImpressao,caminhoArquivo);
+        this.ideiasDesign = novaCriacaoDesign.ideiasDesign();
+        this.arquivoReferencia = caminhoArquivo;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public CriacaoDesign(){}
 
     public String getIdeiasDesign() {
         return ideiasDesign;
@@ -44,27 +37,4 @@ public class CriacaoDesign {
         this.arquivoReferencia = arquivoReferencia;
     }
 
-    public Impressao getImpressao() {
-        return impressao;
-    }
-
-    public void setImpressao(Impressao impressao) {
-        this.impressao = impressao;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
-    public LocalDate getDataSolicitacao() {
-        return dataSolicitacao;
-    }
-
-    public void setDataSolicitacao(LocalDate dataSolicitacao) {
-        this.dataSolicitacao = dataSolicitacao;
-    }
 }

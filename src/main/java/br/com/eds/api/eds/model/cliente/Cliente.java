@@ -1,5 +1,6 @@
 package br.com.eds.api.eds.model.cliente;
 
+import br.com.eds.api.eds.model.conserto.NovoConserto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,6 +14,11 @@ public class Cliente {
     private Long id;
     private String nome;
     private String contato;
+
+    public Cliente(NovoConserto dadosCliente){
+        this.nome = dadosCliente.nomeCliente();
+        this.contato = dadosCliente.contatoCliente();
+    }
 
     public Long getId() {
         return id;
