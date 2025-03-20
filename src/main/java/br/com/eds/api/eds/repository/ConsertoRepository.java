@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ConsertoRepository extends JpaRepository <Long, Conserto> {
+public interface ConsertoRepository extends JpaRepository <Conserto, Long> {
 }

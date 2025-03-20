@@ -1,16 +1,15 @@
 package br.com.eds.api.eds.model.criacaoDesign;
 
 
+import br.com.eds.api.eds.model.impressao.NovaImpressao;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.web.multipart.MultipartFile;
 
 public record NovaCriacaoDesign(
         @NotBlank
         String ideiasDesign,
-        @NotBlank
-        String nomeCliente,
-        @NotBlank
-        String contatoCliente,
-        MultipartFile arquivoReferencia
+        MultipartFile arquivoReferencia,
+        NovaImpressao dadosImpressao
 ) {
 }
+

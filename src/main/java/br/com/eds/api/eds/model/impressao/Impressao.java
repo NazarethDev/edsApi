@@ -2,38 +2,30 @@ package br.com.eds.api.eds.model.impressao;
 
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
-
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "tipo", discriminatorType = DiscriminatorType.STRING)
 public class Impressao {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nomeCliente;
     private String contatoCliente;
     private String arquivoImpressao;
+
     @Enumerated(EnumType.STRING)
     private MaterialImpressao materialImpressao;
+
     @Enumerated(EnumType.STRING)
     private Dimensao dimensao;
     private Integer unidades;
+
     @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private LocalDate dataSolicitacao;
+    private LocalDateTime dataSolicitacao;
 
     public Impressao(){}
-    public Impressao(String nomeCliente, String contatoCliente, String arquivoImpressao,
-                     MaterialImpressao materialImpressao, Dimensao dimensao, Integer unidades) {
-        this.nomeCliente = nomeCliente;
-        this.contatoCliente = contatoCliente;
-        this.arquivoImpressao = arquivoImpressao;
-        this.materialImpressao = materialImpressao;
-        this.dimensao = dimensao;
-        this.unidades = unidades;
-    }
 
     public Impressao (NovaImpressao novaImpressao, String caminhoArquivo){
         this.nomeCliente = novaImpressao.nomeCliente();
@@ -42,6 +34,39 @@ public class Impressao {
         this.dimensao = novaImpressao.dimensao();
         this.unidades = novaImpressao.unidades();
         this.arquivoImpressao = caminhoArquivo;
+        this.dataSolicitacao = LocalDateTime.now();
+    }
+    public Impressao (NovaImpressao novaImpressao){
+        this.nomeCliente = novaImpressao.nomeCliente();
+        this.contatoCliente = novaImpressao.contatoCliente();
+        this.materialImpressao = novaImpressao.materialImpressao();
+        this.dimensao = novaImpressao.dimensao();
+        this.unidades = novaImpressao.unidades();
+        this.dataSolicitacao = LocalDateTime.now();
+    }
+
+    public void updatePrint(UpdatePrint dadosAtualizados, String arquivoImpressao){
+        if (LocalDateTime.now().isAfter(dataSolicitacao.plusHours(2))){
+            throw new RuntimeException("Não é mais possível alterar o serviço de design após duas horas desde a solicitação");
+        }
+        if (dadosAtualizados.nomeCliente() != null){
+            this.nomeCliente = dadosAtualizados.nomeCliente();
+        }
+        if (dadosAtualizados.contatoCliente() != null){
+            this.contatoCliente = dadosAtualizados.contatoCliente();
+        }
+        if (dadosAtualizados.materialImpressao() != null){
+            this.materialImpressao = dadosAtualizados.materialImpressao();
+        }
+        if (dadosAtualizados.dimensao() != null){
+            this.dimensao = dadosAtualizados.dimensao();
+        }
+        if (dadosAtualizados.unidades() != null){
+            this.unidades = dadosAtualizados.unidades();
+        }
+        if (!arquivoImpressao.isEmpty() || arquivoImpressao != null){
+            this.arquivoImpressao = arquivoImpressao;
+        }
     }
 
     public Long getId() {
@@ -52,11 +77,11 @@ public class Impressao {
         this.id = id;
     }
 
-    public LocalDate getDataSolicitacao() {
+    public LocalDateTime getDataSolicitacao() {
         return dataSolicitacao;
     }
 
-    public void setDataSolicitacao(LocalDate dataSolicitacao) {
+    public void setDataSolicitacao(LocalDateTime dataSolicitacao) {
         this.dataSolicitacao = dataSolicitacao;
     }
 

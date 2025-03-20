@@ -4,18 +4,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.*;
-import br.com.eds.api.eds.repository.criacaoDesign.ArquivoCriacaoDesignRepository;
-import br.com.eds.api.eds.repository.impressao.ArquivoImpressaoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
 public class ArquivoService {
-
-    @Autowired
-    private ArquivoImpressaoRepository arquivoImpressaoRepository;
-
-    @Autowired
-    private ArquivoCriacaoDesignRepository arquivoCriacao;
 
     private static final String IMPRESSAO_DIR = "src/main/resources/static/impressao_design/";
     private static final String DESIGN_DIR = "src/main/resources/static/criacao_design/";

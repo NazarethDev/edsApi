@@ -1,19 +1,13 @@
 package br.com.eds.api.eds.model.impressao;
 
-
-import jakarta.validation.constraints.NotBlank;
 import org.springframework.web.multipart.MultipartFile;
 
-public record NovaImpressao(
-        @NotBlank
+public record UpdatePrint(
+        Long id,
         String nomeCliente,
-        @NotBlank
         String contatoCliente,
-        @NotBlank
         MaterialImpressao materialImpressao,
-        @NotBlank
         Dimensao dimensao,
-        @NotBlank
         Integer unidades,
         MultipartFile arquivoImpressao
 ) {
