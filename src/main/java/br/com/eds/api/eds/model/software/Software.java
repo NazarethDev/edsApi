@@ -1,10 +1,10 @@
 package br.com.eds.api.eds.model.software;
 
 import br.com.eds.api.eds.model.cliente.Cliente;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 public class Software {
@@ -17,8 +17,8 @@ public class Software {
     @Enumerated(EnumType.STRING)
     private TipoServicoSoftware servico;
     private Cliente cliente;
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private LocalDate dataSolicitacao;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+    private LocalDateTime dataSolicitacao;
 
     public Long getId() {
         return id;
@@ -28,11 +28,11 @@ public class Software {
         this.id = id;
     }
 
-    public LocalDate getDataSolicitacao() {
+    public LocalDateTime getDataSolicitacao() {
         return dataSolicitacao;
     }
 
-    public void setDataSolicitacao(LocalDate dataSolicitacao) {
+    public void setDataSolicitacao(LocalDateTime dataSolicitacao) {
         this.dataSolicitacao = dataSolicitacao;
     }
 

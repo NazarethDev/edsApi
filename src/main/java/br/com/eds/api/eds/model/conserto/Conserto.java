@@ -1,37 +1,60 @@
 package br.com.eds.api.eds.model.conserto;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Conserto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String descricaoProblema;
     private String nomeCliente;
     private String contatoCliente;
+    private String descricaoProblema;
+    private String arquivo;
     private String tempoDeUso;
     @Enumerated(EnumType.STRING)
     private TipoProduto tipoAparelho;
     @Enumerated(EnumType.STRING)
     private Fabricante fabricante;
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private LocalDate dataSolicitacao;
-//    @Enumerated(EnumType.STRING)
-//    private FabricanteNotebook fabricanteNotebook;
-//    @Enumerated(EnumType.STRING)
-//    private FabricanteMicroondas fabricanteMicroondas;
-//    @Enumerated(EnumType.STRING)
-//    private FabricanteTelevisao fabricanteTelevisao;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+    private LocalDateTime dataSolicitacao;
 
-
-    public Conserto(NovoConserto novoConserto){
-        this.dataSolicitacao = LocalDate.now();
+    public Conserto(NovoConserto novoConserto, String arquivo) {
         this.nomeCliente = novoConserto.nomeCliente();
         this.contatoCliente = novoConserto.contatoCliente();
         this.descricaoProblema = novoConserto.descricaoProblema();
+        this.arquivo = arquivo;
+        this.tempoDeUso = novoConserto.tempoDeUso();
+        this.tipoAparelho = novoConserto.tipoAparelho();
+        this.fabricante = novoConserto.fabricante();
+        this.dataSolicitacao = LocalDateTime.now();
+    }
+
+    public void updateConserto (UpdateConserto dados, String arquivo){
+        if (dados.nomeCliente() != null){
+            this.nomeCliente = dados.nomeCliente();
+        }
+        if (dados.contatoCliente() != null){
+            this.contatoCliente = dados.contatoCliente();
+        }
+        if (dados.descricaoProblema() != null){
+            this.descricaoProblema = dados.descricaoProblema();
+        }
+        if (dados.tempoDeUso() != null){
+            this.tempoDeUso = dados.tempoDeUso();
+        }
+        if (dados.tipoAparelho() != null){
+            this.tipoAparelho = dados.tipoAparelho();
+        }
+        if (dados.fabricante() != null){
+            this.fabricante = dados.fabricante();
+        }
+        if (arquivo != null && !arquivo.isEmpty()){
+            this.arquivo = arquivo;
+        }
     }
 
     public Long getId() {
@@ -42,37 +65,29 @@ public class Conserto {
         this.id = id;
     }
 
-    public LocalDate getDataSolicitacao() {
+    public LocalDateTime getDataSolicitacao() {
         return dataSolicitacao;
     }
 
-    public void setDataSolicitacao(LocalDate dataSolicitacao) {
+    public void setDataSolicitacao(LocalDateTime dataSolicitacao) {
         this.dataSolicitacao = dataSolicitacao;
     }
 
-//    public FabricanteTelevisao getFabricanteTelevisao() {
-//        return fabricanteTelevisao;
-//    }
-//
-//    public void setFabricanteTelevisao(FabricanteTelevisao fabricanteTelevisao) {
-//        this.fabricanteTelevisao = fabricanteTelevisao;
-//    }
+    public String getArquivo() {
+        return arquivo;
+    }
 
-//    public FabricanteMicroondas getFabricanteMicroondas() {
-//        return fabricanteMicroondas;
-//    }
-//
-//    public void setFabricanteMicroondas(FabricanteMicroondas fabricanteMicroondas) {
-//        this.fabricanteMicroondas = fabricanteMicroondas;
-//    }
+    public void setArquivo(String arquivo) {
+        this.arquivo = arquivo;
+    }
 
-//    public FabricanteNotebook getFabricanteNotebook() {
-//        return fabricanteNotebook;
-//    }
-//
-//    public void setFabricanteNotebook(FabricanteNotebook fabricanteNotebook) {
-//        this.fabricanteNotebook = fabricanteNotebook;
-//    }
+    public Fabricante getFabricante() {
+        return fabricante;
+    }
+
+    public void setFabricante(Fabricante fabricante) {
+        this.fabricante = fabricante;
+    }
 
     public String getTempoDeUso() {
         return tempoDeUso;

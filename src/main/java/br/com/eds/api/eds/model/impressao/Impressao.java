@@ -1,5 +1,6 @@
 package br.com.eds.api.eds.model.impressao;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDateTime;
@@ -22,7 +23,7 @@ public class Impressao {
     private Dimensao dimensao;
     private Integer unidades;
 
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dataSolicitacao;
 
     public Impressao(){}
@@ -55,7 +56,7 @@ public class Impressao {
         if (dadosAtualizados.unidades() != null){
             this.unidades = dadosAtualizados.unidades();
         }
-        if (!arquivoImpressao.isEmpty() || arquivoImpressao != null){
+        if (arquivoImpressao != null && !arquivoImpressao.isEmpty()){
             this.arquivoImpressao = arquivoImpressao;
         }
     }

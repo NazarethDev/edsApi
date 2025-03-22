@@ -1,6 +1,5 @@
 package br.com.eds.api.eds.model.conserto;
 
-import br.com.eds.api.eds.model.software.TipoDispositivo;
 
 enum TipoProduto {
     TELEVISOR,
@@ -10,7 +9,6 @@ enum TipoProduto {
 }
 
 public enum Fabricante {
-    // Fabricantes de Televisão
     SAMSUNG(TipoProduto.TELEVISOR, TipoProduto.NOTEBOOK, TipoProduto.MICROONDAS),
     LG(TipoProduto.TELEVISOR, TipoProduto.MICROONDAS),
     SONY(TipoProduto.TELEVISOR),
@@ -22,7 +20,6 @@ public enum Fabricante {
     XIAOMI(TipoProduto.TELEVISOR),
     SHARP(TipoProduto.TELEVISOR),
 
-    // Fabricantes de Notebook
     APPLE(TipoProduto.NOTEBOOK),
     ACER(TipoProduto.NOTEBOOK),
     DELL(TipoProduto.NOTEBOOK),
@@ -31,15 +28,13 @@ public enum Fabricante {
     ASUS(TipoProduto.NOTEBOOK),
     MULTILASER(TipoProduto.NOTEBOOK),
 
-    // Fabricantes de Micro-ondas
     BRASTEMP(TipoProduto.MICROONDAS),
     ELECTROLUX(TipoProduto.MICROONDAS),
     CONSUL(TipoProduto.MICROONDAS),
     BOSCH(TipoProduto.MICROONDAS),
     MIDEA(TipoProduto.MICROONDAS),
 
-    // Fabricante genérico para qualquer categoria
-    OUTRO(TipoProduto.TELEVISOR, TipoProduto.NOTEBOOK, TipoProduto.MICROONDAS);
+    OUTRO(TipoProduto.TELEVISOR, TipoProduto.NOTEBOOK, TipoProduto.MICROONDAS, TipoProduto.OUTRO);
 
 
     private TipoProduto [] categorias;

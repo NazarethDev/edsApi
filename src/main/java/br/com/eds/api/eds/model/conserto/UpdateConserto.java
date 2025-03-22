@@ -1,9 +1,8 @@
 package br.com.eds.api.eds.model.conserto;
 
-
 import org.springframework.web.multipart.MultipartFile;
 
-public record NovoConserto(
+public record UpdateConserto(
         String nomeCliente,
         String contatoCliente,
         String descricaoProblema,
@@ -11,5 +10,5 @@ public record NovoConserto(
         String tempoDeUso,
         TipoProduto tipoAparelho,
         Fabricante fabricante
-        ) {
+) {
 }

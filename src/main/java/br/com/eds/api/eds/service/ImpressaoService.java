@@ -22,12 +22,12 @@ public class ImpressaoService {
 
     @Transactional
     public ResponseEntity createPrint(NovaImpressao impressao) throws IOException {
-        String arquivo = arquivoService.salvarArquivo(impressao.arquivoImpressao(), true);
+        String arquivo = arquivoService.salvarArquivo(impressao.arquivoImpressao(), true,false);
         var novaImpressao = new Impressao(impressao);
 
         impressaoRepository.save(novaImpressao);
 
-        return ResponseEntity.ok(new ResultadoNovaImpressao("Impressão criada com sucesso. Lembre", novaImpressao));
+        return ResponseEntity.ok(new ResultadoNovaImpressao("Impressão criada com sucesso. Lembre-se o número de identificação!", novaImpressao));
     }
 
     @Transactional
@@ -41,7 +41,7 @@ public class ImpressaoService {
 
         String novoArquivo = "";
         if (dadosAtualizados.arquivoImpressao() != null) {
-            novoArquivo = arquivoService.salvarArquivo(dadosAtualizados.arquivoImpressao(), true);
+            novoArquivo = arquivoService.salvarArquivo(dadosAtualizados.arquivoImpressao(), true,false);
         }
 
         order.updatePrint(dadosAtualizados,novoArquivo);

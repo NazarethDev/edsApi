@@ -25,7 +25,7 @@ public class CriacaoDesignService {
 
     @Transactional
     public ResponseEntity novoDesign(NovaCriacaoDesign novoDesign) throws IOException {
-        String caminhoArquivo = arquivoService.salvarArquivo(novoDesign.arquivoReferencia(), false);
+        String caminhoArquivo = arquivoService.salvarArquivo(novoDesign.arquivoReferencia(), false,false);
         var novaCriacao = new CriacaoDesign(novoDesign, novoDesign.dadosImpressao(),caminhoArquivo);
         criacaoDesignRepository.save(novaCriacao);
         return ResponseEntity.ok(novaCriacao);
@@ -47,7 +47,7 @@ public class CriacaoDesignService {
         String novoArquivoReferencia = "";
 
         if (dadosAtualizados.arquivoreferencia() != null && !dadosAtualizados.arquivoreferencia().isEmpty()) {
-            novoArquivoReferencia = arquivoService.salvarArquivo(dadosAtualizados.arquivoreferencia(), false);
+            novoArquivoReferencia = arquivoService.salvarArquivo(dadosAtualizados.arquivoreferencia(), false, false);
         }
 
         criacaoDesign.updateDesig(dadosAtualizados, novoArquivoReferencia);
@@ -71,7 +71,7 @@ public class CriacaoDesignService {
 
     public ResponseEntity showMyOrder(Long id, String contato){
         if (id == null && contato == null){
-            return ResponseEntity.badRequest().body("Por favor, informe o número do pedido ou contato do cliente");
+            return ResponseEntity.badRequest().body("Por favor, informe o número do pedido ou contato do cliente.");
         } else if (id != null) {
             var design = criacaoDesignRepository.findById(id);
             if (design.isEmpty()){

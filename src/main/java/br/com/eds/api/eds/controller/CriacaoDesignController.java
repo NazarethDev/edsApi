@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/criacaodesign")
+@RequestMapping("/design")
 public class CriacaoDesignController {
 
     @Autowired

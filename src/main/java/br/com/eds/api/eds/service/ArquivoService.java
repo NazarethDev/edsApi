@@ -10,13 +10,14 @@ public class ArquivoService {
 
     private static final String IMPRESSAO_DIR = "src/main/resources/static/impressao_design/";
     private static final String DESIGN_DIR = "src/main/resources/static/criacao_design/";
+    private static final String CONSERTO_DIR = "src/main/resources/static/conserto";
 
-    public String salvarArquivo(MultipartFile file, boolean isImpressao) throws IOException {
+    public String salvarArquivo(MultipartFile file, boolean isImpressao, boolean isConserto) throws IOException {
         if(file == null || file.isEmpty()){
             return null;
         }
 
-        String diretorio = isImpressao ? IMPRESSAO_DIR : DESIGN_DIR;
+        String diretorio = isImpressao ? IMPRESSAO_DIR : (isConserto ? CONSERTO_DIR : DESIGN_DIR);
         Files.createDirectories(Paths.get(diretorio));
 
         String nomeArquivo = System.currentTimeMillis() + "_" + file.getOriginalFilename();
