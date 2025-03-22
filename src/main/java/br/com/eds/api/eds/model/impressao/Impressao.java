@@ -27,15 +27,6 @@ public class Impressao {
 
     public Impressao(){}
 
-    public Impressao (NovaImpressao novaImpressao, String caminhoArquivo){
-        this.nomeCliente = novaImpressao.nomeCliente();
-        this.contatoCliente = novaImpressao.contatoCliente();
-        this.materialImpressao = novaImpressao.materialImpressao();
-        this.dimensao = novaImpressao.dimensao();
-        this.unidades = novaImpressao.unidades();
-        this.arquivoImpressao = caminhoArquivo;
-        this.dataSolicitacao = LocalDateTime.now();
-    }
     public Impressao (NovaImpressao novaImpressao){
         this.nomeCliente = novaImpressao.nomeCliente();
         this.contatoCliente = novaImpressao.contatoCliente();
