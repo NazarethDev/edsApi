@@ -19,9 +19,7 @@ public class CriacaoDesign extends Impressao {
         this.arquivoReferencia = caminhoArquivo;
     }
 
-    public void updatePrint(UpdateDesign dadosAtualizados, String novaReferencia){
-        super.updatePrint(dadosAtualizados.novosDadosImpressao(),novaReferencia);
-
+    public void updateDesig(UpdateDesign dadosAtualizados, String novaReferencia){
         if (dadosAtualizados.ideiasDesign() != null && !dadosAtualizados.ideiasDesign().isEmpty()){
             this.ideiasDesign = dadosAtualizados.ideiasDesign();
         }

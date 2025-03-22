@@ -65,15 +65,18 @@ public class ImpressaoService {
         if (id == null && contato ==null){
             return ResponseEntity.badRequest().body("Por favor, indique um número do pedido ou contato do informado no momento da compra!");
         } else if (id != null){
-            var pedido = impressaoRepository.findById(id).get();
-            return ResponseEntity.ok(pedido);
-        } else if (contato != null) {
+            var pedido = impressaoRepository.findById(id);
+            if (pedido.isEmpty()){
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(pedido.get());
+        } else {
             var pedido = impressaoRepository.findByContatoCliente(contato);
+            if (pedido.isEmpty()){
+                return ResponseEntity.notFound().build();
+            }
             List<PedidosImpressao> pedidos = pedido.stream().map(PedidosImpressao::new).toList();
             return ResponseEntity.ok(pedidos);
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
+         }
     }
-
 }
