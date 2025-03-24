@@ -1,8 +1,11 @@
 package br.com.eds.api.eds.model.criacaoDesign;
 
+import br.com.eds.api.eds.model.cliente.Cliente;
 import br.com.eds.api.eds.model.impressao.Impressao;
 import br.com.eds.api.eds.model.impressao.NovaImpressao;
 import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -13,19 +16,32 @@ public class CriacaoDesign extends Impressao {
 
     public CriacaoDesign(){}
 
-    public CriacaoDesign(NovaCriacaoDesign novaCriacaoDesign, NovaImpressao dadosImpressao, String caminhoArquivo) {
-        super(dadosImpressao);
+    public CriacaoDesign(NovaCriacaoDesign novaCriacaoDesign, NovaImpressao dadosImpressao, String caminhoArquivo, Cliente cliente) {
+        super(cliente,dadosImpressao);
         this.ideiasDesign = novaCriacaoDesign.ideiasDesign();
         this.arquivoReferencia = caminhoArquivo;
     }
 
-    public void updateDesig(UpdateDesign dadosAtualizados, String novaReferencia){
+    public void updateDesign(UpdateDesign dadosAtualizados, String novaReferencia){
         if (dadosAtualizados.ideiasDesign() != null && !dadosAtualizados.ideiasDesign().isEmpty()){
             this.ideiasDesign = dadosAtualizados.ideiasDesign();
         }
         if (novaReferencia != null && !novaReferencia.isEmpty()) {
             this.arquivoReferencia = novaReferencia;
         }
+        if (dadosAtualizados.novosDadosImpressao() != null){
+            if (dadosAtualizados.novosDadosImpressao().materialImpressao() != null){
+                setMaterialImpressao(dadosAtualizados.novosDadosImpressao().materialImpressao());
+            }
+            if (dadosAtualizados.novosDadosImpressao().dimensao() != null){
+                setDimensao(dadosAtualizados.novosDadosImpressao().dimensao());
+            }
+            if (dadosAtualizados.novosDadosImpressao().unidades() != null && dadosAtualizados.novosDadosImpressao().unidades() != 0){
+                setUnidades(dadosAtualizados.novosDadosImpressao().unidades());
+            }
+        }
+        this.setDataAtualizacao(LocalDateTime.now());
+
     }
 
     public String getIdeiasDesign() {

@@ -1,5 +1,6 @@
 package br.com.eds.api.eds.service;
 
+import br.com.eds.api.eds.model.cliente.Cliente;
 import br.com.eds.api.eds.model.criacaoDesign.CriacaoDesign;
 import br.com.eds.api.eds.model.criacaoDesign.NovaCriacaoDesign;
 import br.com.eds.api.eds.model.criacaoDesign.PedidosDesign;
@@ -23,10 +24,14 @@ public class CriacaoDesignService {
     @Autowired
     CriacaoDesignRepository criacaoDesignRepository;
 
+    @Autowired
+    ClienteService clienteService;
+
     @Transactional
     public ResponseEntity novoDesign(NovaCriacaoDesign novoDesign) throws IOException {
-        String caminhoArquivo = arquivoService.salvarArquivo(novoDesign.arquivoReferencia(), false,false);
-        var novaCriacao = new CriacaoDesign(novoDesign, novoDesign.dadosImpressao(),caminhoArquivo);
+        String caminhoArquivo = arquivoService.salvarArquivo(novoDesign.arquivoReferencia(),null,false,false);
+        Cliente cliente = clienteService.obterOuCriarCliente(novoDesign.dadosImpressao().nomeCliente(),novoDesign.dadosImpressao().contatoCliente());
+        var novaCriacao = new CriacaoDesign(novoDesign, novoDesign.dadosImpressao(),caminhoArquivo, cliente);
         criacaoDesignRepository.save(novaCriacao);
         return ResponseEntity.ok(novaCriacao);
     }
@@ -47,10 +52,10 @@ public class CriacaoDesignService {
         String novoArquivoReferencia = "";
 
         if (dadosAtualizados.arquivoreferencia() != null && !dadosAtualizados.arquivoreferencia().isEmpty()) {
-            novoArquivoReferencia = arquivoService.salvarArquivo(dadosAtualizados.arquivoreferencia(), false, false);
+            novoArquivoReferencia = arquivoService.salvarArquivo(dadosAtualizados.arquivoreferencia(), criacaoDesign.getArquivoReferencia(),false, false);
         }
 
-        criacaoDesign.updateDesig(dadosAtualizados, novoArquivoReferencia);
+        criacaoDesign.updateDesign(dadosAtualizados, novoArquivoReferencia);
         criacaoDesignRepository.save(criacaoDesign);
 
         return ResponseEntity.ok(criacaoDesign);
@@ -63,14 +68,14 @@ public class CriacaoDesignService {
         }
         var design = criacaoDesign.get();
         if (LocalDateTime.now().isAfter(design.getDataSolicitacao().plusHours(2))) {
-            return ResponseEntity.badRequest().body("Não é possível alterar o pedido depois de duas horas da solicitação do serviço");
+            return ResponseEntity.badRequest().body("Não é possível excluir o pedido depois de duas horas da solicitação do serviço");
         }
         criacaoDesignRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
     public ResponseEntity showMyOrder(Long id, String contato){
-        if (id == null && contato == null){
+        if (id == null && contato == null || contato.isEmpty()){
             return ResponseEntity.badRequest().body("Por favor, informe o número do pedido ou contato do cliente.");
         } else if (id != null) {
             var design = criacaoDesignRepository.findById(id);

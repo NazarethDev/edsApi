@@ -23,10 +23,14 @@ public class ConsertoService {
     @Autowired
     ArquivoService arquivoService;
 
+    @Autowired
+    ClienteService clienteService;
+
     @Transactional
     public ResponseEntity createConserto(NovoConserto novo) throws IOException {
-        var arquivo = arquivoService.salvarArquivo(novo.arquivo(),false, true);
-        var conserto = new Conserto(novo, arquivo);
+        var arquivo = arquivoService.salvarArquivo(novo.arquivo(), null, false, true);
+        var cliente = clienteService.obterOuCriarCliente(novo.nomeCliente(), novo.contatoCliente());
+        var conserto = new Conserto(novo, arquivo, cliente);
         return ResponseEntity.ok(conserto);
     }
 
@@ -41,7 +45,7 @@ public class ConsertoService {
 
         String arquivo = "";
         if (dados.arquivo() != null && !dados.arquivo().isEmpty()){
-            arquivo = arquivoService.salvarArquivo(dados.arquivo(), false, true);
+            arquivo = arquivoService.salvarArquivo(dados.arquivo(), conserto.getArquivo(), false, true);
         }
 
         conserto.updateConserto(dados, arquivo);
@@ -51,21 +55,14 @@ public class ConsertoService {
     }
 
     public ResponseEntity deleteOrder(Long id){
-        var conserto = consertoRepository.findById(id);
-        if (conserto.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
-        if (LocalDateTime.now().isAfter(conserto.get().getDataSolicitacao().plusHours(3))){
-            return ResponseEntity.badRequest().body("Não é possível cancelar um pedido de orçamento depois de duas horas da solicitação.");
-        }
-
-        consertoRepository.deleteById(id);
-
-        return ResponseEntity.noContent().build();
+        if (consertoRepository.existsById(id)){
+            consertoRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else return ResponseEntity.notFound().build();
     }
 
     public ResponseEntity showMyOrder(Long id, String contato){
-        if (id == null && contato == null){
+        if (id == null && contato == null || contato.isEmpty()){
             return ResponseEntity.badRequest().body("Por favor, informe o número do pedido ou contato do cliente.");
         } else if (id != null) {
             var conserto = consertoRepository.findById(id);

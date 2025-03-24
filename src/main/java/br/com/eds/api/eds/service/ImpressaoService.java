@@ -22,7 +22,7 @@ public class ImpressaoService {
 
     @Transactional
     public ResponseEntity createPrint(NovaImpressao impressao) throws IOException {
-        String arquivo = arquivoService.salvarArquivo(impressao.arquivoImpressao(), true,false);
+        String arquivo = arquivoService.salvarArquivo(impressao.arquivoImpressao(), null,true,false);
         var novaImpressao = new Impressao(impressao);
 
         impressaoRepository.save(novaImpressao);
@@ -41,7 +41,10 @@ public class ImpressaoService {
 
         String novoArquivo = "";
         if (dadosAtualizados.arquivoImpressao() != null) {
-            novoArquivo = arquivoService.salvarArquivo(dadosAtualizados.arquivoImpressao(), true,false);
+            novoArquivo = arquivoService.salvarArquivo(dadosAtualizados.arquivoImpressao(), order.getArquivoImpressao(), true,false);
+        }
+        if (LocalDateTime.now().isAfter(order.getDataSolicitacao().plusHours(2))){
+            return ResponseEntity.badRequest().body("Não é possível alterar características do pedido após duas horas da solicitação :(");
         }
 
         order.updatePrint(dadosAtualizados,novoArquivo);
@@ -62,7 +65,7 @@ public class ImpressaoService {
     }
 
     public ResponseEntity showMyOrder(Long id, String contato) {
-        if (id == null && contato ==null){
+        if (id == null && contato == null || contato.isEmpty()){
             return ResponseEntity.badRequest().body("Por favor, indique um número do pedido ou contato do informado no momento da compra!");
         } else if (id != null){
             var pedido = impressaoRepository.findById(id);

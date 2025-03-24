@@ -12,13 +12,10 @@ public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nome;
-    private String contato;
+    private String nomeCliente;
+    private String contatoCliente;
 
-    public Cliente(NovoConserto dadosCliente){
-        this.nome = dadosCliente.nomeCliente();
-        this.contato = dadosCliente.contatoCliente();
-    }
+    public Cliente(){}
 
     public Long getId() {
         return id;
@@ -28,19 +25,19 @@ public class Cliente {
         this.id = id;
     }
 
-    public String getContato() {
-        return contato;
+    public String getNomeCliente() {
+        return nomeCliente;
     }
 
-    public void setContato(String contato) {
-        this.contato = contato;
+    public void setNomeCliente(String nomeCliente) {
+        this.nomeCliente = nomeCliente;
     }
 
-    public String getNome() {
-        return nome;
+    public String getContatoCliente() {
+        return contatoCliente;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setContatoCliente(String contatoCliente) {
+        this.contatoCliente = contatoCliente;
     }
 }

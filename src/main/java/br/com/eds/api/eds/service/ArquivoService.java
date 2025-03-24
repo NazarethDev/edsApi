@@ -12,7 +12,7 @@ public class ArquivoService {
     private static final String DESIGN_DIR = "src/main/resources/static/criacao_design/";
     private static final String CONSERTO_DIR = "src/main/resources/static/conserto";
 
-    public String salvarArquivo(MultipartFile file, boolean isImpressao, boolean isConserto) throws IOException {
+    public String salvarArquivo(MultipartFile file, String arquivoAtual, boolean isImpressao, boolean isConserto) throws IOException {
         if(file == null || file.isEmpty()){
             return null;
         }
@@ -20,12 +20,17 @@ public class ArquivoService {
         String diretorio = isImpressao ? IMPRESSAO_DIR : (isConserto ? CONSERTO_DIR : DESIGN_DIR);
         Files.createDirectories(Paths.get(diretorio));
 
+        if (arquivoAtual != null && !arquivoAtual.isEmpty()){
+            Path caminhoArquivoAtual = Paths.get(diretorio, arquivoAtual);
+            Files.deleteIfExists(caminhoArquivoAtual);
+        }
+
         String nomeArquivo = System.currentTimeMillis() + "_" + file.getOriginalFilename();
         Path caminhoArquivo = Paths.get(diretorio,nomeArquivo);
 
         Files.copy(file.getInputStream(), caminhoArquivo, StandardCopyOption.REPLACE_EXISTING);
 
-        return nomeArquivo;  // Retorna o caminho para salvar na entidade
+        return nomeArquivo;
     }
 
 }

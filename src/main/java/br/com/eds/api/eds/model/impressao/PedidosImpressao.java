@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 public record PedidosImpressao(
         Long id,
         String nomeCliente,
-        String contatoCliente,
         LocalDateTime dataSolicitacao,
         String arquivoImpressao,
         MaterialImpressao materialImpressao,
@@ -13,7 +12,7 @@ public record PedidosImpressao(
 ) {
     public PedidosImpressao(Impressao impressao){
         this(impressao.getId(), impressao.getNomeCliente(),
-                impressao.getContatoCliente(),impressao.getDataSolicitacao(),
+                impressao.getDataSolicitacao(),
                 impressao.getArquivoImpressao(), impressao.getMaterialImpressao(),
                 impressao.getUnidades());
     }

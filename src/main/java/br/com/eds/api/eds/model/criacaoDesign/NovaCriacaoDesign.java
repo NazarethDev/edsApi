@@ -9,6 +9,7 @@ public record NovaCriacaoDesign(
         @NotBlank
         String ideiasDesign,
         MultipartFile arquivoReferencia,
+        @NotBlank
         NovaImpressao dadosImpressao
 ) {
 }

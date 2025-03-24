@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 public record PedidosDesign(
         Long id,
         String nomeCliente,
-        String contatoCliente,
         String arquivoReferencia,
         String ideiasDesign,
         MaterialImpressao materialImpressao,
@@ -17,7 +16,7 @@ public record PedidosDesign(
         LocalDateTime dataSolicitacao
 ) {
     public PedidosDesign (CriacaoDesign design){
-        this(design.getId(), design.getNomeCliente(), design.getContatoCliente(),
+        this(design.getId(), design.getNomeCliente(),
                 design.getArquivoReferencia(), design.getIdeiasDesign(),
                 design.getMaterialImpressao(),design.getDimensao(),
                 design.getUnidades(), design.getDataSolicitacao());

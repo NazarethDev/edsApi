@@ -1,24 +1,49 @@
 package br.com.eds.api.eds.model.software;
-
 import br.com.eds.api.eds.model.cliente.Cliente;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Software {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
     private String detalhesServico;
     @Enumerated(EnumType.STRING)
     private TipoDispositivo dispositivo;
     @Enumerated(EnumType.STRING)
-    private TipoServicoSoftware servico;
-    private Cliente cliente;
+    private List<TipoServicoSoftware> servicos;
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dataSolicitacao;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+    private LocalDateTime dataAtualizacao;
+
+    public Software (Cliente cliente, NewSoftSer dados){
+        this.cliente = cliente;
+        this.detalhesServico = dados.detalhesServico();
+        this.dispositivo = dados.dispositivo();
+        this.servicos = dados.servicos();
+        this.dataSolicitacao = LocalDateTime.now();
+    }
+
+    public void updateService(UpdateSoftSer dados){
+        if (dados.detalhesServico() != null && !dados.detalhesServico().isEmpty()){
+            this.detalhesServico = dados.detalhesServico();
+        }
+        if (dados.dispositivo() != null){
+            this.dispositivo = dados.dispositivo();
+        }
+        if (dados.servicos() != null && !dados.servicos().isEmpty()){
+            this.servicos = dados.servicos();
+        }
+        this.dataAtualizacao = LocalDateTime.now();
+    }
 
     public Long getId() {
         return id;
@@ -26,14 +51,6 @@ public class Software {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public LocalDateTime getDataSolicitacao() {
-        return dataSolicitacao;
-    }
-
-    public void setDataSolicitacao(LocalDateTime dataSolicitacao) {
-        this.dataSolicitacao = dataSolicitacao;
     }
 
     public Cliente getCliente() {
@@ -44,12 +61,20 @@ public class Software {
         this.cliente = cliente;
     }
 
-    public TipoServicoSoftware getServico() {
-        return servico;
+    public LocalDateTime getDataSolicitacao() {
+        return dataSolicitacao;
     }
 
-    public void setServico(TipoServicoSoftware servico) {
-        this.servico = servico;
+    public void setDataSolicitacao(LocalDateTime dataSolicitacao) {
+        this.dataSolicitacao = dataSolicitacao;
+    }
+
+    public List<TipoServicoSoftware> getServicos() {
+        return servicos;
+    }
+
+    public void setServicos(List<TipoServicoSoftware> servicos) {
+        this.servicos = servicos;
     }
 
     public TipoDispositivo getDispositivo() {
@@ -66,5 +91,13 @@ public class Software {
 
     public void setDetalhesServico(String detalhesServico) {
         this.detalhesServico = detalhesServico;
+    }
+
+    public LocalDateTime getDataAtualizacao() {
+        return dataAtualizacao;
+    }
+
+    public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
+        this.dataAtualizacao = dataAtualizacao;
     }
 }

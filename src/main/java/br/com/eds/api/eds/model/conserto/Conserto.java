@@ -1,7 +1,8 @@
 package br.com.eds.api.eds.model.conserto;
+
+import br.com.eds.api.eds.model.cliente.Cliente;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -10,8 +11,9 @@ public class Conserto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nomeCliente;
-    private String contatoCliente;
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
     private String descricaoProblema;
     private String arquivo;
     private String tempoDeUso;
@@ -21,10 +23,11 @@ public class Conserto {
     private Fabricante fabricante;
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dataSolicitacao;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+    private LocalDateTime dataAtualizacao;
 
-    public Conserto(NovoConserto novoConserto, String arquivo) {
-        this.nomeCliente = novoConserto.nomeCliente();
-        this.contatoCliente = novoConserto.contatoCliente();
+    public Conserto(NovoConserto novoConserto, String arquivo, Cliente cliente) {
+        this.cliente = cliente;
         this.descricaoProblema = novoConserto.descricaoProblema();
         this.arquivo = arquivo;
         this.tempoDeUso = novoConserto.tempoDeUso();
@@ -34,12 +37,6 @@ public class Conserto {
     }
 
     public void updateConserto (UpdateConserto dados, String arquivo){
-        if (dados.nomeCliente() != null){
-            this.nomeCliente = dados.nomeCliente();
-        }
-        if (dados.contatoCliente() != null){
-            this.contatoCliente = dados.contatoCliente();
-        }
         if (dados.descricaoProblema() != null){
             this.descricaoProblema = dados.descricaoProblema();
         }
@@ -55,6 +52,7 @@ public class Conserto {
         if (arquivo != null && !arquivo.isEmpty()){
             this.arquivo = arquivo;
         }
+        this.dataAtualizacao = LocalDateTime.now();
     }
 
     public Long getId() {
@@ -97,20 +95,12 @@ public class Conserto {
         this.tempoDeUso = tempoDeUso;
     }
 
-    public String getNomeCliente() {
-        return nomeCliente;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setNomeCliente(String nomeCliente) {
-        this.nomeCliente = nomeCliente;
-    }
-
-    public String getContatoCliente() {
-        return contatoCliente;
-    }
-
-    public void setContatoCliente(String contatoCliente) {
-        this.contatoCliente = contatoCliente;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     public String getDescricaoProblema() {
@@ -127,5 +117,13 @@ public class Conserto {
 
     public void setTipoAparelho(TipoProduto tipoAparelho) {
         this.tipoAparelho = tipoAparelho;
+    }
+
+    public LocalDateTime getDataAtualizacao() {
+        return dataAtualizacao;
+    }
+
+    public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
+        this.dataAtualizacao = dataAtualizacao;
     }
 }

@@ -1,8 +1,8 @@
 package br.com.eds.api.eds.model.impressao;
 
+import br.com.eds.api.eds.model.cliente.Cliente;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDateTime;
 
 @Entity
@@ -12,8 +12,9 @@ public class Impressao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nomeCliente;
-    private String contatoCliente;
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
     private String arquivoImpressao;
 
     @Enumerated(EnumType.STRING)
@@ -26,11 +27,13 @@ public class Impressao {
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dataSolicitacao;
 
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+    private LocalDateTime dataAtualizacao;
+
     public Impressao(){}
 
-    public Impressao (NovaImpressao novaImpressao){
-        this.nomeCliente = novaImpressao.nomeCliente();
-        this.contatoCliente = novaImpressao.contatoCliente();
+    public Impressao (Cliente cliente, NovaImpressao novaImpressao){
+        this.cliente = cliente;
         this.materialImpressao = novaImpressao.materialImpressao();
         this.dimensao = novaImpressao.dimensao();
         this.unidades = novaImpressao.unidades();
@@ -38,27 +41,19 @@ public class Impressao {
     }
 
     public void updatePrint(UpdatePrint dadosAtualizados, String arquivoImpressao){
-        if (LocalDateTime.now().isAfter(dataSolicitacao.plusHours(2))){
-            throw new RuntimeException("Não é mais possível alterar o serviço de design após duas horas desde a solicitação");
-        }
-        if (dadosAtualizados.nomeCliente() != null){
-            this.nomeCliente = dadosAtualizados.nomeCliente();
-        }
-        if (dadosAtualizados.contatoCliente() != null){
-            this.contatoCliente = dadosAtualizados.contatoCliente();
-        }
         if (dadosAtualizados.materialImpressao() != null){
             this.materialImpressao = dadosAtualizados.materialImpressao();
         }
         if (dadosAtualizados.dimensao() != null){
             this.dimensao = dadosAtualizados.dimensao();
         }
-        if (dadosAtualizados.unidades() != null){
+        if (dadosAtualizados.unidades() != null && dadosAtualizados.unidades() != 0){
             this.unidades = dadosAtualizados.unidades();
         }
         if (arquivoImpressao != null && !arquivoImpressao.isEmpty()){
             this.arquivoImpressao = arquivoImpressao;
         }
+        this.dataAtualizacao = LocalDateTime.now();
     }
 
     public Long getId() {
@@ -67,6 +62,14 @@ public class Impressao {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     public LocalDateTime getDataSolicitacao() {
@@ -109,19 +112,11 @@ public class Impressao {
         this.arquivoImpressao = arquivoImpressao;
     }
 
-    public String getNomeCliente() {
-        return nomeCliente;
+    public LocalDateTime getDataAtualizacao() {
+        return dataAtualizacao;
     }
 
-    public void setNomeCliente(String nomeCliente) {
-        this.nomeCliente = nomeCliente;
-    }
-
-    public String getContatoCliente() {
-        return contatoCliente;
-    }
-
-    public void setContatoCliente(String contatoCliente) {
-        this.contatoCliente = contatoCliente;
+    public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
+        this.dataAtualizacao = dataAtualizacao;
     }
 }
