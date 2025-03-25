@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface ImpressaoRepository extends JpaRepository <Impressao, Long> {
     List <Impressao> findByContatoCliente(String contato);
+
+    List<Impressao> findByEmailCliente(String email);
 }

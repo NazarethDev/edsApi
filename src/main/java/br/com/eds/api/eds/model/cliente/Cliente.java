@@ -1,6 +1,5 @@
 package br.com.eds.api.eds.model.cliente;
 
-import br.com.eds.api.eds.model.conserto.NovoConserto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,6 +13,7 @@ public class Cliente {
     private Long id;
     private String nomeCliente;
     private String contatoCliente;
+    private String emailCliente;
 
     public Cliente(){}
 
@@ -39,5 +39,13 @@ public class Cliente {
 
     public void setContatoCliente(String contatoCliente) {
         this.contatoCliente = contatoCliente;
+    }
+
+    public String getEmailCliente() {
+        return emailCliente;
+    }
+
+    public void setEmailCliente(String emailCliente) {
+        this.emailCliente = emailCliente;
     }
 }

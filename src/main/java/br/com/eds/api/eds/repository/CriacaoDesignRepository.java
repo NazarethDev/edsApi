@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface CriacaoDesignRepository extends JpaRepository <CriacaoDesign,Long> {
     List<CriacaoDesign> findByContatoCliente(String contato);
+
+    List<CriacaoDesign> findByEmailCliente(String email);
 }

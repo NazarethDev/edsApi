@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface SoftwareRepository extends JpaRepository <Software, Long> {
     List<Software> findByContatoCliente(String contato);
+
+    List<Software> findByEmailCliente(String email);
 }

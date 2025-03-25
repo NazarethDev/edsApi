@@ -24,8 +24,9 @@ public class ImpressaoController {
 
     @GetMapping
     public ResponseEntity showPrint(@RequestParam(required = false) Long id,
-                                    @RequestParam(required = false) String contato){
-        return impressaoService.showMyOrder(id,contato);
+                                    @RequestParam(required = false) String contato,
+                                    @RequestParam(required = false) String email){
+        return impressaoService.showMyOrder(id,contato, email);
     }
 
     @PutMapping

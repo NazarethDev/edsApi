@@ -20,10 +20,14 @@ public class ImpressaoService {
     @Autowired
     ArquivoService arquivoService;
 
+    @Autowired
+    ClienteService clienteService;
+
     @Transactional
     public ResponseEntity createPrint(NovaImpressao impressao) throws IOException {
         String arquivo = arquivoService.salvarArquivo(impressao.arquivoImpressao(), null,true,false);
-        var novaImpressao = new Impressao(impressao);
+        var cliente = clienteService.obterOuCriarCliente(impressao.nomeCliente(),impressao.contatoCliente(), impressao.emailCliente());
+        var novaImpressao = new Impressao(cliente, impressao);
 
         impressaoRepository.save(novaImpressao);
 
@@ -64,22 +68,32 @@ public class ImpressaoService {
         return ResponseEntity.noContent().build();
     }
 
-    public ResponseEntity showMyOrder(Long id, String contato) {
-        if (id == null && contato == null || contato.isEmpty()){
+    public ResponseEntity showMyOrder(Long id, String contato, String email) {
+        if ((id == null && contato == null) || (contato != null && contato.isEmpty())) {
             return ResponseEntity.badRequest().body("Por favor, indique um número do pedido ou contato do informado no momento da compra!");
-        } else if (id != null){
+        } else if (id != null) {
             var pedido = impressaoRepository.findById(id);
-            if (pedido.isEmpty()){
+            if (pedido.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }
             return ResponseEntity.ok(pedido.get());
-        } else {
+        } else if (contato != null) {
             var pedido = impressaoRepository.findByContatoCliente(contato);
-            if (pedido.isEmpty()){
+            if (pedido.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }
             List<PedidosImpressao> pedidos = pedido.stream().map(PedidosImpressao::new).toList();
             return ResponseEntity.ok(pedidos);
-         }
+        } else if (email != null && !email.isEmpty()) {
+            var pedido = impressaoRepository.findByEmailCliente(email);
+            if (pedido.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+            List<PedidosImpressao> orders = pedido.stream().map(PedidosImpressao::new).toList();
+            return ResponseEntity.ok(orders);
+        } else {
+            return ResponseEntity.badRequest().body("Por favor, forneça um identificador válido (ID, contato ou e-mail).");
+        }
     }
+
 }

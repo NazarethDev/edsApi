@@ -24,7 +24,7 @@ public class SoftwareService {
     @Transactional
     public ResponseEntity createSoftServ(NewSoftSer dados){
 
-        var cliente = clienteService.obterOuCriarCliente(dados.nomeCliente(), dados.contatoCliente());
+        var cliente = clienteService.obterOuCriarCliente(dados.nomeCliente(), dados.contatoCliente(), dados.emailCliente());
 
         var softwareServ = new Software(cliente,dados);
         softwareRepository.save(softwareServ);
@@ -43,21 +43,34 @@ public class SoftwareService {
         return ResponseEntity.ok(pedido);
     }
 
-    public ResponseEntity showMyRequests (Long id, String contato){
-        if (id == null && contato == null || contato.isEmpty()){
+    public ResponseEntity showMyRequests(Long id, String contato, String email) {
+        if ((id == null && contato == null) || (contato != null && contato.isEmpty())) {
             return ResponseEntity.badRequest().body("Por favor, indique um número do pedido ou contato do informado no momento da compra!");
-        } else if (id != null){
+        } else if (id != null) {
             var request = softwareRepository.findById(id);
-            if (request.isEmpty()){
+            if (request.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }
             return ResponseEntity.ok(request.get());
-        } else {
+        } else if (contato != null) {
             var request = softwareRepository.findByContatoCliente(contato);
+            if (request.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
             List<PedidosSoftServ> requests = request.stream().map(PedidosSoftServ::new).toList();
             return ResponseEntity.ok(requests);
+        } else if (email != null && !email.isEmpty()) {
+            var software = softwareRepository.findByEmailCliente(email);
+            if (software.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+            List<PedidosSoftServ> pedidos = software.stream().map(PedidosSoftServ::new).toList();
+            return ResponseEntity.ok(pedidos);
+        } else {
+            return ResponseEntity.badRequest().body("Por favor, forneça um identificador válido (ID, contato ou e-mail).");
         }
     }
+
 
     public ResponseEntity deleteRequest(Long id){
             if (softwareRepository.existsById(id)){

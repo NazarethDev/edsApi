@@ -10,6 +10,8 @@ public record NovaImpressao(
         @NotBlank
         String contatoCliente,
         @NotBlank
+        String emailCliente,
+        @NotBlank
         MaterialImpressao materialImpressao,
         @NotBlank
         Dimensao dimensao,

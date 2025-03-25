@@ -9,6 +9,8 @@ public record NewSoftSer(
         String nomeCliente,
         @NotBlank
         String contatoCliente,
+        @NotBlank
+        String emailCliente,
         String detalhesServico,
         @NotBlank
         TipoDispositivo dispositivo,

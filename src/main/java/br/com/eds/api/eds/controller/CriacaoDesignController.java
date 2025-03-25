@@ -33,8 +33,9 @@ public class CriacaoDesignController {
 
     @GetMapping
     public ResponseEntity showOrder(@RequestParam(required = false)Long id,
-                                     @RequestParam(required = false) String contato){
-        return designService.showMyOrder(id,contato);
+                                     @RequestParam(required = false) String contato,
+                                    @RequestParam(required = false) String email){
+        return designService.showMyOrder(id,contato, email);
     }
 
 }

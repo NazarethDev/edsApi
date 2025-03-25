@@ -30,7 +30,7 @@ public class CriacaoDesignService {
     @Transactional
     public ResponseEntity novoDesign(NovaCriacaoDesign novoDesign) throws IOException {
         String caminhoArquivo = arquivoService.salvarArquivo(novoDesign.arquivoReferencia(),null,false,false);
-        Cliente cliente = clienteService.obterOuCriarCliente(novoDesign.dadosImpressao().nomeCliente(),novoDesign.dadosImpressao().contatoCliente());
+        Cliente cliente = clienteService.obterOuCriarCliente(novoDesign.dadosImpressao().nomeCliente(),novoDesign.dadosImpressao().contatoCliente(), novoDesign.dadosImpressao().emailCliente());
         var novaCriacao = new CriacaoDesign(novoDesign, novoDesign.dadosImpressao(),caminhoArquivo, cliente);
         criacaoDesignRepository.save(novaCriacao);
         return ResponseEntity.ok(novaCriacao);
@@ -74,23 +74,33 @@ public class CriacaoDesignService {
         return ResponseEntity.noContent().build();
     }
 
-    public ResponseEntity showMyOrder(Long id, String contato){
-        if (id == null && contato == null || contato.isEmpty()){
+    public ResponseEntity showMyOrder(Long id, String contato, String email) {
+        if ((id == null && contato == null) || (contato != null && contato.isEmpty())) {
             return ResponseEntity.badRequest().body("Por favor, informe o número do pedido ou contato do cliente.");
         } else if (id != null) {
             var design = criacaoDesignRepository.findById(id);
-            if (design.isEmpty()){
+            if (design.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }
             return ResponseEntity.ok(design.get());
-        } else {
+        } else if (contato != null) {
             var orders = criacaoDesignRepository.findByContatoCliente(contato);
-            if (orders.isEmpty()){
+            if (orders.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }
             List<PedidosDesign> designs = orders.stream().map(PedidosDesign::new).toList();
             return ResponseEntity.ok(designs);
+        } else if (email != null && !email.isEmpty()) {
+            var pedido = criacaoDesignRepository.findByEmailCliente(email);
+            if (pedido.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+            List<PedidosDesign> designs = pedido.stream().map(PedidosDesign::new).toList();
+            return ResponseEntity.ok(designs);
+        } else {
+            return ResponseEntity.badRequest().body("Por favor, forneça um identificador válido (ID, contato ou e-mail).");
         }
     }
+
 
 }

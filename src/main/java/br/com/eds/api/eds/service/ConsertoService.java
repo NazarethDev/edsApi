@@ -29,7 +29,7 @@ public class ConsertoService {
     @Transactional
     public ResponseEntity createConserto(NovoConserto novo) throws IOException {
         var arquivo = arquivoService.salvarArquivo(novo.arquivo(), null, false, true);
-        var cliente = clienteService.obterOuCriarCliente(novo.nomeCliente(), novo.contatoCliente());
+        var cliente = clienteService.obterOuCriarCliente(novo.nomeCliente(), novo.contatoCliente(), novo.emailCliente());
         var conserto = new Conserto(novo, arquivo, cliente);
         return ResponseEntity.ok(conserto);
     }
@@ -61,7 +61,7 @@ public class ConsertoService {
         } else return ResponseEntity.notFound().build();
     }
 
-    public ResponseEntity showMyOrder(Long id, String contato){
+    public ResponseEntity showMyOrder(Long id, String contato, String email){
         if (id == null && contato == null || contato.isEmpty()){
             return ResponseEntity.badRequest().body("Por favor, informe o número do pedido ou contato do cliente.");
         } else if (id != null) {
@@ -70,13 +70,20 @@ public class ConsertoService {
                 return ResponseEntity.noContent().build();
             }
             return ResponseEntity.ok(conserto.get());
-        } else {
+        } else if (contato!= null){
             var conserto = consertoRepository.findByContatoCliente(contato);
             if (conserto.isEmpty()){
                 return ResponseEntity.noContent().build();
             }
             List<ConsertosSolicitados> consertos = conserto.stream().map(ConsertosSolicitados::new).toList();
             return ResponseEntity.ok(consertos);
+        } else {
+            var request = consertoRepository.findByEmailCliente(email);
+            if (request.isEmpty()){
+                return ResponseEntity.notFound().build();
+            }
+            List<ConsertosSolicitados> consertosSolicitados = request.stream().map(ConsertosSolicitados::new).toList();
+            return ResponseEntity.ok(consertosSolicitados);
         }
     }
 

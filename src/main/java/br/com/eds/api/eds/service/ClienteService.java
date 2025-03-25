@@ -17,12 +17,13 @@ public class ClienteService {
     }
 
     @Transactional
-    public Cliente obterOuCriarCliente(String nomeCliente, String contatoCliente) {
+    public Cliente obterOuCriarCliente(String nomeCliente, String contatoCliente, String emailCliente) {
         return clienteRepository.findByContatoClienteAndNomeCliente(contatoCliente, nomeCliente)
                 .orElseGet(() -> {
                     Cliente novoCliente = new Cliente();
                     novoCliente.setNomeCliente(nomeCliente);
                     novoCliente.setContatoCliente(contatoCliente);
+                    novoCliente.setEmailCliente(emailCliente);
                     return clienteRepository.save(novoCliente);
                 });
     }

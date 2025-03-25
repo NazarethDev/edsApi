@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface ConsertoRepository extends JpaRepository <Conserto, Long> {
     List <Conserto> findByContatoCliente(String contato);
+
+    List<Conserto> findByEmailCliente(String email);
 }

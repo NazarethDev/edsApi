@@ -27,8 +27,9 @@ public class ConsertoController {
     }
     @GetMapping
     public ResponseEntity showOrder(@RequestParam(required = false)Long id,
-                                    @RequestParam(required = false) String contato){
-        return consertoService.showMyOrder(id, contato);
+                                    @RequestParam(required = false) String contato,
+                                    @RequestParam (required = false)String email){
+        return consertoService.showMyOrder(id, contato, email);
     }
 
     @DeleteMapping

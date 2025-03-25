@@ -10,6 +10,8 @@ public record NovoConserto(
         @NotBlank
         String contatoCliente,
         @NotBlank
+        String emailCliente,
+        @NotBlank
         String descricaoProblema,
         MultipartFile arquivo,
         @NotBlank
