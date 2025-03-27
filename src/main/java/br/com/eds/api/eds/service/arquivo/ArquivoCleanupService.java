@@ -1,5 +1,6 @@
-package br.com.eds.api.eds.service;
+package br.com.eds.api.eds.service.arquivo;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -9,10 +10,14 @@ import java.time.temporal.ChronoUnit;
 
 @Service
 public class ArquivoCleanupService {
+
+    @Autowired
+    ArquivoService arquivoService;
+
     private String [] DIRETORIOS = {
-            "src/main/resources/static/impressao_design/",
-            "src/main/resources/static/criacao_design/",
-            "src/main/resources/static/conserto/"
+            arquivoService.getIMPRESSAO_DIR(),
+            arquivoService.getDESIGN_DIR(),
+            arquivoService.getCONSERTO_DIR()
     };
 
     private static final int DIAS_EXPIRACAO = 15;

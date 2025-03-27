@@ -1,5 +1,7 @@
 package br.com.eds.api.eds.model.software;
 import br.com.eds.api.eds.model.cliente.Cliente;
+
+import br.com.eds.api.eds.model.gestao.managementUpdates.StatusServicos;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
@@ -11,16 +13,25 @@ public class Software {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
+
     private String detalhesServico;
+
     @Enumerated(EnumType.STRING)
     private TipoDispositivo dispositivo;
+
     @Enumerated(EnumType.STRING)
     private List<TipoServicoSoftware> servicos;
+
+    @Enumerated(EnumType.STRING)
+    private StatusServicos status;
+
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dataSolicitacao;
+
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dataAtualizacao;
 
@@ -99,5 +110,13 @@ public class Software {
 
     public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
         this.dataAtualizacao = dataAtualizacao;
+    }
+
+    public StatusServicos getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusServicos status) {
+        this.status = status;
     }
 }

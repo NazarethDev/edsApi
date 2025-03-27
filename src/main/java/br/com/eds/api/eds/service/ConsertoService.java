@@ -5,13 +5,13 @@ import br.com.eds.api.eds.model.conserto.UpdateConserto;
 import br.com.eds.api.eds.model.conserto.Conserto;
 import br.com.eds.api.eds.model.conserto.NovoConserto;
 import br.com.eds.api.eds.repository.ConsertoRepository;
+import br.com.eds.api.eds.service.arquivo.ArquivoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -54,6 +54,7 @@ public class ConsertoService {
         return ResponseEntity.ok(conserto);
     }
 
+    @Transactional
     public ResponseEntity deleteOrder(Long id){
         if (consertoRepository.existsById(id)){
             consertoRepository.deleteById(id);

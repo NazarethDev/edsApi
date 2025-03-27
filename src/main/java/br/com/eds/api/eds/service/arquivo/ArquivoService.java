@@ -1,4 +1,4 @@
-package br.com.eds.api.eds.service;
+package br.com.eds.api.eds.service.arquivo;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -8,9 +8,9 @@ import java.nio.file.*;
 @Service
 public class ArquivoService {
 
-    private static final String IMPRESSAO_DIR = "src/main/resources/static/impressao_design/";
-    private static final String DESIGN_DIR = "src/main/resources/static/criacao_design/";
-    private static final String CONSERTO_DIR = "src/main/resources/static/conserto";
+    private final String IMPRESSAO_DIR = "src/main/resources/static/impressao_design/";
+    private final String DESIGN_DIR = "src/main/resources/static/criacao_design/";
+    private final String CONSERTO_DIR = "src/main/resources/static/conserto";
 
     public String salvarArquivo(MultipartFile file, String arquivoAtual, boolean isImpressao, boolean isConserto) throws IOException {
         if(file == null || file.isEmpty()){
@@ -33,4 +33,15 @@ public class ArquivoService {
         return nomeArquivo;
     }
 
+    public String getIMPRESSAO_DIR() {
+        return IMPRESSAO_DIR;
+    }
+
+    public String getCONSERTO_DIR() {
+        return CONSERTO_DIR;
+    }
+
+    public String getDESIGN_DIR() {
+        return DESIGN_DIR;
+    }
 }

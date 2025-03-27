@@ -1,28 +1,41 @@
 package br.com.eds.api.eds.model.conserto;
 
 import br.com.eds.api.eds.model.cliente.Cliente;
+import br.com.eds.api.eds.model.gestao.managementUpdates.StatusServicos;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
+@Entity
 public class Conserto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
+
     private String descricaoProblema;
+
     private String arquivo;
+
     private String tempoDeUso;
+
     @Enumerated(EnumType.STRING)
     private TipoProduto tipoAparelho;
+
     @Enumerated(EnumType.STRING)
     private Fabricante fabricante;
+
+    @Enumerated(EnumType.STRING)
+    private StatusServicos status;
+
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dataSolicitacao;
+
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dataAtualizacao;
 
@@ -125,5 +138,13 @@ public class Conserto {
 
     public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
         this.dataAtualizacao = dataAtualizacao;
+    }
+
+    public StatusServicos getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusServicos status) {
+        this.status = status;
     }
 }

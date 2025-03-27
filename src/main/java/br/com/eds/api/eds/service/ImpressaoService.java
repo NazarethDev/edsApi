@@ -2,6 +2,7 @@ package br.com.eds.api.eds.service;
 
 import br.com.eds.api.eds.model.impressao.*;
 import br.com.eds.api.eds.repository.ImpressaoRepository;
+import br.com.eds.api.eds.service.arquivo.ArquivoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -57,6 +58,7 @@ public class ImpressaoService {
         return ResponseEntity.ok(impressao);
     }
 
+    @Transactional
     public ResponseEntity deleteOrder(Long impressaoId){
         var impressao = impressaoRepository.findById(impressaoId);
         if (impressao.isEmpty()){

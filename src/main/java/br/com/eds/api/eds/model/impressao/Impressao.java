@@ -1,6 +1,7 @@
 package br.com.eds.api.eds.model.impressao;
 
 import br.com.eds.api.eds.model.cliente.Cliente;
+import br.com.eds.api.eds.model.gestao.managementUpdates.StatusServicos;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -22,6 +23,10 @@ public class Impressao {
 
     @Enumerated(EnumType.STRING)
     private Dimensao dimensao;
+
+    @Enumerated(EnumType.STRING)
+    private StatusServicos status;
+
     private Integer unidades;
 
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
@@ -118,5 +123,13 @@ public class Impressao {
 
     public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
         this.dataAtualizacao = dataAtualizacao;
+    }
+
+    public StatusServicos getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusServicos status) {
+        this.status = status;
     }
 }

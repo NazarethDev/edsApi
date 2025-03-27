@@ -71,7 +71,7 @@ public class SoftwareService {
         }
     }
 
-
+    @Transactional
     public ResponseEntity deleteRequest(Long id){
             if (softwareRepository.existsById(id)){
                 softwareRepository.deleteById(id);

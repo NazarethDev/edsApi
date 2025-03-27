@@ -6,6 +6,7 @@ import br.com.eds.api.eds.model.criacaoDesign.NovaCriacaoDesign;
 import br.com.eds.api.eds.model.criacaoDesign.PedidosDesign;
 import br.com.eds.api.eds.model.criacaoDesign.UpdateDesign;
 import br.com.eds.api.eds.repository.CriacaoDesignRepository;
+import br.com.eds.api.eds.service.arquivo.ArquivoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -61,6 +62,7 @@ public class CriacaoDesignService {
         return ResponseEntity.ok(criacaoDesign);
     }
 
+    @Transactional
     public ResponseEntity deleteOrder (Long id) {
         var criacaoDesign = criacaoDesignRepository.findById(id);
         if (criacaoDesign.isEmpty()) {
