@@ -80,14 +80,14 @@ public class ImpressaoService {
             }
             return ResponseEntity.ok(pedido.get());
         } else if (contato != null) {
-            var pedido = impressaoRepository.findByContatoCliente(contato);
+            var pedido = impressaoRepository.findByCliente_ContatoCliente(contato);
             if (pedido.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }
             List<PedidosImpressao> pedidos = pedido.stream().map(PedidosImpressao::new).toList();
             return ResponseEntity.ok(pedidos);
         } else if (email != null && !email.isEmpty()) {
-            var pedido = impressaoRepository.findByEmailCliente(email);
+            var pedido = impressaoRepository.findByCliente_EmailCliente(email);
             if (pedido.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }

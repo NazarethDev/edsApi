@@ -86,14 +86,14 @@ public class CriacaoDesignService {
             }
             return ResponseEntity.ok(design.get());
         } else if (contato != null) {
-            var orders = criacaoDesignRepository.findByContatoCliente(contato);
+            var orders = criacaoDesignRepository.findByCliente_ContatoCliente(contato);
             if (orders.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }
             List<PedidosDesign> designs = orders.stream().map(PedidosDesign::new).toList();
             return ResponseEntity.ok(designs);
         } else if (email != null && !email.isEmpty()) {
-            var pedido = criacaoDesignRepository.findByEmailCliente(email);
+            var pedido = criacaoDesignRepository.findByCliente_EmailCliente(email);
             if (pedido.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }

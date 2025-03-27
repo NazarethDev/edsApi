@@ -53,14 +53,14 @@ public class SoftwareService {
             }
             return ResponseEntity.ok(request.get());
         } else if (contato != null) {
-            var request = softwareRepository.findByContatoCliente(contato);
+            var request = softwareRepository.findByCliente_ContatoCliente(contato);
             if (request.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }
             List<PedidosSoftServ> requests = request.stream().map(PedidosSoftServ::new).toList();
             return ResponseEntity.ok(requests);
         } else if (email != null && !email.isEmpty()) {
-            var software = softwareRepository.findByEmailCliente(email);
+            var software = softwareRepository.findByCliente_EmailCliente(email);
             if (software.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }

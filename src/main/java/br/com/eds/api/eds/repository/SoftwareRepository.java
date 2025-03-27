@@ -10,9 +10,9 @@ import java.util.List;
 
 @Repository
 public interface SoftwareRepository extends JpaRepository <Software, Long> {
-    List<Software> findByContatoCliente(String contato);
+    List<Software> findByCliente_ContatoCliente(String contatoCliente);
 
-    List<Software> findByEmailCliente(String email);
+    List<Software> findByCliente_EmailCliente(String emailCliente);
 
     @Query(value = """
             SELECT servico 

@@ -72,14 +72,14 @@ public class ConsertoService {
             }
             return ResponseEntity.ok(conserto.get());
         } else if (contato!= null){
-            var conserto = consertoRepository.findByContatoCliente(contato);
+            var conserto = consertoRepository.findByCliente_ContatoCliente(contato);
             if (conserto.isEmpty()){
                 return ResponseEntity.noContent().build();
             }
             List<ConsertosSolicitados> consertos = conserto.stream().map(ConsertosSolicitados::new).toList();
             return ResponseEntity.ok(consertos);
         } else {
-            var request = consertoRepository.findByEmailCliente(email);
+            var request = consertoRepository.findByCliente_EmailCliente(email);
             if (request.isEmpty()){
                 return ResponseEntity.notFound().build();
             }

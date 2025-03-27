@@ -10,9 +10,8 @@ import java.util.List;
 
 @Repository
 public interface ConsertoRepository extends JpaRepository <Conserto, Long> {
-    List <Conserto> findByContatoCliente(String contato);
-
-    List<Conserto> findByEmailCliente(String email);
+    List<Conserto> findByCliente_ContatoCliente(String contatoCliente);
+    List<Conserto> findByCliente_EmailCliente(String emailCliente);
 
     @Query(value = "SELECT COUNT(*) FROM conserto WHERE cliente_id = :clienteId", nativeQuery = true)
     Integer contarSolicitacoesConserto(@Param("clienteId") Long clienteId);

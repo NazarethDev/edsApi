@@ -10,9 +10,9 @@ import java.util.List;
 
 @Repository
 public interface ImpressaoRepository extends JpaRepository <Impressao, Long> {
-    List <Impressao> findByContatoCliente(String contato);
+    List<Impressao> findByCliente_ContatoCliente(String contatoCliente);
 
-    List<Impressao> findByEmailCliente(String email);
+    List<Impressao> findByCliente_EmailCliente(String emailCliente);
 
     @Query(value = "SELECT COUNT(*) FROM impressao WHERE cliente_id = :clienteId", nativeQuery = true)
     Integer contarPedidosPorCliente(@Param("clienteId") Long clienteId);
