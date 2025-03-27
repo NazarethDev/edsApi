@@ -1,9 +1,12 @@
 package br.com.eds.api.eds.model.cliente;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+
+import java.time.LocalDateTime;
 
 @Entity
 public class Cliente {
@@ -14,6 +17,11 @@ public class Cliente {
     private String nomeCliente;
     private String contatoCliente;
     private String emailCliente;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+    private LocalDateTime dataCadastro;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+    private LocalDateTime dataAtualizacao;
+
 
     public Cliente(){}
 
@@ -47,5 +55,21 @@ public class Cliente {
 
     public void setEmailCliente(String emailCliente) {
         this.emailCliente = emailCliente;
+    }
+
+    public LocalDateTime getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(LocalDateTime dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
+
+    public LocalDateTime getDataAtualizacao() {
+        return dataAtualizacao;
+    }
+
+    public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
+        this.dataAtualizacao = dataAtualizacao;
     }
 }

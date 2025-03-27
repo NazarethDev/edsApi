@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Service
 public class ClienteService {
 
@@ -24,6 +26,7 @@ public class ClienteService {
                     novoCliente.setNomeCliente(nomeCliente);
                     novoCliente.setContatoCliente(contatoCliente);
                     novoCliente.setEmailCliente(emailCliente);
+                    novoCliente.setDataCadastro(LocalDateTime.now());
                     return clienteRepository.save(novoCliente);
                 });
     }
