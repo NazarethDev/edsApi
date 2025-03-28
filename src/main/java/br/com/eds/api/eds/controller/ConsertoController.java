@@ -6,6 +6,7 @@ import br.com.eds.api.eds.service.ConsertoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
@@ -17,8 +18,9 @@ public class ConsertoController {
     ConsertoService consertoService;
 
     @PostMapping
-    public ResponseEntity novoPedido(@RequestBody NovoConserto novoConserto) throws IOException {
-        return consertoService.createConserto(novoConserto);
+    public ResponseEntity novoPedido(@RequestPart("data")NovoConserto novoConserto,
+                                     @RequestPart(value = "arquivo", required = false) MultipartFile arquivo) throws IOException {
+        return consertoService.createConserto(novoConserto,arquivo);
     }
 
     @PutMapping

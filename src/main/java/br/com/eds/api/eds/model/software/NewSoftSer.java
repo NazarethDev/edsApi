@@ -1,6 +1,7 @@
 package br.com.eds.api.eds.model.software;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
@@ -9,12 +10,12 @@ public record NewSoftSer(
         String nomeCliente,
         @NotBlank
         String contatoCliente,
-        @NotBlank
+        @NotNull
         String emailCliente,
         String detalhesServico,
-        @NotBlank
+        @NotNull
         TipoDispositivo dispositivo,
-        @NotBlank
+        @NotNull
         List<TipoServicoSoftware> servicos
 ) {
 }

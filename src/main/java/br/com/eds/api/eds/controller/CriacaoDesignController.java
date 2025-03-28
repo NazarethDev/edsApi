@@ -6,6 +6,7 @@ import br.com.eds.api.eds.service.CriacaoDesignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
@@ -17,8 +18,16 @@ public class CriacaoDesignController {
     CriacaoDesignService designService;
 
     @PostMapping
-    public ResponseEntity createDesign(@RequestBody NovaCriacaoDesign design) throws IOException {
-        return designService.novoDesign(design);
+    public ResponseEntity<?> createDesign(
+            @RequestPart("data") NovaCriacaoDesign design,
+            @RequestPart("arquivo") MultipartFile arquivo) throws IOException {
+        NovaCriacaoDesign novaCriacao = new NovaCriacaoDesign(
+                design.ideiasDesign(),
+                design.dadosImpressao(),
+                arquivo
+        );
+
+        return designService.novoDesign(novaCriacao);
     }
 
     @PutMapping

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,10 +28,11 @@ public class ConsertoService {
     ClienteService clienteService;
 
     @Transactional
-    public ResponseEntity createConserto(NovoConserto novo) throws IOException {
-        var arquivo = arquivoService.salvarArquivo(novo.arquivo(), null, false, true);
+    public ResponseEntity createConserto(NovoConserto novo, MultipartFile file) throws IOException {
+        var arquivo = arquivoService.salvarArquivo(file, null, false, true);
         var cliente = clienteService.obterOuCriarCliente(novo.nomeCliente(), novo.contatoCliente(), novo.emailCliente());
         var conserto = new Conserto(novo, arquivo, cliente);
+        consertoRepository.save(conserto);
         return ResponseEntity.ok(conserto);
     }
 

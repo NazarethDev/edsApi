@@ -30,7 +30,7 @@ public class ArquivoService {
 
         Files.copy(file.getInputStream(), caminhoArquivo, StandardCopyOption.REPLACE_EXISTING);
 
-        return nomeArquivo;
+        return caminhoArquivo.toString();
     }
 
     public String getIMPRESSAO_DIR() {

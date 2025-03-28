@@ -20,5 +20,6 @@ public record NovoConserto(
         TipoProduto tipoAparelho,
         @NotBlank
         Fabricante fabricante
-        ) {
+        )
+{
 }

@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -39,9 +41,9 @@ public class Software {
         this.cliente = cliente;
         this.detalhesServico = dados.detalhesServico();
         this.dispositivo = dados.dispositivo();
-        this.servicos = dados.servicos();
-        this.dataSolicitacao = LocalDateTime.now();
-    }
+        this.servicos = new ArrayList<>(dados.servicos());
+        this.dataSolicitacao = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
+        this.status = StatusServicos.NOVO;    }
 
     public void updateService(UpdateSoftSer dados){
         if (dados.detalhesServico() != null && !dados.detalhesServico().isEmpty()){
@@ -53,7 +55,7 @@ public class Software {
         if (dados.servicos() != null && !dados.servicos().isEmpty()){
             this.servicos = dados.servicos();
         }
-        this.dataAtualizacao = LocalDateTime.now();
+        this.dataAtualizacao = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
     }
 
     public Long getId() {

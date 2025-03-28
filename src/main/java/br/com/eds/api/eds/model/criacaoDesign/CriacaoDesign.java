@@ -6,6 +6,7 @@ import br.com.eds.api.eds.model.impressao.NovaImpressao;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 
 @Entity
@@ -17,7 +18,7 @@ public class CriacaoDesign extends Impressao {
     public CriacaoDesign(){}
 
     public CriacaoDesign(NovaCriacaoDesign novaCriacaoDesign, NovaImpressao dadosImpressao, String caminhoArquivo, Cliente cliente) {
-        super(cliente,dadosImpressao);
+        super(cliente,dadosImpressao,caminhoArquivo);
         this.ideiasDesign = novaCriacaoDesign.ideiasDesign();
         this.arquivoReferencia = caminhoArquivo;
     }
@@ -40,8 +41,7 @@ public class CriacaoDesign extends Impressao {
                 setUnidades(dadosAtualizados.novosDadosImpressao().unidades());
             }
         }
-        this.setDataAtualizacao(LocalDateTime.now());
-
+        this.setDataAtualizacao(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
     }
 
     public String getIdeiasDesign() {

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -25,10 +26,10 @@ public class ImpressaoService {
     ClienteService clienteService;
 
     @Transactional
-    public ResponseEntity createPrint(NovaImpressao impressao) throws IOException {
-        String arquivo = arquivoService.salvarArquivo(impressao.arquivoImpressao(), null,true,false);
+    public ResponseEntity createPrint(NovaImpressao impressao, MultipartFile file) throws IOException {
+        String arquivo = arquivoService.salvarArquivo(file, null,true,false);
         var cliente = clienteService.obterOuCriarCliente(impressao.nomeCliente(),impressao.contatoCliente(), impressao.emailCliente());
-        var novaImpressao = new Impressao(cliente, impressao);
+        var novaImpressao = new Impressao(cliente, impressao, arquivo);
 
         impressaoRepository.save(novaImpressao);
 

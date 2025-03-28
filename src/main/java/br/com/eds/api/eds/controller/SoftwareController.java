@@ -15,7 +15,7 @@ public class SoftwareController {
     SoftwareService softwareService;
 
     @PostMapping
-    public ResponseEntity novoSoftServ(NewSoftSer novo){
+    public ResponseEntity novoSoftServ(@RequestBody NewSoftSer novo){
         return softwareService.createSoftServ(novo);
     }
 

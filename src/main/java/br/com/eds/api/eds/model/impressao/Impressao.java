@@ -4,7 +4,10 @@ import br.com.eds.api.eds.model.cliente.Cliente;
 import br.com.eds.api.eds.model.gestao.managementUpdates.StatusServicos;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -37,13 +40,14 @@ public class Impressao {
 
     public Impressao(){}
 
-    public Impressao (Cliente cliente, NovaImpressao novaImpressao){
+    public Impressao (Cliente cliente, NovaImpressao novaImpressao, String arquivo){
         this.cliente = cliente;
         this.materialImpressao = novaImpressao.materialImpressao();
         this.dimensao = novaImpressao.dimensao();
         this.unidades = novaImpressao.unidades();
-        this.dataSolicitacao = LocalDateTime.now();
-    }
+        this.arquivoImpressao = arquivo;
+        this.dataSolicitacao = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
+        this.status = StatusServicos.NOVO;    }
 
     public void updatePrint(UpdatePrint dadosAtualizados, String arquivoImpressao){
         if (dadosAtualizados.materialImpressao() != null){
@@ -58,7 +62,7 @@ public class Impressao {
         if (arquivoImpressao != null && !arquivoImpressao.isEmpty()){
             this.arquivoImpressao = arquivoImpressao;
         }
-        this.dataAtualizacao = LocalDateTime.now();
+        this.dataAtualizacao = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
     }
 
     public Long getId() {

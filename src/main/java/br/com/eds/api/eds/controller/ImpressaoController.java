@@ -6,6 +6,7 @@ import br.com.eds.api.eds.service.ImpressaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
@@ -18,8 +19,9 @@ public class ImpressaoController {
     ImpressaoService impressaoService;
 
     @PostMapping
-    public ResponseEntity novaImpressao(@RequestBody NovaImpressao novaImpressao) throws IOException {
-        return impressaoService.createPrint(novaImpressao);
+    public ResponseEntity novaImpressao(@RequestPart("data") NovaImpressao novaImpressao,
+                                        @RequestPart("arquivo") MultipartFile arquivo) throws IOException {
+        return impressaoService.createPrint(novaImpressao, arquivo);
     }
 
     @GetMapping

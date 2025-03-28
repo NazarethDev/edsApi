@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Entity
 public class Conserto {
@@ -46,7 +47,8 @@ public class Conserto {
         this.tempoDeUso = novoConserto.tempoDeUso();
         this.tipoAparelho = novoConserto.tipoAparelho();
         this.fabricante = novoConserto.fabricante();
-        this.dataSolicitacao = LocalDateTime.now();
+        this.dataSolicitacao = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
+        this.status = StatusServicos.NOVO;
     }
 
     public void updateConserto (UpdateConserto dados, String arquivo){
@@ -65,7 +67,7 @@ public class Conserto {
         if (arquivo != null && !arquivo.isEmpty()){
             this.arquivo = arquivo;
         }
-        this.dataAtualizacao = LocalDateTime.now();
+        this.dataAtualizacao = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
     }
 
     public Long getId() {
