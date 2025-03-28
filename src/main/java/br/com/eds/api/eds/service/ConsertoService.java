@@ -36,21 +36,21 @@ public class ConsertoService {
         return ResponseEntity.ok(conserto);
     }
 
-    @Transactional
-    public ResponseEntity updateConserto(Long id, UpdateConserto dados) throws IOException {
+    public ResponseEntity updateConserto(Long id, UpdateConserto dados, MultipartFile arquivo) throws IOException {
         var order = consertoRepository.findById(id);
         if (order.isEmpty()){
             return ResponseEntity.notFound().build();
         }
 
+        System.out.println("Arquivo antes da atualização em consertoService: " + order.get().getArquivo());
+
         var conserto = order.get();
 
-        String arquivo = "";
-        if (dados.arquivo() != null && !dados.arquivo().isEmpty()){
-            arquivo = arquivoService.salvarArquivo(dados.arquivo(), conserto.getArquivo(), false, true);
-        }
+        String file = arquivoService.salvarArquivo(arquivo, conserto.getArquivo(), false, true);
 
-        conserto.updateConserto(dados, arquivo);
+
+        conserto.updateConserto(dados, file);
+        System.out.println("Arquivo em consertoService. Arquivo depois da alteração: " + conserto.getArquivo());
         consertoRepository.save(conserto);
 
         return ResponseEntity.ok(conserto);
@@ -64,30 +64,39 @@ public class ConsertoService {
         } else return ResponseEntity.notFound().build();
     }
 
-    public ResponseEntity showMyOrder(Long id, String contato, String email){
-        if (id == null && contato == null || contato.isEmpty()){
+    public ResponseEntity showMyOrder(Long id, String contato, String email) {
+        if (id == null && (contato == null || contato.isEmpty()) && (email == null || email.isEmpty())) {
             return ResponseEntity.badRequest().body("Por favor, informe o número do pedido ou contato do cliente.");
-        } else if (id != null) {
+        }
+
+        if (id != null) {
             var conserto = consertoRepository.findById(id);
-            if (conserto.isEmpty()){
+            if (conserto.isEmpty()) {
                 return ResponseEntity.noContent().build();
             }
             return ResponseEntity.ok(conserto.get());
-        } else if (contato!= null){
+        }
+
+        if (contato != null && !contato.isEmpty()) {
             var conserto = consertoRepository.findByCliente_ContatoCliente(contato);
-            if (conserto.isEmpty()){
+            if (conserto.isEmpty()) {
                 return ResponseEntity.noContent().build();
             }
             List<ConsertosSolicitados> consertos = conserto.stream().map(ConsertosSolicitados::new).toList();
             return ResponseEntity.ok(consertos);
-        } else {
+        }
+
+        if (email != null && !email.isEmpty()) {
             var request = consertoRepository.findByCliente_EmailCliente(email);
-            if (request.isEmpty()){
+            if (request.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }
             List<ConsertosSolicitados> consertosSolicitados = request.stream().map(ConsertosSolicitados::new).toList();
             return ResponseEntity.ok(consertosSolicitados);
         }
+
+        return ResponseEntity.badRequest().body("Por favor, forneça um identificador válido (ID, contato ou e-mail).");
     }
+
 
 }

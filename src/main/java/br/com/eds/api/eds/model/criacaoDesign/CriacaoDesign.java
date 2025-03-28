@@ -8,9 +8,8 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-
 @Entity
-@DiscriminatorValue("CRIACAO_DESIGN")
+@DiscriminatorValue("Criacao_design")
 public class CriacaoDesign extends Impressao {
     private String ideiasDesign;
     private String arquivoReferencia;

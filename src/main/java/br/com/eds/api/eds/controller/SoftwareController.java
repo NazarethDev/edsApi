@@ -6,6 +6,7 @@ import br.com.eds.api.eds.service.SoftwareService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/software")
@@ -19,8 +20,9 @@ public class SoftwareController {
         return softwareService.createSoftServ(novo);
     }
 
-    @PutMapping
-    public ResponseEntity updateSoftServ(Long id,UpdateSoftSer update){
+    @PutMapping("/{id}")
+    public ResponseEntity updateSoftServ(@PathVariable Long id,
+                                         @RequestBody UpdateSoftSer update){
         return softwareService.updateSoftServ(id, update);
     }
 

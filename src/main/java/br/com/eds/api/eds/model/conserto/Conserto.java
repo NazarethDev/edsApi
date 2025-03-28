@@ -4,11 +4,13 @@ import br.com.eds.api.eds.model.cliente.Cliente;
 import br.com.eds.api.eds.model.gestao.managementUpdates.StatusServicos;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 @Entity
+@DynamicUpdate
 public class Conserto {
 
     @Id
@@ -40,6 +42,8 @@ public class Conserto {
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dataAtualizacao;
 
+    public Conserto (){}
+
     public Conserto(NovoConserto novoConserto, String arquivo, Cliente cliente) {
         this.cliente = cliente;
         this.descricaoProblema = novoConserto.descricaoProblema();
@@ -52,6 +56,9 @@ public class Conserto {
     }
 
     public void updateConserto (UpdateConserto dados, String arquivo){
+        System.out.println("Arquivo atual na entidade: " + this.arquivo);
+        System.out.println("Novo arquivo recebido: " + arquivo);
+
         if (dados.descricaoProblema() != null){
             this.descricaoProblema = dados.descricaoProblema();
         }
@@ -66,6 +73,7 @@ public class Conserto {
         }
         if (arquivo != null && !arquivo.isEmpty()){
             this.arquivo = arquivo;
+            System.out.println("Arquivo atualizado na entidade: " + this.arquivo);
         }
         this.dataAtualizacao = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
     }

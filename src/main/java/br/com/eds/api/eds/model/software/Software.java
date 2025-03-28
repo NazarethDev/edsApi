@@ -35,7 +35,11 @@ public class Software {
     private LocalDateTime dataSolicitacao;
 
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+    @Column(name = "data_atualizacao")
     private LocalDateTime dataAtualizacao;
+
+    public Software() {
+    }
 
     public Software (Cliente cliente, NewSoftSer dados){
         this.cliente = cliente;
@@ -43,9 +47,12 @@ public class Software {
         this.dispositivo = dados.dispositivo();
         this.servicos = new ArrayList<>(dados.servicos());
         this.dataSolicitacao = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
-        this.status = StatusServicos.NOVO;    }
+        this.status = StatusServicos.NOVO;
+    }
 
     public void updateService(UpdateSoftSer dados){
+        this.dataAtualizacao = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
+        System.out.println("Data de atualização: " + this.dataAtualizacao);
         if (dados.detalhesServico() != null && !dados.detalhesServico().isEmpty()){
             this.detalhesServico = dados.detalhesServico();
         }
@@ -55,7 +62,6 @@ public class Software {
         if (dados.servicos() != null && !dados.servicos().isEmpty()){
             this.servicos = dados.servicos();
         }
-        this.dataAtualizacao = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
     }
 
     public Long getId() {

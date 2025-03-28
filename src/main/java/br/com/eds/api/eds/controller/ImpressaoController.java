@@ -32,12 +32,14 @@ public class ImpressaoController {
     }
 
     @PutMapping
-    public ResponseEntity updatePrint(@PathVariable Long id, @RequestBody UpdatePrint dados) throws IOException {
-        return impressaoService.updatePrint(id, dados);
+    public ResponseEntity updatePrint(@PathVariable Long id,
+                                      @RequestPart UpdatePrint dados,
+                                      @RequestPart MultipartFile file) throws IOException {
+        return impressaoService.updatePrint(id, dados, file);
     }
 
-    @DeleteMapping
-    public ResponseEntity deletePrint(Long id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity deletePrint(@PathVariable Long id){
         return impressaoService.deleteOrder(id);
     }
 

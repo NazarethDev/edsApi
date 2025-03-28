@@ -39,7 +39,7 @@ public class CriacaoDesignService {
     }
 
     @Transactional
-    public ResponseEntity<?> updateDesign(Long id,UpdateDesign dadosAtualizados) throws IOException {
+    public ResponseEntity<?> updateDesign(Long id,UpdateDesign dadosAtualizados, MultipartFile file) throws IOException {
         var design = criacaoDesignRepository.findById(id);
         if (design.isEmpty()){
             return ResponseEntity.notFound().build();
@@ -51,11 +51,7 @@ public class CriacaoDesignService {
             return ResponseEntity.badRequest().body("Não é possível alterar o pedido depois de duas horas da solicitação do serviço");
         }
 
-        String novoArquivoReferencia = "";
-
-        if (dadosAtualizados.arquivoreferencia() != null && !dadosAtualizados.arquivoreferencia().isEmpty()) {
-            novoArquivoReferencia = arquivoService.salvarArquivo(dadosAtualizados.arquivoreferencia(), criacaoDesign.getArquivoReferencia(),false, false);
-        }
+        String novoArquivoReferencia = arquivoService.salvarArquivo(file, criacaoDesign.getArquivoReferencia(),false, false);
 
         criacaoDesign.updateDesign(dadosAtualizados, novoArquivoReferencia);
         criacaoDesignRepository.save(criacaoDesign);
@@ -78,32 +74,39 @@ public class CriacaoDesignService {
     }
 
     public ResponseEntity showMyOrder(Long id, String contato, String email) {
-        if ((id == null && contato == null) || (contato != null && contato.isEmpty())) {
+        if (id == null && (contato == null || contato.isEmpty()) && (email == null || email.isEmpty())) {
             return ResponseEntity.badRequest().body("Por favor, informe o número do pedido ou contato do cliente.");
-        } else if (id != null) {
+        }
+
+        if (id != null) {
             var design = criacaoDesignRepository.findById(id);
             if (design.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }
             return ResponseEntity.ok(design.get());
-        } else if (contato != null) {
+        }
+
+        if (contato != null && !contato.isEmpty()) {
             var orders = criacaoDesignRepository.findByCliente_ContatoCliente(contato);
             if (orders.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }
             List<PedidosDesign> designs = orders.stream().map(PedidosDesign::new).toList();
             return ResponseEntity.ok(designs);
-        } else if (email != null && !email.isEmpty()) {
+        }
+
+        if (email != null && !email.isEmpty()) {
             var pedido = criacaoDesignRepository.findByCliente_EmailCliente(email);
             if (pedido.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }
             List<PedidosDesign> designs = pedido.stream().map(PedidosDesign::new).toList();
             return ResponseEntity.ok(designs);
-        } else {
-            return ResponseEntity.badRequest().body("Por favor, forneça um identificador válido (ID, contato ou e-mail).");
         }
+
+        return ResponseEntity.badRequest().body("Por favor, forneça um identificador válido (ID, contato ou e-mail).");
     }
+
 
 
 }

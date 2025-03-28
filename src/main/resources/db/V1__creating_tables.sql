@@ -31,23 +31,32 @@ CREATE TABLE Impressao (
     unidades INT,
     dataSolicitacao DATETIME,
     dataAtualizacao DATETIME,
-    tipo VARCHAR(50),
+    PRIMARY KEY (id),
     FOREIGN KEY (cliente_id) REFERENCES Cliente(id)
 );
 
 CREATE TABLE CriacaoDesign (
-    id BIGINT PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    cliente_id BIGINT,
+    arquivoImpressao VARCHAR(255),
+    materialImpressao VARCHAR(50),
+    dimensao VARCHAR(50),
+    status VARCHAR(50),
+    unidades INT,
+    dataSolicitacao DATETIME,
+    dataAtualizacao DATETIME,
     ideiasDesign TEXT,
     arquivoReferencia VARCHAR(255),
-    FOREIGN KEY (id) REFERENCES Impressao(id)
+    PRIMARY KEY (id),
+    FOREIGN KEY (cliente_id) REFERENCES Cliente(id)
 );
 
 CREATE TABLE Software (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     cliente_id BIGINT,
     detalhesServico TEXT,
-    dispositivo VARCHAR(50),
-    status VARCHAR(50),
+    dispositivo VARCHAR(50) NOT NULL,
+    status VARCHAR(50) NOT NULL,
     dataSolicitacao DATETIME,
     dataAtualizacao DATETIME,
     FOREIGN KEY (cliente_id) REFERENCES Cliente(id)
@@ -55,7 +64,7 @@ CREATE TABLE Software (
 
 CREATE TABLE Software_Servicos (
     software_id BIGINT,
-    servico VARCHAR(120),
+    servico VARCHAR(120) NOT NULL,
     PRIMARY KEY (software_id, servico),
-    FOREIGN KEY (software_id) REFERENCES Software(id)
+    FOREIGN KEY (software_id) REFERENCES Software(id) ON DELETE CASCADE
 );

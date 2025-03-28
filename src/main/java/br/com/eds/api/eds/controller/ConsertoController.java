@@ -23,10 +23,13 @@ public class ConsertoController {
         return consertoService.createConserto(novoConserto,arquivo);
     }
 
-    @PutMapping
-    public ResponseEntity updateOrder(@PathVariable Long id, @RequestBody UpdateConserto dados) throws IOException{
-        return consertoService.updateConserto(id, dados);
+    @PutMapping("/{id}")
+    public ResponseEntity updateOrder(@PathVariable Long id,
+                                      @RequestBody UpdateConserto dados,
+                                      @RequestPart(value = "arquivo", required = false) MultipartFile arquivo) throws IOException{
+        return consertoService.updateConserto(id, dados, arquivo);
     }
+
     @GetMapping
     public ResponseEntity showOrder(@RequestParam(required = false)Long id,
                                     @RequestParam(required = false) String contato,
@@ -34,7 +37,7 @@ public class ConsertoController {
         return consertoService.showMyOrder(id, contato, email);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity deleteOrder(@PathVariable Long id){
         return consertoService.deleteOrder(id);
     }

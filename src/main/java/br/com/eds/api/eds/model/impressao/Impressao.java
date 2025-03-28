@@ -4,7 +4,6 @@ import br.com.eds.api.eds.model.cliente.Cliente;
 import br.com.eds.api.eds.model.gestao.managementUpdates.StatusServicos;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;

@@ -30,9 +30,11 @@ public class CriacaoDesignController {
         return designService.novoDesign(novaCriacao);
     }
 
-    @PutMapping
-    public ResponseEntity updateDesign(@PathVariable Long id,@RequestBody UpdateDesign design) throws IOException {
-        return designService.updateDesign(id, design);
+    @PutMapping("/{id}")
+    public ResponseEntity updateDesign(@PathVariable Long id,
+                                       @RequestPart UpdateDesign design,
+                                       @RequestPart MultipartFile file) throws IOException {
+        return designService.updateDesign(id, design, file);
     }
 
     @DeleteMapping
