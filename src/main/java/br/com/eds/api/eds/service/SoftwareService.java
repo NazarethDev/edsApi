@@ -1,9 +1,6 @@
 package br.com.eds.api.eds.service;
 
-import br.com.eds.api.eds.model.software.NewSoftSer;
-import br.com.eds.api.eds.model.software.PedidosSoftServ;
-import br.com.eds.api.eds.model.software.Software;
-import br.com.eds.api.eds.model.software.UpdateSoftSer;
+import br.com.eds.api.eds.model.software.*;
 import br.com.eds.api.eds.repository.SoftwareRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -48,7 +45,7 @@ public class SoftwareService {
         pedido.updateService(dados);
 
         softwareRepository.save(pedido);
-        return ResponseEntity.ok(pedido);
+        return ResponseEntity.ok(new SoftwareResponse(pedido));
     }
 
     public ResponseEntity showMyRequests(Long id, String contato, String email) {
@@ -61,7 +58,7 @@ public class SoftwareService {
             if (request.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }
-            return ResponseEntity.ok(request.get());
+            return ResponseEntity.ok(new SoftwareResponse(request.get()));
         }
 
         if (contato != null && !contato.isEmpty()) {
@@ -69,7 +66,7 @@ public class SoftwareService {
             if (request.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }
-            List<PedidosSoftServ> requests = request.stream().map(PedidosSoftServ::new).toList();
+            List<SoftwareResponse> requests = request.stream().map(SoftwareResponse::new).toList();
             return ResponseEntity.ok(requests);
         }
 
@@ -78,7 +75,7 @@ public class SoftwareService {
             if (software.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }
-            List<PedidosSoftServ> pedidos = software.stream().map(PedidosSoftServ::new).toList();
+            List<SoftwareResponse> pedidos = software.stream().map(SoftwareResponse::new).toList();
             return ResponseEntity.ok(pedidos);
         }
 

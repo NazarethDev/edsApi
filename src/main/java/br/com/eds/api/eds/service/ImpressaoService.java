@@ -54,7 +54,7 @@ public class ImpressaoService {
         order.updatePrint(dadosAtualizados,novoArquivo);
         impressaoRepository.save(order);
 
-        return ResponseEntity.ok(impressao);
+        return ResponseEntity.ok(new PrintResponse(order));
     }
 
     @Transactional
@@ -80,7 +80,7 @@ public class ImpressaoService {
             if (pedido.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }
-            return ResponseEntity.ok(pedido.get());
+            return ResponseEntity.ok(new PrintResponse(pedido.get()));
         }
 
         if (contato != null && !contato.isEmpty()) {
@@ -88,7 +88,7 @@ public class ImpressaoService {
             if (pedidos.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }
-            List<PedidosImpressao> listaPedidos = pedidos.stream().map(PedidosImpressao::new).toList();
+            List<PrintResponse> listaPedidos = pedidos.stream().map(PrintResponse::new).toList();
             return ResponseEntity.ok(listaPedidos);
         }
 
@@ -97,7 +97,7 @@ public class ImpressaoService {
             if (pedidos.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }
-            List<PedidosImpressao> listaPedidos = pedidos.stream().map(PedidosImpressao::new).toList();
+            List<PrintResponse> listaPedidos = pedidos.stream().map(PrintResponse::new).toList();
             return ResponseEntity.ok(listaPedidos);
         }
 

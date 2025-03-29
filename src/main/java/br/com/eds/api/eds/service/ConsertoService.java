@@ -1,9 +1,6 @@
 package br.com.eds.api.eds.service;
 
-import br.com.eds.api.eds.model.conserto.ConsertosSolicitados;
-import br.com.eds.api.eds.model.conserto.UpdateConserto;
-import br.com.eds.api.eds.model.conserto.Conserto;
-import br.com.eds.api.eds.model.conserto.NovoConserto;
+import br.com.eds.api.eds.model.conserto.*;
 import br.com.eds.api.eds.repository.ConsertoRepository;
 import br.com.eds.api.eds.service.arquivo.ArquivoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +47,7 @@ public class ConsertoService {
         conserto.updateConserto(dados, file);
         consertoRepository.save(conserto);
 
-        return ResponseEntity.ok(conserto);
+        return ResponseEntity.ok(new ConsertoResponse(conserto));
     }
 
     @Transactional
@@ -71,7 +68,7 @@ public class ConsertoService {
             if (conserto.isEmpty()) {
                 return ResponseEntity.noContent().build();
             }
-            return ResponseEntity.ok(conserto.get());
+            return ResponseEntity.ok(new ConsertoResponse(conserto.get()));
         }
 
         if (contato != null && !contato.isEmpty()) {
@@ -79,7 +76,7 @@ public class ConsertoService {
             if (conserto.isEmpty()) {
                 return ResponseEntity.noContent().build();
             }
-            List<ConsertosSolicitados> consertos = conserto.stream().map(ConsertosSolicitados::new).toList();
+            List<ConsertoResponse> consertos = conserto.stream().map(ConsertoResponse::new).toList();
             return ResponseEntity.ok(consertos);
         }
 
@@ -88,7 +85,7 @@ public class ConsertoService {
             if (request.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }
-            List<ConsertosSolicitados> consertosSolicitados = request.stream().map(ConsertosSolicitados::new).toList();
+            List<ConsertoResponse> consertosSolicitados = request.stream().map(ConsertoResponse::new).toList();
             return ResponseEntity.ok(consertosSolicitados);
         }
 

@@ -1,10 +1,7 @@
 package br.com.eds.api.eds.service;
 
 import br.com.eds.api.eds.model.cliente.Cliente;
-import br.com.eds.api.eds.model.criacaoDesign.CriacaoDesign;
-import br.com.eds.api.eds.model.criacaoDesign.NovaCriacaoDesign;
-import br.com.eds.api.eds.model.criacaoDesign.PedidosDesign;
-import br.com.eds.api.eds.model.criacaoDesign.UpdateDesign;
+import br.com.eds.api.eds.model.criacaoDesign.*;
 import br.com.eds.api.eds.repository.CriacaoDesignRepository;
 import br.com.eds.api.eds.service.arquivo.ArquivoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +53,7 @@ public class CriacaoDesignService {
         criacaoDesign.updateDesign(dadosAtualizados, novoArquivoReferencia);
         criacaoDesignRepository.save(criacaoDesign);
 
-        return ResponseEntity.ok(criacaoDesign);
+        return ResponseEntity.ok(new CriacaoDesignResponse(criacaoDesign));
     }
 
     @Transactional
@@ -83,7 +80,7 @@ public class CriacaoDesignService {
             if (design.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }
-            return ResponseEntity.ok(design.get());
+            return ResponseEntity.ok(new CriacaoDesignResponse(design.get()));
         }
 
         if (contato != null && !contato.isEmpty()) {
@@ -91,7 +88,7 @@ public class CriacaoDesignService {
             if (orders.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }
-            List<PedidosDesign> designs = orders.stream().map(PedidosDesign::new).toList();
+            List<CriacaoDesignResponse> designs = orders.stream().map(CriacaoDesignResponse::new).toList();
             return ResponseEntity.ok(designs);
         }
 
@@ -100,7 +97,7 @@ public class CriacaoDesignService {
             if (pedido.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }
-            List<PedidosDesign> designs = pedido.stream().map(PedidosDesign::new).toList();
+            List<CriacaoDesignResponse> designs = pedido.stream().map(CriacaoDesignResponse::new).toList();
             return ResponseEntity.ok(designs);
         }
 
