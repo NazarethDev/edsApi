@@ -32,12 +32,12 @@ public class CriacaoDesignController {
 
     @PutMapping("/{id}")
     public ResponseEntity updateDesign(@PathVariable Long id,
-                                       @RequestPart UpdateDesign design,
-                                       @RequestPart MultipartFile file) throws IOException {
+                                       @RequestPart("data") UpdateDesign design,
+                                       @RequestPart(value = "file",required = false) MultipartFile file) throws IOException {
         return designService.updateDesign(id, design, file);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity deleteOrder(@PathVariable Long id){
        return designService.deleteOrder(id);
     }

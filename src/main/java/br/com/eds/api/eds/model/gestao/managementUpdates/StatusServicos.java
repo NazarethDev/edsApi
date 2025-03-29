@@ -8,6 +8,6 @@ public enum StatusServicos {
     PROCESSANDO,
     AGUARDA_RETIRADA,
     ENTREGA_SOLICITADA,
-    FINALIZADO
-
+    FINALIZADO,
+    CANCELADO
 }

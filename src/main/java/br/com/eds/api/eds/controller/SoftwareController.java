@@ -33,8 +33,8 @@ public class SoftwareController {
         return softwareService.showMyRequests(id,contato,email);
     }
 
-    @DeleteMapping
-    public ResponseEntity deleteRequest(Long id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteRequest(@PathVariable Long id){
         return softwareService.deleteRequest(id);
     }
 }

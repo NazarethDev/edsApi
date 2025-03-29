@@ -25,7 +25,7 @@ public class ConsertoController {
 
     @PutMapping("/{id}")
     public ResponseEntity updateOrder(@PathVariable Long id,
-                                      @RequestBody UpdateConserto dados,
+                                      @RequestPart("dados") UpdateConserto dados,
                                       @RequestPart(value = "arquivo", required = false) MultipartFile arquivo) throws IOException{
         return consertoService.updateConserto(id, dados, arquivo);
     }

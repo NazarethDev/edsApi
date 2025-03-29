@@ -42,15 +42,12 @@ public class ConsertoService {
             return ResponseEntity.notFound().build();
         }
 
-        System.out.println("Arquivo antes da atualização em consertoService: " + order.get().getArquivo());
-
         var conserto = order.get();
 
         String file = arquivoService.salvarArquivo(arquivo, conserto.getArquivo(), false, true);
 
 
         conserto.updateConserto(dados, file);
-        System.out.println("Arquivo em consertoService. Arquivo depois da alteração: " + conserto.getArquivo());
         consertoRepository.save(conserto);
 
         return ResponseEntity.ok(conserto);
