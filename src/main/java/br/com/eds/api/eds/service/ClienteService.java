@@ -20,7 +20,7 @@ public class ClienteService {
 
     @Transactional
     public Cliente obterOuCriarCliente(String nomeCliente, String contatoCliente, String emailCliente) {
-        return clienteRepository.findByContatoClienteAndNomeCliente(contatoCliente, nomeCliente)
+        return clienteRepository.findByContatoClienteAndEmailCliente(contatoCliente, emailCliente)
                 .orElseGet(() -> {
                     Cliente novoCliente = new Cliente();
                     novoCliente.setNomeCliente(nomeCliente);
