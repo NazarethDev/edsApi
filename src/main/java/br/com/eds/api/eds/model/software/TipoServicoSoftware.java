@@ -1,18 +1,18 @@
 package br.com.eds.api.eds.model.software;
 
 public enum TipoServicoSoftware {
-    INSTACACAO_WINDOWS,
-    INTALACAO_LINUX,
-    INTALACAO_MAC,
-    FORMATAÇÃO,
-    BACKUP,
-    OTIMIZACAO,
-    PROBLEMAS_VIRUS,
-    PACOTE_OFFICE,
-    SEGURANCA,
-    ATUALIZACAO_DRIVERS,
-    RECUPERACAO_MEMORIA,
-    ATUALIZAÇÃO_SISTEMA,
-    MONTAGEM_MANUTENCAO_REDE,
-    OUTRO
+    Instalação_windows,
+    Instalação_Linux,
+    Instalação_MAC,
+    Formatação,
+    Backup,
+    Otimização,
+    Problemas_com_vírus,
+    Instalação_pacote_office,
+    Segurança,
+    Atualização_de_drivers,
+    Recuperação_de_memória,
+    Atualização_do_sistema,
+    Redes,
+    Outro
 }

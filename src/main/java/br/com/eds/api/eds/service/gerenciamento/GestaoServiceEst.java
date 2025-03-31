@@ -5,16 +5,20 @@ import br.com.eds.api.eds.model.gestao.est.consertoEst.EstConsertoByCliente;
 import br.com.eds.api.eds.model.gestao.est.impressaoEst.DimensaoEstDTO;
 import br.com.eds.api.eds.model.gestao.est.impressaoEst.EstImpressaoAndDesignByCliente;
 import br.com.eds.api.eds.model.gestao.est.impressaoEst.MaterialEstDTO;
-import br.com.eds.api.eds.model.gestao.est.softwareEst.DispositivoSoftEstDTO;
-import br.com.eds.api.eds.model.gestao.est.softwareEst.EstGeraisSoftEst;
-import br.com.eds.api.eds.model.gestao.est.softwareEst.EstSoftwareByCliente;
-import br.com.eds.api.eds.model.gestao.est.softwareEst.ServicoSoftEstatisticaDTO;
+import br.com.eds.api.eds.model.gestao.est.softwareEst.FrequenciaServicoResponse;
+import br.com.eds.api.eds.model.software.Software;
+import br.com.eds.api.eds.model.software.TipoServicoSoftware;
 import br.com.eds.api.eds.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class GestaoServiceEst {
@@ -43,8 +47,8 @@ public class GestaoServiceEst {
         verificaCliente(clienteId);
         Integer totalImpressoes = impressaoRepository.contarPedidosPorCliente(clienteId);
         Double frquenciaImpressoes = impressaoRepository.calcularFrequenciaPedidos(clienteId);
-        String dimensaoImpressaoMaisPedido = impressaoRepository.encontrarMaterialMaisPedido(clienteId);
-        String materialMaisImpresso = impressaoRepository.encontrarDimensaoMaisPedida(clienteId);
+        String dimensaoImpressaoMaisPedido = impressaoRepository.encontrarDimensaoMaisPedida(clienteId);
+        String materialMaisImpresso = impressaoRepository.encontrarMaterialMaisPedido(clienteId);
         var response = new EstImpressaoAndDesignByCliente(totalImpressoes,frquenciaImpressoes,
                 dimensaoImpressaoMaisPedido,materialMaisImpresso);
 
@@ -65,18 +69,6 @@ public class GestaoServiceEst {
         return ResponseEntity.ok(estatisticas);
     }
 
-    public ResponseEntity softwarePorCliente(Long id){
-        verificaCliente(id);
-        String servicoMaisSolicitado = softwareRepository.encontrarServicoMaisSolicitado(id);
-        Double frequenciaServicos = softwareRepository.calcularFrequenciaServicos(id);
-        String tipoDispositivoMaisSolicitado = softwareRepository.encontrarTipoDispositivoMaisSolicitado(id);
-
-        var estatisticas = new EstSoftwareByCliente(servicoMaisSolicitado,
-                frequenciaServicos,tipoDispositivoMaisSolicitado);
-
-        return ResponseEntity.ok(estatisticas);
-    }
-
     public ResponseEntity CriacaoDesignPorCliente(Long clienteId){
         verificaCliente(clienteId);
         Integer totalImpressoes = criacaoDesignRepository.contarPedidosPorCliente(clienteId);
@@ -87,22 +79,6 @@ public class GestaoServiceEst {
                 dimensaoImpressaoMaisPedido,materialMaisImpresso);
 
         return ResponseEntity.ok(resposta);
-    }
-
-    public ResponseEntity estatisticasGeraisPorMesSoftware(int mes, int ano) {
-        List<Object[]> servicos = softwareRepository.listarServicosMaisSolicitados(mes, ano);
-        List<Object[]> dispositivos = softwareRepository.listarDispositivosMaisSolicitados(mes, ano);
-        List<ServicoSoftEstatisticaDTO> servicoDTOs = servicos.stream()
-                .map(obj -> new ServicoSoftEstatisticaDTO((String) obj[0], ((Number) obj[1]).intValue()))
-                .toList();
-
-        List<DispositivoSoftEstDTO> dispositivoDTOs = dispositivos.stream()
-                .map(obj -> new DispositivoSoftEstDTO((String) obj[0], ((Number) obj[1]).intValue()))
-                .toList();
-
-        var estatisticas = new EstGeraisSoftEst(servicoDTOs, dispositivoDTOs);
-
-        return ResponseEntity.ok(estatisticas);
     }
 
     public ResponseEntity estatisticasMateriaisPorMes(int mes, int ano) {
@@ -135,6 +111,33 @@ public class GestaoServiceEst {
         return ResponseEntity.ok(dispositivosDTO);
     }
 
+    public ResponseEntity<List<Map.Entry<TipoServicoSoftware, Long>>> contarServicosNoMes(int ano, int mes) {
+        // Calcular o início e o fim do mês
+        LocalDateTime inicioMes = LocalDateTime.of(ano, mes, 1, 0, 0, 0, 0);
+        LocalDateTime fimMes = inicioMes.plusMonths(1).minusSeconds(1);
 
+        // Buscar todos os softwares no intervalo de data
+        List<Software> softwaresNoMes = softwareRepository.findAllByDataSolicitacaoBetween(inicioMes, fimMes);
 
+        // Verifica se existem registros no mês
+        if (softwaresNoMes.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        // Contar as ocorrências de cada serviço
+        Map<TipoServicoSoftware, Long> contagemServicos = Arrays.stream(TipoServicoSoftware.values())
+                .collect(Collectors.toMap(
+                        tipoServico -> tipoServico,
+                        tipoServico -> softwaresNoMes.stream()
+                                .filter(software -> software.getServicos().contains(tipoServico))
+                                .count()
+                ));
+
+        // Ordenar o mapa em ordem decrescente pelo valor (contagem)
+        List<Map.Entry<TipoServicoSoftware, Long>> contagemOrdenada = contagemServicos.entrySet().stream()
+                .sorted(Map.Entry.<TipoServicoSoftware, Long>comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(contagemOrdenada);
+    }
 }

@@ -2,39 +2,41 @@ package br.com.eds.api.eds.model.conserto;
 
 
 enum TipoProduto {
-    TELEVISOR,
-    NOTEBOOK,
-    MICROONDAS,
-    OUTRO
+    Televisão,
+    Notebook,
+    Microondas,
+    PC,
+    Outro
 }
 
 public enum Fabricante {
-    SAMSUNG(TipoProduto.TELEVISOR, TipoProduto.NOTEBOOK, TipoProduto.MICROONDAS),
-    LG(TipoProduto.TELEVISOR, TipoProduto.MICROONDAS),
-    SONY(TipoProduto.TELEVISOR),
-    TCL(TipoProduto.TELEVISOR),
-    HISENSE(TipoProduto.TELEVISOR),
-    PHILCO(TipoProduto.TELEVISOR, TipoProduto.MICROONDAS),
-    PANASONIC(TipoProduto.TELEVISOR, TipoProduto.MICROONDAS),
-    VIZIO(TipoProduto.TELEVISOR),
-    XIAOMI(TipoProduto.TELEVISOR),
-    SHARP(TipoProduto.TELEVISOR),
+    Samsung,
+    Lg,
+    Sony,
+    Tcl,
+    Hisense,
+    Philco,
+    Panasonic,
+    Vizio,
+    Xiaomi,
+    Sharp,
 
-    APPLE(TipoProduto.NOTEBOOK),
-    ACER(TipoProduto.NOTEBOOK),
-    DELL(TipoProduto.NOTEBOOK),
-    LENOVO(TipoProduto.NOTEBOOK),
-    HP(TipoProduto.NOTEBOOK),
-    ASUS(TipoProduto.NOTEBOOK),
-    MULTILASER(TipoProduto.NOTEBOOK),
+    Apple,
+    Acer,
+    Dell,
+    Lenovo,
+    Hp,
+    Asus,
+    Multilaser,
 
-    BRASTEMP(TipoProduto.MICROONDAS),
-    ELECTROLUX(TipoProduto.MICROONDAS),
-    CONSUL(TipoProduto.MICROONDAS),
-    BOSCH(TipoProduto.MICROONDAS),
-    MIDEA(TipoProduto.MICROONDAS),
+    Brastemp,
+    Electrolux,
+    Consul,
+    Bosch,
+    Midea,
 
-    OUTRO(TipoProduto.TELEVISOR, TipoProduto.NOTEBOOK, TipoProduto.MICROONDAS, TipoProduto.OUTRO);
+
+    Outro(TipoProduto.Televisão, TipoProduto.Notebook, TipoProduto.Microondas, TipoProduto.Outro, TipoProduto.PC);
 
 
     private TipoProduto [] categorias;

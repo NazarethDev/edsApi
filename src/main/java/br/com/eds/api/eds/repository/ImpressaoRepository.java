@@ -17,9 +17,12 @@ public interface ImpressaoRepository extends JpaRepository <Impressao, Long> {
     @Query(value = "SELECT COUNT(*) FROM impressao WHERE cliente_id = :clienteId", nativeQuery = true)
     Integer contarPedidosPorCliente(@Param("clienteId") Long clienteId);
 
-    @Query(value = "SELECT AVG(DATEDIFF(LEAD(data_solicitacao) OVER (PARTITION BY cliente_id ORDER BY data_solicitacao), data_solicitacao)) " +
-            "FROM impressao WHERE cliente_id = :clienteId", nativeQuery = true)
+    @Query(value = "SELECT AVG(diff) FROM ( " +
+            "SELECT DATEDIFF(data_solicitacao, LAG(data_solicitacao) OVER (PARTITION BY cliente_id ORDER BY data_solicitacao)) AS diff " +
+            "FROM impressao WHERE cliente_id = :clienteId ) AS subquery",
+            nativeQuery = true)
     Double calcularFrequenciaPedidos(@Param("clienteId") Long clienteId);
+
 
     @Query(value = "SELECT dimensao FROM impressao WHERE cliente_id = :clienteId " +
             "GROUP BY dimensao ORDER BY COUNT(*) DESC LIMIT 1", nativeQuery = true)
