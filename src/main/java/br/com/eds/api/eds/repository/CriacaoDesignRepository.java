@@ -1,6 +1,7 @@
 package br.com.eds.api.eds.repository;
 
 import br.com.eds.api.eds.model.criacaoDesign.CriacaoDesign;
+import br.com.eds.api.eds.model.gestao.managementUpdates.StatusServicos;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -29,4 +30,6 @@ public interface CriacaoDesignRepository extends JpaRepository <CriacaoDesign,Lo
     @Query(value = "SELECT material_impressao FROM impressao WHERE cliente_id = :clienteId " +
             "GROUP BY material_impressao ORDER BY COUNT(*) DESC LIMIT 1", nativeQuery = true)
     String encontrarMaterialMaisPedido(@Param("clienteId") Long clienteId);
+
+    List<CriacaoDesign> findByStatus(StatusServicos status);
 }

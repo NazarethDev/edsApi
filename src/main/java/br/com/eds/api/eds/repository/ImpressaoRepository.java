@@ -1,5 +1,6 @@
 package br.com.eds.api.eds.repository;
 
+import br.com.eds.api.eds.model.gestao.managementUpdates.StatusServicos;
 import br.com.eds.api.eds.model.impressao.Impressao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -22,6 +23,9 @@ public interface ImpressaoRepository extends JpaRepository <Impressao, Long> {
             "FROM impressao WHERE cliente_id = :clienteId ) AS subquery",
             nativeQuery = true)
     Double calcularFrequenciaPedidos(@Param("clienteId") Long clienteId);
+
+    @Query("SELECT i FROM Impressao i WHERE TYPE(i) <> CriacaoDesign")
+    List<Impressao> findByStatusPrintStatus(StatusServicos status);
 
 
     @Query(value = "SELECT dimensao FROM impressao WHERE cliente_id = :clienteId " +

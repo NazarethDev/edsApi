@@ -1,6 +1,7 @@
 package br.com.eds.api.eds.repository;
 
 import br.com.eds.api.eds.model.conserto.Conserto;
+import br.com.eds.api.eds.model.gestao.managementUpdates.StatusServicos;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -37,5 +38,6 @@ public interface ConsertoRepository extends JpaRepository <Conserto, Long> {
     """, nativeQuery = true)
     List<Object[]> contarDispositivosPorMes(@Param("mes") int mes, @Param("ano") int ano);
 
+    List<Conserto> findByStatus(StatusServicos status);
 
 }
