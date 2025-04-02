@@ -18,15 +18,17 @@ public interface ImpressaoRepository extends JpaRepository <Impressao, Long> {
     @Query(value = "SELECT COUNT(*) FROM impressao WHERE cliente_id = :clienteId", nativeQuery = true)
     Integer contarPedidosPorCliente(@Param("clienteId") Long clienteId);
 
-    @Query(value = "SELECT AVG(diff) FROM ( " +
-            "SELECT DATEDIFF(data_solicitacao, LAG(data_solicitacao) OVER (PARTITION BY cliente_id ORDER BY data_solicitacao)) AS diff " +
-            "FROM impressao WHERE cliente_id = :clienteId ) AS subquery",
-            nativeQuery = true)
-    Double calcularFrequenciaPedidos(@Param("clienteId") Long clienteId);
+    @Query(value = """
+    SELECT COUNT(*) 
+    FROM impressao 
+    WHERE cliente_id = :clienteId 
+    AND MONTH(data_solicitacao) = MONTH(CURRENT_DATE) 
+    AND YEAR(data_solicitacao) = YEAR(CURRENT_DATE)
+    """, nativeQuery = true)
+    Integer calcularFrequenciaPedidos(@Param("clienteId") Long clienteId);
 
-    @Query("SELECT i FROM Impressao i WHERE TYPE(i) <> CriacaoDesign")
-    List<Impressao> findByStatusPrintStatus(StatusServicos status);
-
+    @Query("SELECT i FROM Impressao i WHERE TYPE(i) <> CriacaoDesign AND i.status = :status")
+    List<Impressao> findByStatusPrintStatus(@Param("status") StatusServicos status);
 
     @Query(value = "SELECT dimensao FROM impressao WHERE cliente_id = :clienteId " +
             "GROUP BY dimensao ORDER BY COUNT(*) DESC LIMIT 1", nativeQuery = true)

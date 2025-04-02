@@ -74,32 +74,31 @@ public class GestaoServiceOrderStatus {
     }
 
     @Transactional
-    public ResponseEntity updateStatus(Long id, String status) {
+    public ResponseEntity updateStatus (Long id, String status){
         StatusServicos novoStatus = convertToStatusPedido(status);
-
         Optional<Impressao> impressao = impressaoRepository.findById(id);
-        if (impressao.isPresent()) {
+        if (impressao.isPresent() && impressao.get().getTipoEntidade().equalsIgnoreCase("impressao")) {
             impressao.get().setStatus(novoStatus);
             impressaoRepository.save(impressao.get());
             return ResponseEntity.ok(impressao.get());
         }
 
         Optional<CriacaoDesign> design = criacaoDesignRepository.findById(id);
-        if (design.isPresent()) {
+        if (design.isPresent() && design.get().getTipoEntidade().equalsIgnoreCase("criacaodesign")) {
             design.get().setStatus(novoStatus);
             criacaoDesignRepository.save(design.get());
             return ResponseEntity.ok(design.get());
         }
 
         Optional<Conserto> conserto = consertoRepository.findById(id);
-        if (conserto.isPresent()) {
+        if (conserto.isPresent() && conserto.get().getTipoEntidade().equalsIgnoreCase("conserto")) {
             conserto.get().setStatus(novoStatus);
             consertoRepository.save(conserto.get());
             return ResponseEntity.ok(conserto.get());
         }
 
         Optional<Software> software = softwareRepository.findById(id);
-        if (software.isPresent()) {
+        if (software.isPresent() && software.get().getTipoEntidade().equalsIgnoreCase("software")) {
             software.get().setStatus(novoStatus);
             softwareRepository.save(software.get());
             return ResponseEntity.ok(software.get());
@@ -107,7 +106,4 @@ public class GestaoServiceOrderStatus {
 
         return ResponseEntity.notFound().build();
     }
-
-
-
 }

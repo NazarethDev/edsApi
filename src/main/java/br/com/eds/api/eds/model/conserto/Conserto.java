@@ -42,6 +42,8 @@ public class Conserto {
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dataAtualizacao;
 
+    private final String tipoEntidade = "conserto";
+
     public Conserto (){}
 
     public Conserto(NovoConserto novoConserto, String arquivo, Cliente cliente) {
@@ -156,5 +158,9 @@ public class Conserto {
 
     public void setStatus(StatusServicos status) {
         this.status = status;
+    }
+
+    public String getTipoEntidade() {
+        return tipoEntidade;
     }
 }

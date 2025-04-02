@@ -17,11 +17,16 @@ public interface CriacaoDesignRepository extends JpaRepository <CriacaoDesign,Lo
     @Query(value = "SELECT COUNT(*) FROM impressao WHERE cliente_id = :clienteId", nativeQuery = true)
     Integer contarPedidosPorCliente(@Param("clienteId") Long clienteId);
 
-    @Query(value = "SELECT AVG(diff) FROM ( " +
-            "SELECT DATEDIFF(data_solicitacao, LAG(data_solicitacao) OVER (PARTITION BY cliente_id ORDER BY data_solicitacao)) AS diff " +
-            "FROM impressao WHERE cliente_id = :clienteId ) AS subquery",
-            nativeQuery = true)
-    Double calcularFrequenciaPedidos(@Param("clienteId") Long clienteId);
+    @Query(value = """
+    SELECT COUNT(*) 
+    FROM criacao_design cd
+    INNER JOIN impressao i ON cd.id = i.id
+    WHERE i.cliente_id = :clienteId
+    AND MONTH(i.data_solicitacao) = MONTH(CURRENT_DATE)
+    AND YEAR(i.data_solicitacao) = YEAR(CURRENT_DATE)
+    """, nativeQuery = true)
+    Integer calcularFrequenciaCriacaoDesign(@Param("clienteId") Long clienteId);
+
 
     @Query(value = "SELECT dimensao FROM impressao WHERE cliente_id = :clienteId " +
             "GROUP BY dimensao ORDER BY COUNT(*) DESC LIMIT 1", nativeQuery = true)

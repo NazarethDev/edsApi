@@ -21,6 +21,7 @@ public class Cliente {
     private LocalDateTime dataCadastro;
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dataAtualizacao;
+    private final String tipoEntidade = "cliente";
 
 
     public Cliente(){}
@@ -71,5 +72,9 @@ public class Cliente {
 
     public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
         this.dataAtualizacao = dataAtualizacao;
+    }
+
+    public String getTipoEntidade() {
+        return tipoEntidade;
     }
 }

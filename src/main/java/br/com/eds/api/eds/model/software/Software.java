@@ -25,7 +25,10 @@ public class Software {
     @Enumerated(EnumType.STRING)
     private TipoDispositivo dispositivo;
 
+    @ElementCollection(targetClass = TipoServicoSoftware.class)
+    @CollectionTable(name = "software_servicos", joinColumns = @JoinColumn(name = "software_id"))
     @Enumerated(EnumType.STRING)
+    @Column(name = "servico")
     private List<TipoServicoSoftware> servicos;
 
     @Enumerated(EnumType.STRING)
@@ -37,6 +40,8 @@ public class Software {
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     @Column(name = "data_atualizacao")
     private LocalDateTime dataAtualizacao;
+
+    private final String tipoEntidade = "software";
 
     public Software() {
     }
@@ -126,5 +131,9 @@ public class Software {
 
     public void setStatus(StatusServicos status) {
         this.status = status;
+    }
+
+    public String getTipoEntidade() {
+        return tipoEntidade;
     }
 }

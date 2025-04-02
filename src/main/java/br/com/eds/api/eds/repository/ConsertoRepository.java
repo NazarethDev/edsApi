@@ -25,9 +25,14 @@ public interface ConsertoRepository extends JpaRepository <Conserto, Long> {
             "GROUP BY fabricante ORDER BY COUNT(*) DESC LIMIT 1", nativeQuery = true)
     String encontrarFabricanteMaisRecorrente(@Param("clienteId") Long clienteId);
 
-    @Query(value = "SELECT AVG(DATEDIFF(LEAD(data_solicitacao) OVER (PARTITION BY cliente_id ORDER BY data_solicitacao), data_solicitacao)) " +
-            "FROM conserto WHERE cliente_id = :clienteId", nativeQuery = true)
-    Double calcularFrequenciaConsertos(@Param("clienteId") Long clienteId);
+    @Query(value = """
+    SELECT COUNT(*) 
+    FROM conserto 
+    WHERE cliente_id = :clienteId 
+    AND MONTH(data_solicitacao) = MONTH(CURRENT_DATE) 
+    AND YEAR(data_solicitacao) = YEAR(CURRENT_DATE)
+    """, nativeQuery = true)
+    Integer calcularFrequenciaConsertos(@Param("clienteId") Long clienteId);
 
     @Query(value = """
     SELECT tipo_aparelho, COUNT(*) as total

@@ -9,6 +9,7 @@ import br.com.eds.api.eds.model.gestao.est.softwareEst.FrequenciaServicoResponse
 import br.com.eds.api.eds.model.software.Software;
 import br.com.eds.api.eds.model.software.TipoServicoSoftware;
 import br.com.eds.api.eds.repository.*;
+import org.hibernate.id.IncrementGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,10 +48,10 @@ public class GestaoServiceEst {
     public ResponseEntity impressaoPorCliente(Long clienteId){
         verificaCliente(clienteId);
         Integer totalImpressoes = impressaoRepository.contarPedidosPorCliente(clienteId);
-        Double frquenciaImpressoes = impressaoRepository.calcularFrequenciaPedidos(clienteId);
+        Integer pedidosNoMes = impressaoRepository.calcularFrequenciaPedidos(clienteId);
         String dimensaoImpressaoMaisPedido = impressaoRepository.encontrarDimensaoMaisPedida(clienteId);
         String materialMaisImpresso = impressaoRepository.encontrarMaterialMaisPedido(clienteId);
-        var response = new EstImpressaoAndDesignByCliente(totalImpressoes,frquenciaImpressoes,
+        var response = new EstImpressaoAndDesignByCliente(totalImpressoes,pedidosNoMes,
                 dimensaoImpressaoMaisPedido,materialMaisImpresso);
 
         return ResponseEntity.ok(response);
@@ -60,7 +62,7 @@ public class GestaoServiceEst {
         Integer totalSolicitacaoConserto = consertoRepository.contarSolicitacoesConserto(id);
         String tipoProdutoMaisConsertos = consertoRepository.encontrarTipoProdutoMaisConsertado(id);
         String fabricanteMaisConsertado = consertoRepository.encontrarFabricanteMaisRecorrente(id);
-        Double frequenciaDeSolicitacoes = consertoRepository.calcularFrequenciaConsertos(id);
+        Integer frequenciaDeSolicitacoes = consertoRepository.calcularFrequenciaConsertos(id);
 
         var estatisticas = new EstConsertoByCliente(
                 totalSolicitacaoConserto,tipoProdutoMaisConsertos,
@@ -72,7 +74,7 @@ public class GestaoServiceEst {
     public ResponseEntity CriacaoDesignPorCliente(Long clienteId){
         verificaCliente(clienteId);
         Integer totalImpressoes = criacaoDesignRepository.contarPedidosPorCliente(clienteId);
-        Double frquenciaImpressoes = criacaoDesignRepository.calcularFrequenciaPedidos(clienteId);
+        Integer frquenciaImpressoes = criacaoDesignRepository.calcularFrequenciaCriacaoDesign(clienteId);
         String dimensaoImpressaoMaisPedido = criacaoDesignRepository.encontrarMaterialMaisPedido(clienteId);
         String materialMaisImpresso = criacaoDesignRepository.encontrarDimensaoMaisPedida(clienteId);
         var resposta = new EstImpressaoAndDesignByCliente(totalImpressoes,frquenciaImpressoes,
@@ -125,15 +127,10 @@ public class GestaoServiceEst {
         }
 
         // Contar as ocorrências de cada serviço
-        Map<TipoServicoSoftware, Long> contagemServicos = Arrays.stream(TipoServicoSoftware.values())
-                .collect(Collectors.toMap(
-                        tipoServico -> tipoServico,
-                        tipoServico -> softwaresNoMes.stream()
-                                .filter(software -> software.getServicos().contains(tipoServico))
-                                .count()
-                ));
+        Map<TipoServicoSoftware, Long> contagemServicos = softwaresNoMes.stream()
+                .flatMap(software -> software.getServicos().stream()) // Obtém todos os serviços de cada software
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting())); // Conta as ocorrências
 
-        // Ordenar o mapa em ordem decrescente pelo valor (contagem)
         List<Map.Entry<TipoServicoSoftware, Long>> contagemOrdenada = contagemServicos.entrySet().stream()
                 .sorted(Map.Entry.<TipoServicoSoftware, Long>comparingByValue(Comparator.reverseOrder()))
                 .collect(Collectors.toList());

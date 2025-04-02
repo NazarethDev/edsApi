@@ -13,6 +13,8 @@ import java.time.temporal.ChronoUnit;
 public class CriacaoDesign extends Impressao {
     private String ideiasDesign;
     private String arquivoReferencia;
+    private final String tipoEntidade = "criacaodesign";
+
 
     public CriacaoDesign(){}
 

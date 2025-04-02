@@ -15,7 +15,7 @@ public interface SoftwareRepository extends JpaRepository <Software, Long> {
 
     List<Software> findByCliente_EmailCliente(String emailCliente);
 
-    @Query("SELECT s FROM Software s WHERE s.dataSolicitacao BETWEEN :startDate AND :endDate")
+    @Query("SELECT s FROM Software s JOIN s.servicos servico WHERE s.dataSolicitacao BETWEEN :startDate AND :endDate")
     List<Software> findAllByDataSolicitacaoBetween(LocalDateTime startDate, LocalDateTime endDate);
 
     List<Software> findByStatus(StatusServicos status);

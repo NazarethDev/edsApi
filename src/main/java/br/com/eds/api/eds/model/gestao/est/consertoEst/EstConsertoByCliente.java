@@ -4,6 +4,6 @@ public record EstConsertoByCliente(
         Integer totalConsertos,
         String tipoProdutoMaisConsertado,
         String fabricanteMaisRecorrente,
-        Double frequenciaDias
+        Integer pedidosNesteMes
 ) {
 }

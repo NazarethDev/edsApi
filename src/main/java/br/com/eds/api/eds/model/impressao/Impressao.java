@@ -37,6 +37,9 @@ public class Impressao {
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dataAtualizacao;
 
+    private final String tipoEntidade = "impressao";
+
+
     public Impressao(){}
 
     public Impressao (Cliente cliente, NovaImpressao novaImpressao, String arquivo){
@@ -134,5 +137,9 @@ public class Impressao {
 
     public void setStatus(StatusServicos status) {
         this.status = status;
+    }
+
+    public String getTipoEntidade() {
+        return tipoEntidade;
     }
 }
