@@ -2,7 +2,9 @@ package br.com.eds.api.eds.model.impressao;
 
 import br.com.eds.api.eds.model.cliente.Cliente;
 import br.com.eds.api.eds.model.gestao.managementUpdates.StatusServicos;
+import br.com.eds.api.eds.model.domiciliar.Domiciliar;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -39,6 +41,11 @@ public class Impressao {
 
     private final String tipoEntidade = "impressao";
 
+    @OneToOne
+    @JoinColumn(name = "domicilio_id")
+    @JsonProperty("entregaCombinada")
+    private Domiciliar domicilio;
+
 
     public Impressao(){}
 
@@ -47,6 +54,7 @@ public class Impressao {
         this.materialImpressao = novaImpressao.materialImpressao();
         this.dimensao = novaImpressao.dimensao();
         this.unidades = novaImpressao.unidades();
+        this.domicilio = new Domiciliar(novaImpressao.domiciliar());
         this.arquivoImpressao = arquivo;
         this.dataSolicitacao = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
         this.status = StatusServicos.NOVO;    }

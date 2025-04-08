@@ -1,5 +1,7 @@
 package br.com.eds.api.eds.model.software;
 
+import br.com.eds.api.eds.model.domiciliar.Domiciliar;
+import br.com.eds.api.eds.model.domiciliar.NovoEmDomicilio;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -16,6 +18,7 @@ public record NewSoftSer(
         @NotNull
         TipoDispositivo dispositivo,
         @NotNull
-        List<TipoServicoSoftware> servicos
+        List<TipoServicoSoftware> servicos,
+        NovoEmDomicilio domicilio
 ) {
 }

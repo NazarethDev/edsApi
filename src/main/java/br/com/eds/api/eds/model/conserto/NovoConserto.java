@@ -1,6 +1,7 @@
 package br.com.eds.api.eds.model.conserto;
 
 
+import br.com.eds.api.eds.model.domiciliar.NovoEmDomicilio;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,7 +20,8 @@ public record NovoConserto(
         @NotBlank
         TipoProduto tipoAparelho,
         @NotBlank
-        Fabricante fabricante
+        Fabricante fabricante,
+        NovoEmDomicilio domiciliar
         )
 {
 }

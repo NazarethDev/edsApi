@@ -2,6 +2,7 @@ package br.com.eds.api.eds.model.conserto;
 
 import br.com.eds.api.eds.model.cliente.Cliente;
 import br.com.eds.api.eds.model.gestao.managementUpdates.StatusServicos;
+import br.com.eds.api.eds.model.domiciliar.Domiciliar;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -44,15 +45,20 @@ public class Conserto {
 
     private final String tipoEntidade = "conserto";
 
+    @OneToOne
+    @JoinColumn(name = "domicilio_id")
+    private Domiciliar domicilio;
+
     public Conserto (){}
 
     public Conserto(NovoConserto novoConserto, String arquivo, Cliente cliente) {
         this.cliente = cliente;
         this.descricaoProblema = novoConserto.descricaoProblema();
-        this.arquivo = arquivo;
         this.tempoDeUso = novoConserto.tempoDeUso();
         this.tipoAparelho = novoConserto.tipoAparelho();
         this.fabricante = novoConserto.fabricante();
+        this.domicilio = new Domiciliar(novoConserto.domiciliar());
+        this.arquivo = arquivo;
         this.dataSolicitacao = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
         this.status = StatusServicos.NOVO;
     }

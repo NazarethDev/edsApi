@@ -2,6 +2,7 @@ package br.com.eds.api.eds.model.software;
 import br.com.eds.api.eds.model.cliente.Cliente;
 
 import br.com.eds.api.eds.model.gestao.managementUpdates.StatusServicos;
+import br.com.eds.api.eds.model.domiciliar.Domiciliar;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
@@ -43,6 +44,10 @@ public class Software {
 
     private final String tipoEntidade = "software";
 
+    @OneToOne
+    @JoinColumn(name = "domicilio_id")
+    private Domiciliar domicilio;
+
     public Software() {
     }
 
@@ -51,6 +56,7 @@ public class Software {
         this.detalhesServico = dados.detalhesServico();
         this.dispositivo = dados.dispositivo();
         this.servicos = new ArrayList<>(dados.servicos());
+        this.domicilio = new Domiciliar(dados.domicilio());
         this.dataSolicitacao = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
         this.status = StatusServicos.NOVO;
     }

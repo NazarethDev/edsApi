@@ -17,7 +17,7 @@ public record NovaCriacaoDesign(
                         dadosImpressao.materialImpressao(),
                         dadosImpressao.dimensao(),
                         dadosImpressao.unidades(),
-                        arquivo
+                        dadosImpressao.domiciliar()
                 );
                 this.arquivo = arquivo;
         }
