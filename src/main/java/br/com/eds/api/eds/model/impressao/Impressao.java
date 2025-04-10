@@ -33,6 +33,10 @@ public class Impressao {
 
     private Integer unidades;
 
+    private String ladosImpressao;
+
+    private String coresImpressao;
+
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dataSolicitacao;
 
@@ -54,6 +58,8 @@ public class Impressao {
         this.materialImpressao = novaImpressao.materialImpressao();
         this.dimensao = novaImpressao.dimensao();
         this.unidades = novaImpressao.unidades();
+        this.ladosImpressao = novaImpressao.ladosImpressao();
+        this.coresImpressao = novaImpressao.coresImpressao();
         this.domicilio = new Domiciliar(novaImpressao.domiciliar());
         this.arquivoImpressao = arquivo;
         this.dataSolicitacao = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
@@ -68,6 +74,12 @@ public class Impressao {
         }
         if (dadosAtualizados.unidades() != null && dadosAtualizados.unidades() != 0){
             this.unidades = dadosAtualizados.unidades();
+        }
+        if (dadosAtualizados.coresImpressao() != null && !dadosAtualizados.coresImpressao().equals(coresImpressao)){
+            this.coresImpressao = dadosAtualizados.coresImpressao();
+        }
+        if (dadosAtualizados.ladosImpressao() !=null && !dadosAtualizados.ladosImpressao().equals(ladosImpressao)){
+            this.ladosImpressao = dadosAtualizados.ladosImpressao();
         }
         if (arquivoImpressao != null && !arquivoImpressao.isEmpty()){
             this.arquivoImpressao = arquivoImpressao;
@@ -149,5 +161,29 @@ public class Impressao {
 
     public String getTipoEntidade() {
         return tipoEntidade;
+    }
+
+    public String getLadosImpressao() {
+        return ladosImpressao;
+    }
+
+    public void setLadosImpressao(String ladosImpressao) {
+        this.ladosImpressao = ladosImpressao;
+    }
+
+    public String getCoresImpressao() {
+        return coresImpressao;
+    }
+
+    public void setCoresImpressao(String coresImpressao) {
+        this.coresImpressao = coresImpressao;
+    }
+
+    public Domiciliar getDomicilio() {
+        return domicilio;
+    }
+
+    public void setDomicilio(Domiciliar domicilio) {
+        this.domicilio = domicilio;
     }
 }

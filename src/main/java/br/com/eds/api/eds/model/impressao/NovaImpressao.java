@@ -8,9 +8,13 @@ public record NovaImpressao(
         @NotBlank String nomeCliente,
         @NotBlank String contatoCliente,
         @NotBlank String emailCliente,
+        String contatoAlternativoCliente,
+        String cpf,
         @NotBlank MaterialImpressao materialImpressao,
         @NotBlank Dimensao dimensao,
         @NotBlank Integer unidades,
+        @NotBlank String ladosImpressao,
+        @NotBlank String coresImpressao,
         NovoEmDomicilio domiciliar
 ) {
 }

@@ -1,0 +1,10 @@
+ALTER TABLE Software
+ADD COLUMN tempo_uso VARCHAR(80),
+ADD COLUMN fabricante VARCHAR(50);
+
+ALTER TABLE Cliente
+ADD COLUMN contato_alternativo VARCHAR(20),
+ADD COLUMN cpf VARCHAR(14);
+
+ALTER TABLE Cliente
+MODIFY COLUMN contato_cliente VARCHAR(20);

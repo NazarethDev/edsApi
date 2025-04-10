@@ -5,6 +5,5 @@ public enum TipoDispositivo {
     PC,
     Notebook,
     Televisão,
-    Caixa_de_som
-
+    Outro
 }

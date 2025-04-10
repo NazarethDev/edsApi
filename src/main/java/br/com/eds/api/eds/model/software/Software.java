@@ -1,6 +1,7 @@
 package br.com.eds.api.eds.model.software;
 import br.com.eds.api.eds.model.cliente.Cliente;
 
+import br.com.eds.api.eds.model.conserto.Fabricante;
 import br.com.eds.api.eds.model.gestao.managementUpdates.StatusServicos;
 import br.com.eds.api.eds.model.domiciliar.Domiciliar;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -44,6 +45,13 @@ public class Software {
 
     private final String tipoEntidade = "software";
 
+    private String tempoUso;
+
+    @Enumerated(EnumType.STRING)
+    private Fabricante fabricante;
+
+    private String detalhesDoServico;
+
     @OneToOne
     @JoinColumn(name = "domicilio_id")
     private Domiciliar domicilio;
@@ -56,6 +64,8 @@ public class Software {
         this.detalhesServico = dados.detalhesServico();
         this.dispositivo = dados.dispositivo();
         this.servicos = new ArrayList<>(dados.servicos());
+        this.tempoUso = dados.tempoUso();
+        this.fabricante = dados.fabricante();
         this.domicilio = new Domiciliar(dados.domicilio());
         this.dataSolicitacao = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
         this.status = StatusServicos.NOVO;
@@ -70,8 +80,17 @@ public class Software {
         if (dados.dispositivo() != null){
             this.dispositivo = dados.dispositivo();
         }
+        if (dados.tempoUso() != null){
+            this.tempoUso = dados.tempoUso();
+        }
         if (dados.servicos() != null && !dados.servicos().isEmpty()){
             this.servicos = dados.servicos();
+        }
+        if (dados.fabricante() != null){
+            this.fabricante = dados.fabricante();
+        }
+        if (dados.detalhesServico() != null && !detalhesDoServico.equals(this.detalhesDoServico)){
+            this.detalhesDoServico = dados.detalhesServico();
         }
     }
 
@@ -141,5 +160,29 @@ public class Software {
 
     public String getTipoEntidade() {
         return tipoEntidade;
+    }
+
+    public String getTempoUso() {
+        return tempoUso;
+    }
+
+    public void setTempoUso(String tempoUso) {
+        this.tempoUso = tempoUso;
+    }
+
+    public Domiciliar getDomicilio() {
+        return domicilio;
+    }
+
+    public void setDomicilio(Domiciliar domicilio) {
+        this.domicilio = domicilio;
+    }
+
+    public Fabricante getFabricante() {
+        return fabricante;
+    }
+
+    public void setFabricante(Fabricante fabricante) {
+        this.fabricante = fabricante;
     }
 }

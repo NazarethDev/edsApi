@@ -6,8 +6,8 @@ import br.com.eds.api.eds.service.SoftwareService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
+@CrossOrigin(origins = "http://localhost:8000")
 @RestController
 @RequestMapping("/software")
 public class SoftwareController {

@@ -16,7 +16,9 @@ public class Cliente {
     private Long id;
     private String nomeCliente;
     private String contatoCliente;
+    private String contatoAlternativo;
     private String emailCliente;
+    private String cpf;
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dataCadastro;
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
@@ -76,5 +78,21 @@ public class Cliente {
 
     public String getTipoEntidade() {
         return tipoEntidade;
+    }
+
+    public String getContatoAlternativo() {
+        return contatoAlternativo;
+    }
+
+    public void setContatoAlternativo(String contatoAlternativo) {
+        this.contatoAlternativo = contatoAlternativo;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 }

@@ -4,9 +4,11 @@ public record ClienteResponse(
         Long id,
         String nomeCliente,
         String contatoCliente,
-        String emailCliente
+        String contatoAlternativo,
+        String emailCliente,
+        String cpf
 ) {
     public ClienteResponse(Cliente cliente) {
-        this(cliente.getId(), cliente.getNomeCliente(), cliente.getContatoCliente(), cliente.getEmailCliente());
+        this(cliente.getId(), cliente.getNomeCliente(), cliente.getContatoCliente(), cliente.getContatoAlternativo(), cliente.getEmailCliente(), cliente.getCpf());
     }
 }

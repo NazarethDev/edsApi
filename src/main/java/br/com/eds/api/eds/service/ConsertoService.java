@@ -27,7 +27,7 @@ public class ConsertoService {
     @Transactional
     public ResponseEntity createConserto(NovoConserto novo, MultipartFile file) throws IOException {
         var arquivo = arquivoService.salvarArquivo(file, null, false, true);
-        var cliente = clienteService.obterOuCriarCliente(novo.nomeCliente(), novo.contatoCliente(), novo.emailCliente());
+        var cliente = clienteService.obterOuCriarCliente(novo.nomeCliente(), novo.contatoCliente(), novo.emailCliente(), novo.contatoAlternativoCliente(), novo.cpf());
         var conserto = new Conserto(novo, arquivo, cliente);
         consertoRepository.save(conserto);
         return ResponseEntity.ok(conserto);

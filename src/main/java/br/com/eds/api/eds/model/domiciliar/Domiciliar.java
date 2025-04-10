@@ -4,6 +4,7 @@ import br.com.eds.api.eds.model.conserto.Conserto;
 import br.com.eds.api.eds.model.criacaoDesign.CriacaoDesign;
 import br.com.eds.api.eds.model.impressao.Impressao;
 import br.com.eds.api.eds.model.software.Software;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 
@@ -27,6 +28,7 @@ public class Domiciliar {
     @Enumerated(EnumType.STRING)
     private Periodo periodo;
 
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate data;
 
     private final String tipoEntidade = "emDomicilio";

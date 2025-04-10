@@ -28,7 +28,7 @@ public class SoftwareService {
     @Transactional
     public ResponseEntity createSoftServ(NewSoftSer dados){
 
-        var cliente = clienteService.obterOuCriarCliente(dados.nomeCliente(), dados.contatoCliente(), dados.emailCliente());
+        var cliente = clienteService.obterOuCriarCliente(dados.nomeCliente(), dados.contatoCliente(), dados.emailCliente(), dados.contatoAlternativoCliente(), dados.cpf());
 
         var softwareServ = new Software(cliente,dados);
         softwareRepository.save(softwareServ);

@@ -1,6 +1,7 @@
 package br.com.eds.api.eds.model.software;
 
-import jakarta.validation.constraints.NotBlank;
+
+import br.com.eds.api.eds.model.conserto.Fabricante;
 
 import java.util.List;
 
@@ -9,6 +10,8 @@ public record UpdateSoftSer(
         String contatoCliente,
         String detalhesServico,
         TipoDispositivo dispositivo,
+        String tempoUso,
+        Fabricante fabricante,
         List<TipoServicoSoftware> servicos
 ) {
 }

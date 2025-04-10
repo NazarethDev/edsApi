@@ -3,18 +3,18 @@ package br.com.eds.api.eds.model.conserto;
 
 import br.com.eds.api.eds.model.domiciliar.NovoEmDomicilio;
 import jakarta.validation.constraints.NotBlank;
-import org.springframework.web.multipart.MultipartFile;
 
 public record NovoConserto(
         @NotBlank
         String nomeCliente,
         @NotBlank
         String contatoCliente,
+        String contatoAlternativoCliente,
+        String cpf,
         @NotBlank
         String emailCliente,
         @NotBlank
         String descricaoProblema,
-        MultipartFile arquivo,
         @NotBlank
         String tempoDeUso,
         @NotBlank

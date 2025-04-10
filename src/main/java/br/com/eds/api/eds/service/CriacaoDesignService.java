@@ -29,7 +29,8 @@ public class CriacaoDesignService {
     @Transactional
     public ResponseEntity novoDesign(NovaCriacaoDesign novoDesign) throws IOException {
         String caminhoArquivo = arquivoService.salvarArquivo(novoDesign.arquivo(), null,false,false);
-        Cliente cliente = clienteService.obterOuCriarCliente(novoDesign.dadosImpressao().nomeCliente(),novoDesign.dadosImpressao().contatoCliente(), novoDesign.dadosImpressao().emailCliente());
+        Cliente cliente = clienteService.obterOuCriarCliente(novoDesign.dadosImpressao().nomeCliente(),novoDesign.dadosImpressao().contatoCliente(), novoDesign.dadosImpressao().emailCliente(),
+                novoDesign.dadosImpressao().contatoAlternativoCliente(),novoDesign.dadosImpressao().cpf());
         var novaCriacao = new CriacaoDesign(novoDesign, novoDesign.dadosImpressao(),caminhoArquivo, cliente);
         criacaoDesignRepository.save(novaCriacao);
         return ResponseEntity.ok(novaCriacao);

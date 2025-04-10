@@ -14,6 +14,8 @@ public record NovaCriacaoDesign(
                         dadosImpressao.nomeCliente(),
                         dadosImpressao.contatoCliente(),
                         dadosImpressao.emailCliente(),
+                        dadosImpressao().contatoAlternativoCliente(),
+                        dadosImpressao.cpf(),
                         dadosImpressao.materialImpressao(),
                         dadosImpressao.dimensao(),
                         dadosImpressao.unidades(),

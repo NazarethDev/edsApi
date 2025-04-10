@@ -17,6 +17,8 @@ public record PrintResponse(
         LocalDateTime dataSolicitacao,
         @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
         LocalDateTime dataAtualizacao,
+        String ladosImpressao,
+        String coresImpressao,
         ClienteResponse cliente
 ) {
     public PrintResponse(Impressao impressao) {
@@ -29,6 +31,8 @@ public record PrintResponse(
                 impressao.getUnidades(),
                 impressao.getDataSolicitacao(),
                 impressao.getDataAtualizacao(),
+                impressao.getLadosImpressao(),
+                impressao.getCoresImpressao(),
                 new ClienteResponse(impressao.getCliente())
         );
     }

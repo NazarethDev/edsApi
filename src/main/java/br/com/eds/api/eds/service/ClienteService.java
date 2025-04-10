@@ -19,13 +19,15 @@ public class ClienteService {
     }
 
     @Transactional
-    public Cliente obterOuCriarCliente(String nomeCliente, String contatoCliente, String emailCliente) {
+    public Cliente obterOuCriarCliente(String nomeCliente, String contatoCliente,String contatoAlternativo, String emailCliente, String cpf) {
         return clienteRepository.findByContatoClienteAndEmailCliente(contatoCliente, emailCliente)
                 .orElseGet(() -> {
                     Cliente novoCliente = new Cliente();
                     novoCliente.setNomeCliente(nomeCliente);
                     novoCliente.setContatoCliente(contatoCliente);
+                    novoCliente.setContatoAlternativo(contatoAlternativo);
                     novoCliente.setEmailCliente(emailCliente);
+                    novoCliente.setCpf(cpf);
                     novoCliente.setDataCadastro(LocalDateTime.now());
                     return clienteRepository.save(novoCliente);
                 });
