@@ -10,7 +10,7 @@ public record PrintResponse(
         Long id,
         String arquivoImpressao,
         MaterialImpressao materialImpressao,
-        Dimensao dimensao,
+        Produto produto,
         StatusServicos status,
         Integer unidades,
         @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
@@ -26,7 +26,7 @@ public record PrintResponse(
                 impressao.getId(),
                 impressao.getArquivoImpressao(),
                 impressao.getMaterialImpressao(),
-                impressao.getDimensao(),
+                impressao.getProduto(),
                 impressao.getStatus(),
                 impressao.getUnidades(),
                 impressao.getDataSolicitacao(),

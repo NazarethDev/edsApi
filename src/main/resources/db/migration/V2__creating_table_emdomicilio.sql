@@ -13,10 +13,6 @@ ALTER TABLE conserto
 ADD COLUMN domicilio_id BIGINT,
 ADD CONSTRAINT fk_conserto_domiciliar FOREIGN KEY (domicilio_id) REFERENCES domiciliar(id);
 
-ALTER TABLE impressao
-ADD COLUMN domicilio_id BIGINT,
-ADD CONSTRAINT fk_impressao_domiciliar FOREIGN KEY (domicilio_id) REFERENCES domiciliar(id);
-
 ALTER TABLE software
 ADD COLUMN domicilio_id BIGINT,
 ADD CONSTRAINT fk_software_domiciliar FOREIGN KEY (domicilio_id) REFERENCES domiciliar(id);

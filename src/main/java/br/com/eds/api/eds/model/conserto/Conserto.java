@@ -51,21 +51,19 @@ public class Conserto {
 
     public Conserto (){}
 
-    public Conserto(NovoConserto novoConserto, String arquivo, Cliente cliente) {
+    public Conserto(NovoConserto novoConserto, String arquivo, Cliente cliente, Domiciliar domiciliar) {
         this.cliente = cliente;
         this.descricaoProblema = novoConserto.descricaoProblema();
         this.tempoDeUso = novoConserto.tempoDeUso();
         this.tipoAparelho = novoConserto.tipoAparelho();
         this.fabricante = novoConserto.fabricante();
-        this.domicilio = new Domiciliar(novoConserto.domiciliar());
+        this.domicilio = domiciliar;
         this.arquivo = arquivo;
         this.dataSolicitacao = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
         this.status = StatusServicos.NOVO;
     }
 
     public void updateConserto (UpdateConserto dados, String arquivo){
-        System.out.println("Arquivo atual na entidade: " + this.arquivo);
-        System.out.println("Novo arquivo recebido: " + arquivo);
 
         if (dados.descricaoProblema() != null){
             this.descricaoProblema = dados.descricaoProblema();

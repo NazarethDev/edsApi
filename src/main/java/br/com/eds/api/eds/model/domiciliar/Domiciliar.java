@@ -37,9 +37,6 @@ public class Domiciliar {
     private Conserto conserto;
 
     @OneToOne(mappedBy = "domicilio")
-    private Impressao impressao;
-
-    @OneToOne(mappedBy = "domicilio")
     private Software software;
 
     public Domiciliar(NovoEmDomicilio visita){
@@ -49,6 +46,8 @@ public class Domiciliar {
         this.complemento = visita.complemento();
         this.data = visita.data();
     }
+
+    public Domiciliar (){}
 
     public String getLogradouro() {
         return logradouro;
@@ -108,14 +107,6 @@ public class Domiciliar {
 
     public void setConserto(Conserto conserto) {
         this.conserto = conserto;
-    }
-
-    public Impressao getImpressao() {
-        return impressao;
-    }
-
-    public void setImpressao(Impressao impressao) {
-        this.impressao = impressao;
     }
 
     public Software getSoftware() {

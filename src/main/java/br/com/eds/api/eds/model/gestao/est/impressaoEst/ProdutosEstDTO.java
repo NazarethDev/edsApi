@@ -1,6 +1,6 @@
 package br.com.eds.api.eds.model.gestao.est.impressaoEst;
 
-public record DimensaoEstDTO(
-        String dimensao,
+public record ProdutosEstDTO(
+        String produto,
         int quantidade
 ) {}

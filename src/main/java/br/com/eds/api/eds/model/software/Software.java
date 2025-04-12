@@ -59,10 +59,11 @@ public class Software {
     public Software() {
     }
 
-    public Software (Cliente cliente, NewSoftSer dados){
+    public Software (Cliente cliente, NewSoftSer dados, Domiciliar domicilio){
         this.cliente = cliente;
         this.detalhesServico = dados.detalhesServico();
         this.dispositivo = dados.dispositivo();
+        this.domicilio = domicilio;
         this.servicos = new ArrayList<>(dados.servicos());
         this.tempoUso = dados.tempoUso();
         this.fabricante = dados.fabricante();

@@ -17,9 +17,10 @@ public record NovaCriacaoDesign(
                         dadosImpressao().contatoAlternativoCliente(),
                         dadosImpressao.cpf(),
                         dadosImpressao.materialImpressao(),
-                        dadosImpressao.dimensao(),
                         dadosImpressao.unidades(),
-                        dadosImpressao.domiciliar()
+                        dadosImpressao.ladosImpressao(),
+                        dadosImpressao().coresImpressao(),
+                        dadosImpressao.produto()
                 );
                 this.arquivo = arquivo;
         }

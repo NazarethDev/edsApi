@@ -28,9 +28,9 @@ public interface CriacaoDesignRepository extends JpaRepository <CriacaoDesign,Lo
     Integer calcularFrequenciaCriacaoDesign(@Param("clienteId") Long clienteId);
 
 
-    @Query(value = "SELECT dimensao FROM impressao WHERE cliente_id = :clienteId " +
-            "GROUP BY dimensao ORDER BY COUNT(*) DESC LIMIT 1", nativeQuery = true)
-    String encontrarDimensaoMaisPedida(@Param("clienteId") Long clienteId);
+    @Query(value = "SELECT produto FROM impressao WHERE cliente_id = :clienteId " +
+            "GROUP BY produto ORDER BY COUNT(*) DESC LIMIT 1", nativeQuery = true)
+    String encontrarProdutoMaisPedida(@Param("clienteId") Long clienteId);
 
     @Query(value = "SELECT material_impressao FROM impressao WHERE cliente_id = :clienteId " +
             "GROUP BY material_impressao ORDER BY COUNT(*) DESC LIMIT 1", nativeQuery = true)

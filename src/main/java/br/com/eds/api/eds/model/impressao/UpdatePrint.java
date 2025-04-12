@@ -4,7 +4,7 @@ public record UpdatePrint(
         String nomeCliente,
         String contatoCliente,
         MaterialImpressao materialImpressao,
-        Dimensao dimensao,
+        Produto produto,
         Integer unidades,
         String ladosImpressao,
         String coresImpressao

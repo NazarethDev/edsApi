@@ -1,6 +1,7 @@
 package br.com.eds.api.eds.model.criacaoDesign;
 
 import br.com.eds.api.eds.model.cliente.Cliente;
+import br.com.eds.api.eds.model.domiciliar.Domiciliar;
 import br.com.eds.api.eds.model.impressao.Impressao;
 import br.com.eds.api.eds.model.impressao.NovaImpressao;
 import jakarta.persistence.*;
@@ -35,8 +36,8 @@ public class CriacaoDesign extends Impressao {
             if (dadosAtualizados.novosDadosImpressao().materialImpressao() != null){
                 setMaterialImpressao(dadosAtualizados.novosDadosImpressao().materialImpressao());
             }
-            if (dadosAtualizados.novosDadosImpressao().dimensao() != null){
-                setDimensao(dadosAtualizados.novosDadosImpressao().dimensao());
+            if (dadosAtualizados.novosDadosImpressao().produto() != null){
+                setProduto(dadosAtualizados.novosDadosImpressao().produto());
             }
             if (dadosAtualizados.novosDadosImpressao().unidades() != null && dadosAtualizados.novosDadosImpressao().unidades() != 0){
                 setUnidades(dadosAtualizados.novosDadosImpressao().unidades());

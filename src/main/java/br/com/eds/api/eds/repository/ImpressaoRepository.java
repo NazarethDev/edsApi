@@ -48,12 +48,12 @@ public interface ImpressaoRepository extends JpaRepository <Impressao, Long> {
     List<Object[]> contarMateriaisPorMes(@Param("mes") int mes, @Param("ano") int ano);
 
     @Query(value = """
-    SELECT dimensao, COUNT(*) as total
+    SELECT produtp, COUNT(*) as total
     FROM impressao
     WHERE MONTH(data_solicitacao) = :mes AND YEAR(data_solicitacao) = :ano
-    GROUP BY dimensao
+    GROUP BY produto
     ORDER BY total DESC;
     """, nativeQuery = true)
-    List<Object[]> contarDimensoesPorMes(@Param("mes") int mes, @Param("ano") int ano);
+    List<Object[]> produtoPorMes(@Param("mes") int mes, @Param("ano") int ano);
 
 }

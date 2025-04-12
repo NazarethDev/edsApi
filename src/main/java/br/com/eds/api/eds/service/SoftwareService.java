@@ -9,8 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -22,6 +20,9 @@ public class SoftwareService {
     @Autowired
     ClienteService clienteService;
 
+    @Autowired
+    DomiciliarService domiciliarService;
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -29,8 +30,8 @@ public class SoftwareService {
     public ResponseEntity createSoftServ(NewSoftSer dados){
 
         var cliente = clienteService.obterOuCriarCliente(dados.nomeCliente(), dados.contatoCliente(), dados.emailCliente(), dados.contatoAlternativoCliente(), dados.cpf());
-
-        var softwareServ = new Software(cliente,dados);
+        var domiciliar = domiciliarService.saveDomicilar(dados.domicilio());
+        var softwareServ = new Software(cliente,dados, domiciliar);
         softwareRepository.save(softwareServ);
         return ResponseEntity.ok(softwareServ);
     }

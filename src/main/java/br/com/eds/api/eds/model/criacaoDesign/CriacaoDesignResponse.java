@@ -2,8 +2,8 @@ package br.com.eds.api.eds.model.criacaoDesign;
 
 import br.com.eds.api.eds.model.cliente.ClienteResponse;
 import br.com.eds.api.eds.model.gestao.managementUpdates.StatusServicos;
-import br.com.eds.api.eds.model.impressao.Dimensao;
 import br.com.eds.api.eds.model.impressao.MaterialImpressao;
+import br.com.eds.api.eds.model.impressao.Produto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public record CriacaoDesignResponse(
         Long id,
         MaterialImpressao materialImpressao,
-        Dimensao dimensao,
+        Produto produto,
         StatusServicos status,
         Integer unidades,
         @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
@@ -26,7 +26,7 @@ public record CriacaoDesignResponse(
         this(
                 criacaoDesign.getId(),
                 criacaoDesign.getMaterialImpressao(),
-                criacaoDesign.getDimensao(),
+                criacaoDesign.getProduto(),
                 criacaoDesign.getStatus(),
                 criacaoDesign.getUnidades(),
                 criacaoDesign.getDataSolicitacao(),

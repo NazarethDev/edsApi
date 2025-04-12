@@ -1,6 +1,5 @@
 package br.com.eds.api.eds.service;
 
-import br.com.eds.api.eds.model.cliente.Cliente;
 import br.com.eds.api.eds.model.criacaoDesign.*;
 import br.com.eds.api.eds.repository.CriacaoDesignRepository;
 import br.com.eds.api.eds.service.arquivo.ArquivoService;
@@ -29,7 +28,7 @@ public class CriacaoDesignService {
     @Transactional
     public ResponseEntity novoDesign(NovaCriacaoDesign novoDesign) throws IOException {
         String caminhoArquivo = arquivoService.salvarArquivo(novoDesign.arquivo(), null,false,false);
-        Cliente cliente = clienteService.obterOuCriarCliente(novoDesign.dadosImpressao().nomeCliente(),novoDesign.dadosImpressao().contatoCliente(), novoDesign.dadosImpressao().emailCliente(),
+        var cliente = clienteService.obterOuCriarCliente(novoDesign.dadosImpressao().nomeCliente(),novoDesign.dadosImpressao().contatoCliente(), novoDesign.dadosImpressao().emailCliente(),
                 novoDesign.dadosImpressao().contatoAlternativoCliente(),novoDesign.dadosImpressao().cpf());
         var novaCriacao = new CriacaoDesign(novoDesign, novoDesign.dadosImpressao(),caminhoArquivo, cliente);
         criacaoDesignRepository.save(novaCriacao);

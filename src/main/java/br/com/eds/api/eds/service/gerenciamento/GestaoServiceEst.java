@@ -2,20 +2,17 @@ package br.com.eds.api.eds.service.gerenciamento;
 
 import br.com.eds.api.eds.model.gestao.est.consertoEst.DispositivoConsertoDTO;
 import br.com.eds.api.eds.model.gestao.est.consertoEst.EstConsertoByCliente;
-import br.com.eds.api.eds.model.gestao.est.impressaoEst.DimensaoEstDTO;
+import br.com.eds.api.eds.model.gestao.est.impressaoEst.ProdutosEstDTO;
 import br.com.eds.api.eds.model.gestao.est.impressaoEst.EstImpressaoAndDesignByCliente;
 import br.com.eds.api.eds.model.gestao.est.impressaoEst.MaterialEstDTO;
-import br.com.eds.api.eds.model.gestao.est.softwareEst.FrequenciaServicoResponse;
 import br.com.eds.api.eds.model.software.Software;
 import br.com.eds.api.eds.model.software.TipoServicoSoftware;
 import br.com.eds.api.eds.repository.*;
-import org.hibernate.id.IncrementGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -76,7 +73,7 @@ public class GestaoServiceEst {
         Integer totalImpressoes = criacaoDesignRepository.contarPedidosPorCliente(clienteId);
         Integer frquenciaImpressoes = criacaoDesignRepository.calcularFrequenciaCriacaoDesign(clienteId);
         String dimensaoImpressaoMaisPedido = criacaoDesignRepository.encontrarMaterialMaisPedido(clienteId);
-        String materialMaisImpresso = criacaoDesignRepository.encontrarDimensaoMaisPedida(clienteId);
+        String materialMaisImpresso = criacaoDesignRepository.encontrarProdutoMaisPedida(clienteId);
         var resposta = new EstImpressaoAndDesignByCliente(totalImpressoes,frquenciaImpressoes,
                 dimensaoImpressaoMaisPedido,materialMaisImpresso);
 
@@ -94,10 +91,10 @@ public class GestaoServiceEst {
     }
 
     public ResponseEntity<?> estatisticasDimensoesPorMes(int mes, int ano) {
-        List<Object[]> dimensoes = impressaoRepository.contarDimensoesPorMes(mes, ano);
+        List<Object[]> produtos = impressaoRepository.produtoPorMes(mes, ano);
 
-        List<DimensaoEstDTO> dimensaoDTOs = dimensoes.stream()
-                .map(obj -> new DimensaoEstDTO((String) obj[0], ((Number) obj[1]).intValue()))
+        List<ProdutosEstDTO> dimensaoDTOs = produtos.stream()
+                .map(obj -> new ProdutosEstDTO((String) obj[0], ((Number) obj[1]).intValue()))
                 .toList();
 
         return ResponseEntity.ok(dimensaoDTOs);

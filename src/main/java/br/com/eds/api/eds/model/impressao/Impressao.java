@@ -2,9 +2,7 @@ package br.com.eds.api.eds.model.impressao;
 
 import br.com.eds.api.eds.model.cliente.Cliente;
 import br.com.eds.api.eds.model.gestao.managementUpdates.StatusServicos;
-import br.com.eds.api.eds.model.domiciliar.Domiciliar;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -20,13 +18,11 @@ public class Impressao {
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
+
     private String arquivoImpressao;
 
     @Enumerated(EnumType.STRING)
     private MaterialImpressao materialImpressao;
-
-    @Enumerated(EnumType.STRING)
-    private Dimensao dimensao;
 
     @Enumerated(EnumType.STRING)
     private StatusServicos status;
@@ -43,12 +39,10 @@ public class Impressao {
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dataAtualizacao;
 
-    private final String tipoEntidade = "impressao";
+    @Enumerated(EnumType.STRING)
+    private Produto produto;
 
-    @OneToOne
-    @JoinColumn(name = "domicilio_id")
-    @JsonProperty("entregaCombinada")
-    private Domiciliar domicilio;
+    private final String tipoEntidade = "impressao";
 
 
     public Impressao(){}
@@ -56,11 +50,10 @@ public class Impressao {
     public Impressao (Cliente cliente, NovaImpressao novaImpressao, String arquivo){
         this.cliente = cliente;
         this.materialImpressao = novaImpressao.materialImpressao();
-        this.dimensao = novaImpressao.dimensao();
         this.unidades = novaImpressao.unidades();
         this.ladosImpressao = novaImpressao.ladosImpressao();
         this.coresImpressao = novaImpressao.coresImpressao();
-        this.domicilio = new Domiciliar(novaImpressao.domiciliar());
+        this.produto = novaImpressao.produto();
         this.arquivoImpressao = arquivo;
         this.dataSolicitacao = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
         this.status = StatusServicos.NOVO;    }
@@ -69,8 +62,8 @@ public class Impressao {
         if (dadosAtualizados.materialImpressao() != null){
             this.materialImpressao = dadosAtualizados.materialImpressao();
         }
-        if (dadosAtualizados.dimensao() != null){
-            this.dimensao = dadosAtualizados.dimensao();
+        if (dadosAtualizados.produto() != null){
+            this.produto = dadosAtualizados.produto();
         }
         if (dadosAtualizados.unidades() != null && dadosAtualizados.unidades() != 0){
             this.unidades = dadosAtualizados.unidades();
@@ -111,12 +104,12 @@ public class Impressao {
         this.dataSolicitacao = dataSolicitacao;
     }
 
-    public Dimensao getDimensao() {
-        return dimensao;
+    public Produto getProduto() {
+        return produto;
     }
 
-    public void setDimensao(Dimensao dimensao) {
-        this.dimensao = dimensao;
+    public void setProduto(Produto produto) {
+        this.produto = produto;
     }
 
     public Integer getUnidades() {
@@ -179,11 +172,4 @@ public class Impressao {
         this.coresImpressao = coresImpressao;
     }
 
-    public Domiciliar getDomicilio() {
-        return domicilio;
-    }
-
-    public void setDomicilio(Domiciliar domicilio) {
-        this.domicilio = domicilio;
-    }
 }
