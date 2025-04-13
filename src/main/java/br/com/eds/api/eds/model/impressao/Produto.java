@@ -24,6 +24,8 @@ public enum Produto {
     FOLHAS_AVULSAS("Folhas avulsas"),
     ENCADERNAÇÃO("Encadernação"),
     FOTOS("Fotos"),
+    FOLHAS("Folhas avulsas"),
+    FOTOGRAFIA("Fotografias"),
     OUTRO("Outro");
 
     private final String descricaoProduto;

@@ -14,6 +14,7 @@ public enum MaterialImpressao {
     MATERIAL9("Papel canson 240g"),
     MATERIAL10("Papel canson 300g"),
     MATERIAL11("Papel fotográfico dupla face 180g"),
+
     MATERIAL12("Alta alvura 150g"),
     MATERIAL13("Couché brilho 90g"),
     MATERIAL14("Couché brilho 115g"),

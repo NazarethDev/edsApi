@@ -1,7 +1,6 @@
 package br.com.eds.api.eds.model.criacaoDesign;
 
 import br.com.eds.api.eds.model.cliente.Cliente;
-import br.com.eds.api.eds.model.domiciliar.Domiciliar;
 import br.com.eds.api.eds.model.impressao.Impressao;
 import br.com.eds.api.eds.model.impressao.NovaImpressao;
 import jakarta.persistence.*;

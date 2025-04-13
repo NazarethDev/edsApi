@@ -11,7 +11,7 @@ public record NovaImpressao(
         @NotBlank MaterialImpressao materialImpressao,
         @NotBlank Integer unidades,
         @NotBlank String ladosImpressao,
-        @NotBlank String coresImpressao,
+        String coresImpressao,
         @NotBlank Produto produto
 ) {
 }
