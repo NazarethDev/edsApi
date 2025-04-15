@@ -18,7 +18,7 @@ public class CriacaoDesignController {
     CriacaoDesignService designService;
 
     @PostMapping
-    public ResponseEntity<?> createDesign(
+    public ResponseEntity createDesign(
             @RequestPart("data") NovaCriacaoDesign design,
             @RequestPart("arquivo") MultipartFile arquivo) throws IOException {
         NovaCriacaoDesign novaCriacao = new NovaCriacaoDesign(

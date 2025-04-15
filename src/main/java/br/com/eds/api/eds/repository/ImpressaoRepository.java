@@ -15,6 +15,9 @@ public interface ImpressaoRepository extends JpaRepository <Impressao, Long> {
 
     List<Impressao> findByCliente_EmailCliente(String emailCliente);
 
+    List<Impressao> findByCliente_ContatoClienteOrCliente_EmailCliente(String contatoCliente, String emailCliente);
+
+
     @Query(value = "SELECT COUNT(*) FROM impressao WHERE cliente_id = :clienteId", nativeQuery = true)
     Integer contarPedidosPorCliente(@Param("clienteId") Long clienteId);
 

@@ -14,6 +14,9 @@ public interface CriacaoDesignRepository extends JpaRepository <CriacaoDesign,Lo
     List<CriacaoDesign> findByCliente_ContatoCliente(String contatoCliente);
     List<CriacaoDesign> findByCliente_EmailCliente(String emailCliente);
 
+    List<CriacaoDesign> findByCliente_ContatoClienteOrCliente_EmailCliente(String contatoCliente, String emailCliente);
+
+
     @Query(value = "SELECT COUNT(*) FROM impressao WHERE cliente_id = :clienteId", nativeQuery = true)
     Integer contarPedidosPorCliente(@Param("clienteId") Long clienteId);
 
