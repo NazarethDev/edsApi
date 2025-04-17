@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -44,19 +45,36 @@ public class Impressao {
 
     private final String tipoEntidade = "impressao";
 
+    private static final Set<Produto> PRODUTOS_SEM_MATERIAL = Set.of(
+            Produto.CALENDARIO_1,
+            Produto.CALENDARIO_2,
+            Produto.CALENDARIO_3,
+            Produto.CALENDARIO_4,
+            Produto.CALENDARIO_5,
+            Produto.CALDENDARIO_6,
+            Produto.CALENDÁRIO_7,
+            Produto.CALENDÁRIO_8,
+            Produto.CALENDÁRIO_9,
+            Produto.CALENDARIO_10
+    );
+
 
     public Impressao(){}
 
-    public Impressao (Cliente cliente, NovaImpressao novaImpressao, String arquivo){
+    public Impressao(Cliente cliente, NovaImpressao novaImpressao, String arquivo) {
         this.cliente = cliente;
-        this.materialImpressao = novaImpressao.materialImpressao();
         this.unidades = novaImpressao.unidades();
         this.ladosImpressao = novaImpressao.ladosImpressao();
         this.coresImpressao = novaImpressao.coresImpressao();
         this.produto = novaImpressao.produto();
+
+        this.materialImpressao = produtoDispensaMaterial(this.produto) ? null : novaImpressao.materialImpressao();
+
         this.arquivoImpressao = arquivo;
         this.dataSolicitacao = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
-        this.status = StatusServicos.NOVO;    }
+        this.status = StatusServicos.NOVO;
+    }
+
 
     public void updatePrint(UpdatePrint dadosAtualizados, String arquivoImpressao){
         if (dadosAtualizados.materialImpressao() != null){
@@ -79,6 +97,11 @@ public class Impressao {
         }
         this.dataAtualizacao = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
     }
+
+    private boolean produtoDispensaMaterial(Produto produto) {
+        return PRODUTOS_SEM_MATERIAL.contains(produto);
+    }
+
 
     public Long getId() {
         return id;
