@@ -1,8 +1,6 @@
 package br.com.eds.api.eds.model.domiciliar;
 
 import br.com.eds.api.eds.model.conserto.Conserto;
-import br.com.eds.api.eds.model.criacaoDesign.CriacaoDesign;
-import br.com.eds.api.eds.model.impressao.Impressao;
 import br.com.eds.api.eds.model.software.Software;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
@@ -42,6 +40,7 @@ public class Domiciliar {
     public Domiciliar(NovoEmDomicilio visita){
         this.logradouro = visita.logradouro();
         this.numeroCasa = visita.numeroCasa();
+        this.periodo = visita.periodo();
         this.cep = visita.cep();
         this.complemento = visita.complemento();
         this.data = visita.data();

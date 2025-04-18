@@ -29,11 +29,16 @@ public class SoftwareService {
     @Transactional
     public ResponseEntity createSoftServ(NewSoftSer dados){
 
-        var cliente = clienteService.obterOuCriarCliente(dados.nomeCliente(), dados.contatoCliente(), dados.emailCliente(), dados.contatoAlternativoCliente(), dados.cpf());
-        var domiciliar = domiciliarService.saveDomicilar(dados.domicilio());
+        var cliente = clienteService.obterOuCriarCliente(
+                dados.nomeCliente(),
+                dados.contatoCliente(),
+                dados.contatoAlternativoCliente(),
+                dados.emailCliente(),
+                dados.cpf()
+        );             var domiciliar = domiciliarService.saveDomicilar(dados.domicilio());
         var softwareServ = new Software(cliente,dados, domiciliar);
         softwareRepository.save(softwareServ);
-        return ResponseEntity.ok(softwareServ);
+        return ResponseEntity.ok(new SoftwareResponse(softwareServ));
     }
 
     @Transactional

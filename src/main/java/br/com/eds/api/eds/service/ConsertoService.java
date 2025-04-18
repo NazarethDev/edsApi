@@ -30,11 +30,17 @@ public class ConsertoService {
     @Transactional
     public ResponseEntity createConserto(NovoConserto novo, MultipartFile file) throws IOException {
         var arquivo = arquivoService.salvarArquivo(file, null, false, true);
-        var cliente = clienteService.obterOuCriarCliente(novo.nomeCliente(), novo.contatoCliente(), novo.emailCliente(), novo.contatoAlternativoCliente(), novo.cpf());
+        var cliente = clienteService.obterOuCriarCliente(
+                novo.nomeCliente(),
+                novo.contatoCliente(),
+                novo.contatoAlternativoCliente(),
+                novo.emailCliente(),
+                novo.cpf()
+        );
         var domiciliar = domiciliarService.saveDomicilar(novo.domiciliar());
         var conserto = new Conserto(novo, arquivo, cliente, domiciliar);
         consertoRepository.save(conserto);
-        return ResponseEntity.ok(conserto);
+        return ResponseEntity.ok(new ConsertoResponse(conserto));
     }
 
     public ResponseEntity updateConserto(Long id, UpdateConserto dados, MultipartFile arquivo) throws IOException {

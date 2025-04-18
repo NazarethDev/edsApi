@@ -167,4 +167,12 @@ public class Conserto {
     public String getTipoEntidade() {
         return tipoEntidade;
     }
+
+    public Domiciliar getDomicilio() {
+        return domicilio;
+    }
+
+    public void setDomicilio(Domiciliar domicilio) {
+        this.domicilio = domicilio;
+    }
 }

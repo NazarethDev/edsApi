@@ -1,6 +1,7 @@
 package br.com.eds.api.eds.model.conserto;
 
 import br.com.eds.api.eds.model.cliente.ClienteResponse;
+import br.com.eds.api.eds.model.domiciliar.DomicilioResponse;
 import br.com.eds.api.eds.model.gestao.managementUpdates.StatusServicos;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -18,6 +19,7 @@ public record ConsertoResponse(
         LocalDateTime dataSolicitacao,
         @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
         LocalDateTime dataAtualizacao,
+        DomicilioResponse domiciliar,
         ClienteResponse cliente
 ) {
     public ConsertoResponse(Conserto conserto) {
@@ -31,6 +33,7 @@ public record ConsertoResponse(
                 conserto.getStatus(),
                 conserto.getDataSolicitacao(),
                 conserto.getDataAtualizacao(),
+                new DomicilioResponse(conserto.getDomicilio()),
                 new ClienteResponse(conserto.getCliente())
         );
     }

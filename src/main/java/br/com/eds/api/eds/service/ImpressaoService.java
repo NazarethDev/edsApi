@@ -28,12 +28,17 @@ public class ImpressaoService {
     @Transactional
     public ResponseEntity createPrint(NovaImpressao impressao, MultipartFile file) throws IOException {
         String arquivo = arquivoService.salvarArquivo(file, null,true,false);
-        var cliente = clienteService.obterOuCriarCliente(impressao.nomeCliente(),impressao.contatoCliente(), impressao.emailCliente(), impressao.contatoAlternativoCliente(), impressao.cpf());
-        var novaImpressao = new Impressao(cliente, impressao, arquivo);
+        var cliente = clienteService.obterOuCriarCliente(
+                impressao.nomeCliente(),
+                impressao.contatoCliente(),
+                impressao.contatoAlternativoCliente(),
+                impressao.emailCliente(),
+                impressao.cpf()
+        );        var novaImpressao = new Impressao(cliente, impressao, arquivo);
 
         impressaoRepository.save(novaImpressao);
 
-        return ResponseEntity.ok(novaImpressao);
+        return ResponseEntity.ok(new PrintResponse(novaImpressao));
     }
 
     @Transactional

@@ -52,7 +52,8 @@ public class Software {
 
     private String detalhesDoServico;
 
-    @OneToOne
+
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "domicilio_id")
     private Domiciliar domicilio;
 

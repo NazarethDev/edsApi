@@ -1,6 +1,7 @@
 package br.com.eds.api.eds.model.impressao;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum MaterialImpressao {
     MATERIAL1("Papel sulfite 90g"),
@@ -34,6 +35,11 @@ public enum MaterialImpressao {
     }
 
     public String getMaterial(){
+        return material;
+    }
+
+    @JsonValue
+    public String toJson(){
         return material;
     }
 

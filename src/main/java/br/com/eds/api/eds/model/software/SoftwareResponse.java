@@ -2,6 +2,7 @@ package br.com.eds.api.eds.model.software;
 
 import br.com.eds.api.eds.model.cliente.ClienteResponse;
 import br.com.eds.api.eds.model.conserto.Fabricante;
+import br.com.eds.api.eds.model.domiciliar.DomicilioResponse;
 import br.com.eds.api.eds.model.gestao.managementUpdates.StatusServicos;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -20,6 +21,7 @@ public record SoftwareResponse(
         LocalDateTime dataSolicitacao,
         @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
         LocalDateTime dataAtualizacao,
+        DomicilioResponse domiciliar,
         ClienteResponse cliente
 ) {
     public SoftwareResponse(Software software) {
@@ -33,6 +35,7 @@ public record SoftwareResponse(
                 software.getFabricante(),
                 software.getDataSolicitacao(),
                 software.getDataAtualizacao(),
+                new DomicilioResponse(software.getDomicilio()),
                 new ClienteResponse(software.getCliente())
         );
     }

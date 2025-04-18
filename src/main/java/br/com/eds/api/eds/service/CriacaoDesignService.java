@@ -32,7 +32,7 @@ public class CriacaoDesignService {
                 novoDesign.dadosImpressao().contatoAlternativoCliente(),novoDesign.dadosImpressao().cpf());
         var novaCriacao = new CriacaoDesign(novoDesign, novoDesign.dadosImpressao(),caminhoArquivo, cliente);
         criacaoDesignRepository.save(novaCriacao);
-        return ResponseEntity.ok(novaCriacao);
+        return ResponseEntity.ok(new CriacaoDesignResponse(novaCriacao));
     }
 
     @Transactional

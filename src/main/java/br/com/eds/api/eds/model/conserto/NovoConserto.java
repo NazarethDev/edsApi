@@ -10,9 +10,9 @@ public record NovoConserto(
         @NotBlank
         String contatoCliente,
         String contatoAlternativoCliente,
-        String cpf,
         @NotBlank
         String emailCliente,
+        String cpf,
         @NotBlank
         String descricaoProblema,
         @NotBlank
@@ -22,6 +22,6 @@ public record NovoConserto(
         @NotBlank
         Fabricante fabricante,
         NovoEmDomicilio domiciliar
-        )
+)
 {
 }

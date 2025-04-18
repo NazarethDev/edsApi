@@ -12,9 +12,9 @@ public record NewSoftSer(
         String nomeCliente,
         @NotBlank
         String contatoCliente,
-        @NotNull
-        String emailCliente,
         String contatoAlternativoCliente,
+        @NotBlank
+        String emailCliente,
         String cpf,
         String detalhesServico,
         @NotNull

@@ -13,13 +13,13 @@ public record NovaCriacaoDesign(
                 this.dadosImpressao = new NovaImpressao(
                         dadosImpressao.nomeCliente(),
                         dadosImpressao.contatoCliente(),
+                        dadosImpressao.contatoAlternativoCliente(),
                         dadosImpressao.emailCliente(),
-                        dadosImpressao().contatoAlternativoCliente(),
                         dadosImpressao.cpf(),
                         dadosImpressao.materialImpressao(),
                         dadosImpressao.unidades(),
                         dadosImpressao.ladosImpressao(),
-                        dadosImpressao().coresImpressao(),
+                        dadosImpressao.coresImpressao(),
                         dadosImpressao.produto()
                 );
                 this.arquivo = arquivo;
