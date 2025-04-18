@@ -2,6 +2,7 @@ package br.com.eds.api.eds.model.domiciliar;
 
 import br.com.eds.api.eds.model.conserto.Conserto;
 import br.com.eds.api.eds.model.software.Software;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
@@ -32,9 +33,11 @@ public class Domiciliar {
     private final String tipoEntidade = "emDomicilio";
 
     @OneToOne(mappedBy = "domicilio")
+    @JsonBackReference
     private Conserto conserto;
 
     @OneToOne(mappedBy = "domicilio")
+    @JsonBackReference
     private Software software;
 
     public Domiciliar(NovoEmDomicilio visita){

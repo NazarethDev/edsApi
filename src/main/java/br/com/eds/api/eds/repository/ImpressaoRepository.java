@@ -15,7 +15,11 @@ public interface ImpressaoRepository extends JpaRepository <Impressao, Long> {
 
     List<Impressao> findByCliente_EmailCliente(String emailCliente);
 
-    List<Impressao> findByCliente_ContatoClienteOrCliente_EmailCliente(String contatoCliente, String emailCliente);
+    @Query("SELECT c FROM Impressao c WHERE " +
+            "(:contatoCliente IS NULL OR c.cliente.contatoCliente = :contatoCliente) OR " +
+            "(:emailCliente IS NULL OR c.cliente.emailCliente = :emailCliente)")
+    List<Impressao> buscarPorContatoOuEmail(@Param("contatoCliente") String contatoCliente,
+                                           @Param("emailCliente") String emailCliente);
 
 
     @Query(value = "SELECT COUNT(*) FROM impressao WHERE cliente_id = :clienteId", nativeQuery = true)

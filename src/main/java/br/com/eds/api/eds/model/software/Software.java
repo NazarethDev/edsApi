@@ -5,6 +5,7 @@ import br.com.eds.api.eds.model.conserto.Fabricante;
 import br.com.eds.api.eds.model.gestao.managementUpdates.StatusServicos;
 import br.com.eds.api.eds.model.domiciliar.Domiciliar;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -55,6 +56,7 @@ public class Software {
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "domicilio_id")
+    @JsonManagedReference
     private Domiciliar domicilio;
 
     public Software() {

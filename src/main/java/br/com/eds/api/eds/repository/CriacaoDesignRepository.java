@@ -14,7 +14,11 @@ public interface CriacaoDesignRepository extends JpaRepository <CriacaoDesign,Lo
     List<CriacaoDesign> findByCliente_ContatoCliente(String contatoCliente);
     List<CriacaoDesign> findByCliente_EmailCliente(String emailCliente);
 
-    List<CriacaoDesign> findByCliente_ContatoClienteOrCliente_EmailCliente(String contatoCliente, String emailCliente);
+    @Query("SELECT c FROM CriacaoDesign c WHERE " +
+            "(:contatoCliente IS NULL OR c.cliente.contatoCliente = :contatoCliente) OR " +
+            "(:emailCliente IS NULL OR c.cliente.emailCliente = :emailCliente)")
+    List<CriacaoDesign> buscarPorContatoOuEmail(@Param("contatoCliente") String contatoCliente,
+                                           @Param("emailCliente") String emailCliente);
 
 
     @Query(value = "SELECT COUNT(*) FROM impressao WHERE cliente_id = :clienteId", nativeQuery = true)

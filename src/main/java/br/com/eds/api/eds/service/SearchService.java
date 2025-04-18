@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -26,30 +28,31 @@ public class SearchService {
     @Autowired
     SoftwareRepository softwareRepository;
 
-    public ResponseEntity search(String emailCliente, String contatoCliente){
+    public ResponseEntity<?> search(String emailCliente, String contatoCliente) {
+        if ((emailCliente == null || emailCliente.isBlank()) &&
+                (contatoCliente == null || contatoCliente.isBlank())) {
+            return ResponseEntity.badRequest().body("Informe pelo menos o email ou o contato do cliente.");
+        }
+
         Map<String, Object> resultados = new HashMap<>();
 
-        var consertos = consertoRepository.findByCliente_ContatoClienteOrCliente_EmailCliente(contatoCliente, emailCliente);
-        var softwares = softwareRepository.findByCliente_ContatoClienteOrCliente_EmailCliente(contatoCliente,emailCliente);
-        var impressoes = impressaoRepository.findByCliente_ContatoClienteOrCliente_EmailCliente(contatoCliente, emailCliente);
-        var criacaoDesign = criacaoDesignRepository.findByCliente_ContatoClienteOrCliente_EmailCliente(contatoCliente, emailCliente);
+        List<?> consertos = Collections.emptyList();
+        List<?> softwares = Collections.emptyList();
+        List<?> impressoes = Collections.emptyList();
+        List<?> criacoes = Collections.emptyList();
 
-        if (!consertos.isEmpty()){
-            resultados.put("consertos", consertos);
-        }
-        if (!softwares.isEmpty()){
-            resultados.put("software", softwares);
-        }
-
-        if (!impressoes.isEmpty()){
-            resultados.put("impressoes", impressoes);
+        if (emailCliente != null || contatoCliente != null) {
+            consertos = consertoRepository.buscarPorContatoOuEmail(contatoCliente, emailCliente);
+            softwares = softwareRepository.buscarPorContatoOuEmail(contatoCliente, emailCliente);
+            impressoes = impressaoRepository.buscarPorContatoOuEmail(contatoCliente, emailCliente);
+            criacoes = criacaoDesignRepository.buscarPorContatoOuEmail(contatoCliente, emailCliente);
         }
 
-        if (!criacaoDesign.isEmpty()){
-            resultados.put("criacoesDesign", criacaoDesign);
-        }
+        if (!consertos.isEmpty()) resultados.put("consertos", consertos);
+        if (!softwares.isEmpty()) resultados.put("softwares", softwares);
+        if (!impressoes.isEmpty()) resultados.put("impressoes", impressoes);
+        if (!criacoes.isEmpty()) resultados.put("criacoesDesign", criacoes);
 
         return ResponseEntity.ok(resultados);
     }
-
 }

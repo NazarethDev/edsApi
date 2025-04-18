@@ -15,7 +15,7 @@ CREATE TABLE conserto (
     tempo_de_uso VARCHAR(50),
     tipo_aparelho VARCHAR(100) NOT NULL,
     fabricante VARCHAR(100) NOT NULL,
-    status ENUM('NOVO', 'CLIENTE_CONTATADO', 'EM_ESPERA', 'PEDIDO_CONFIRMADO', 'PROCESSANDO', 'AGUARDA_RETIRADA', 'ENTREGA_SOLICITADA', 'FINALIZADO', 'CANCELADO'),
+    status VARCHAR(25) NOT NULL,
     data_solicitacao DATETIME,
     data_atualizacao DATETIME,
     FOREIGN KEY (cliente_id) REFERENCES cliente(id)
@@ -26,7 +26,7 @@ CREATE TABLE impressao (
     cliente_id BIGINT,
     arquivo_impressao VARCHAR(255),
     material_impressao VARCHAR(100) NOT NULL,
-    status ENUM('Novo', 'Cliente contatato', 'Em espera', 'Pedido confirmado', 'Processando', 'Aguarda retirada', 'Pronto para entrega', 'Finalizado', 'Cancelado'),
+    status VARCHAR(25) NOT NULL,
     unidades INT,
     data_solicitacao DATETIME,
     data_atualizacao DATETIME,
@@ -46,7 +46,7 @@ CREATE TABLE software (
     cliente_id BIGINT,
     detalhes_servico TEXT,
     dispositivo VARCHAR(100) NOT NULL,
-    status ENUM('NOVO', 'CLIENTE_CONTATADO', 'EM_ESPERA', 'PEDIDO_CONFIRMADO', 'PROCESSANDO', 'AGUARDA_RETIRADA', 'ENTREGA_SOLICITADA', 'FINALIZADO', 'CANCELADO'),
+    status VARCHAR(25) NOT NULL,
     data_solicitacao DATETIME,
     data_atualizacao DATETIME,
     FOREIGN KEY (cliente_id) REFERENCES cliente(id)

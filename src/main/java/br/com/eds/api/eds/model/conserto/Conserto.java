@@ -4,6 +4,7 @@ import br.com.eds.api.eds.model.cliente.Cliente;
 import br.com.eds.api.eds.model.gestao.managementUpdates.StatusServicos;
 import br.com.eds.api.eds.model.domiciliar.Domiciliar;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -47,6 +48,7 @@ public class Conserto {
 
     @OneToOne
     @JoinColumn(name = "domicilio_id")
+    @JsonManagedReference
     private Domiciliar domicilio;
 
     public Conserto (){}
