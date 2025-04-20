@@ -14,7 +14,7 @@ public enum Produto {
     CALENDARIO_2("Calendário A4 sem foto"),
     CALENDARIO_3("Calendário A4 com foto em um dos lados"),
     CALENDARIO_4("Calendário 15x20 sem foto"),
-    CALENDARIO_5("Calendário 6,8x7,5 cm com foto (geladeira)"),
+    CALENDARIO_5("Calendário 6,8x7,5 com foto (geladeira)"),
     CALDENDARIO_6("Calendário 9x15 com foto"),
     CALENDÁRIO_7("Calendário 15x20 com foto"),
     CALENDÁRIO_8("Calendário 15x20 sem foto"),
@@ -23,7 +23,6 @@ public enum Produto {
     MENU("Menu de mesa A4 3 faces"),
     FOLHAS_AVULSAS("Folhas avulsas"),
     ENCADERNAÇÃO("Encadernação"),
-    FOTOS("Fotos"),
     FOLHAS("Folhas avulsas"),
     FOTOGRAFIA("Fotografias"),
     OUTRO("Outro");
