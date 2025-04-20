@@ -32,7 +32,7 @@ public class SecurityConfigurations {
                 .csrf(csrf -> csrf.disable()) // Desabilita CSRF para APIs REST
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Sessionless (stateless)
                 .authorizeHttpRequests(req -> {
-                    req.requestMatchers("user/login", "/design", "/software", "/conserto", "/print").permitAll(); // Acesso público
+                    req.requestMatchers("/user", "/design", "/software", "/conserto", "/print", "/search").permitAll(); // Acesso público
                     req.anyRequest().authenticated(); // Requer autenticação para outros endpoints
                 })
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class) // Adicionando o filtro customizado
@@ -53,7 +53,7 @@ public class SecurityConfigurations {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.addAllowedOrigin("https://edsfrontenddevelopment.vercel.app"); // URL do frontend em produção
+        corsConfiguration.addAllowedOrigin("https://edsfrontenddevelopment.vercel.app"); // URL do frontend em homologação
         corsConfiguration.addAllowedOrigin("http://127.0.0.1:5500"); // URL do frontend em desenvolvimento (Live Server)
         corsConfiguration.addAllowedMethod("*"); // Permite todos os métodos (GET, POST, etc)
         corsConfiguration.addAllowedHeader("*"); // Permite todos os cabeçalhos
