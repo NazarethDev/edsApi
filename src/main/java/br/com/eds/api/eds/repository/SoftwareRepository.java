@@ -13,19 +13,20 @@ import java.util.List;
 @Repository
 public interface SoftwareRepository extends JpaRepository <Software, Long> {
     List<Software> findByCliente_ContatoCliente(String contatoCliente);
+    List<Software> findByCliente_EmailCliente(String emailCliente);
 
     @Query("SELECT c FROM Software c WHERE " +
-            "(:contatoCliente IS NULL OR c.cliente.contatoCliente = :contatoCliente) OR " +
+            "(:contatoCliente IS NULL OR c.cliente.contatoCliente = :contatoCliente) AND " +
             "(:emailCliente IS NULL OR c.cliente.emailCliente = :emailCliente)")
     List<Software> buscarPorContatoOuEmail(@Param("contatoCliente") String contatoCliente,
                                            @Param("emailCliente") String emailCliente);
 
 
-    List<Software> findByCliente_EmailCliente(String emailCliente);
-
     @Query("SELECT s FROM Software s JOIN s.servicos servico WHERE s.dataSolicitacao BETWEEN :startDate AND :endDate")
     List<Software> findAllByDataSolicitacaoBetween(LocalDateTime startDate, LocalDateTime endDate);
 
     List<Software> findByStatus(StatusServicos status);
+
+    List<Software> findByStatusAndDataSolicitacaoBetween(StatusServicos status, LocalDateTime dataInicio, LocalDateTime dataFim);
 
 }

@@ -16,8 +16,8 @@ public class SearchController {
     SearchService searchService;
 
     @GetMapping
-    public ResponseEntity buscar(@RequestParam (required = false) String contato,
-                                 @RequestParam (required = false) String email){
-        return searchService.search(contato, email);
+    public ResponseEntity buscar(@RequestParam (required = false) String email,
+                                 @RequestParam (required = false) String contato){
+        return searchService.search(email, contato);
     }
 }

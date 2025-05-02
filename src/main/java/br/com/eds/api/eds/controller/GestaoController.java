@@ -37,7 +37,7 @@ public class GestaoController {
     }
 
     @GetMapping("/printmaterialbymonth")
-    public ResponseEntity printMaterialByMonth(@RequestBody DateRequest date){
+    public ResponseEntity printMaterialByMonth(@RequestParam DateRequest date){
         return gestaoEstService.estatisticasMateriaisPorMes(date.mes(), date.ano());
     }
 
@@ -61,23 +61,23 @@ public class GestaoController {
     }
 
     @GetMapping("/findbyprintstatus")
-    public ResponseEntity allPrintsInStatus(@RequestParam String status){
-        return statusService.statusImpressao(status);
+    public ResponseEntity allPrintsInStatus(@RequestParam String status, Integer mes, Integer ano){
+        return statusService.statusImpressao(status, mes, ano);
     }
 
     @GetMapping("/findbydesignstatus")
-    public ResponseEntity allDesignsInAStatus(@RequestParam String status){
-        return statusService.statusCriacaoDesign(status);
+    public ResponseEntity allDesignsInAStatus(@RequestParam String status, Integer mes, Integer ano){
+        return statusService.statusCriacaoDesign(status, mes, ano);
     }
 
     @GetMapping("/findbysoftwarestatus")
-    public ResponseEntity allSoftwareServicesInAStatus(@RequestParam String status){
-        return statusService.statusSoftware(status);
+    public ResponseEntity allSoftwareServicesInAStatus(String status, Integer mes, Integer ano){
+        return statusService.statusSoftware(status, mes, ano);
     }
 
     @GetMapping("/findbyrepairstatus")
-    public ResponseEntity allRepairsInAStatus(@RequestParam String status){
-        return statusService.statusConserto(status);
+    public ResponseEntity allRepairsInAStatus(@RequestParam String status, Integer mes, Integer ano){
+        return statusService.statusConserto(status, mes, ano);
     }
 
     @PostMapping ("/changestatus")

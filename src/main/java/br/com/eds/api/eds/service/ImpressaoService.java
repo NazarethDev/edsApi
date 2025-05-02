@@ -3,6 +3,7 @@ package br.com.eds.api.eds.service;
 import br.com.eds.api.eds.model.impressao.*;
 import br.com.eds.api.eds.repository.ImpressaoRepository;
 import br.com.eds.api.eds.service.arquivo.ArquivoService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,9 @@ import java.util.List;
 
 @Service
 public class ImpressaoService {
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Autowired
     ImpressaoRepository impressaoRepository;
@@ -35,6 +39,8 @@ public class ImpressaoService {
                 impressao.emailCliente(),
                 impressao.cpf()
         );        var novaImpressao = new Impressao(cliente, impressao, arquivo);
+
+        System.out.println("JSON recebido: " + objectMapper.writeValueAsString(novaImpressao));
 
         impressaoRepository.save(novaImpressao);
 

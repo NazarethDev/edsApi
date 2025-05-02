@@ -10,10 +10,13 @@ import br.com.eds.api.eds.repository.CriacaoDesignRepository;
 import br.com.eds.api.eds.repository.ImpressaoRepository;
 import br.com.eds.api.eds.repository.SoftwareRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -33,28 +36,42 @@ public class GestaoServiceOrderStatus {
     @Autowired
     private SoftwareRepository softwareRepository;
 
+    public Pair<LocalDateTime, LocalDateTime> findStatusDate(Integer mes, Integer ano){
+        LocalDate firstDay = LocalDate.of(ano, mes, 1);
+        LocalDate lastDay = firstDay.withDayOfMonth(firstDay.lengthOfMonth());
+
+        LocalDateTime dataInicio = firstDay.atStartOfDay();
+        LocalDateTime dataFim = lastDay.atTime(23,59,59,999_999_999);
+
+        return Pair.of(dataInicio, dataFim);
+    }
+
     public StatusServicos convertToStatusPedido (String status){
         var valorConvertido = StatusServicos.valueOf(String.valueOf(StatusServicos.valueOf(status.trim().toUpperCase().replace(" ", "_"))));
         return valorConvertido;
     }
 
-    public ResponseEntity statusImpressao(String status){
-        List<Impressao> impressoes = impressaoRepository.findByStatusPrintStatus(convertToStatusPedido(status));
+    public ResponseEntity statusImpressao(String status, Integer mes, Integer ano){
+        var searchDate = findStatusDate(mes, ano);
+        List<Impressao> impressoes = impressaoRepository.findByStatusAndDataSolicitacaoBetween(convertToStatusPedido(status), searchDate.getFirst(), searchDate.getSecond());
         return ResponseEntity.ok(impressoes);
     }
 
-    public ResponseEntity statusCriacaoDesign(String status){
-        List<CriacaoDesign> designs = criacaoDesignRepository.findByStatus(convertToStatusPedido(status));
+    public ResponseEntity statusCriacaoDesign(String status, Integer mes, Integer ano){
+        var searchDate = findStatusDate(mes, ano);
+        List<CriacaoDesign> designs = criacaoDesignRepository.findByStatusAndDataSolicitacaoBetween(convertToStatusPedido(status), searchDate.getFirst(), searchDate.getSecond());
         return ResponseEntity.ok(designs);
     }
 
-    public ResponseEntity statusConserto(String status){
-        List<Conserto> consertos = consertoRepository.findByStatus(convertToStatusPedido(status));
+    public ResponseEntity statusConserto(String status, Integer mes, Integer ano){
+        var searchDate = findStatusDate(mes, ano);
+        List<Conserto> consertos = consertoRepository.findByStatusAndDataSolicitacaoBetween(convertToStatusPedido(status), searchDate.getFirst(), searchDate.getSecond());
         return ResponseEntity.ok(consertos);
     }
 
-    public ResponseEntity statusSoftware (String status){
-        List<Software> software = softwareRepository.findByStatus(convertToStatusPedido(status));
+    public ResponseEntity statusSoftware(String status, Integer mes, Integer ano){
+        var searchDate = findStatusDate(mes, ano);
+        List<Software> software = softwareRepository.findByStatusAndDataSolicitacaoBetween(convertToStatusPedido(status), searchDate.getFirst(), searchDate.getSecond());
         return ResponseEntity.ok(software);
     }
 
@@ -74,7 +91,7 @@ public class GestaoServiceOrderStatus {
     }
 
     @Transactional
-    public ResponseEntity updateStatus (Long id, String status){
+    public ResponseEntity updateStatus(Long id, String status){
         StatusServicos novoStatus = convertToStatusPedido(status);
         Optional<Impressao> impressao = impressaoRepository.findById(id);
         if (impressao.isPresent() && impressao.get().getTipoEntidade().equalsIgnoreCase("impressao")) {

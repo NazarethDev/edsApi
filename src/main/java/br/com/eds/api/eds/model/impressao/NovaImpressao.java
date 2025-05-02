@@ -11,9 +11,9 @@ public record NovaImpressao(
         @NotBlank
         String emailCliente,
         String cpf,
-        @NotBlank MaterialImpressao materialImpressao,
+        MaterialImpressao materialImpressao,
         @NotBlank Integer unidades,
-        @NotBlank String ladosImpressao,
+        String ladosImpressao,
         String coresImpressao,
         @NotBlank Produto produto
 ) {

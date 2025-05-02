@@ -11,7 +11,7 @@ public enum StatusServicos {
     PROCESSANDO("processando"),
     AGUARDA_RETIRADA("aguarda retirada"),
     ENTREGA_SOLICITADA("entrega solicitada"),
-    FINALIZADO("finalzado"),
+    FINALIZADO("finalizado"),
     CANCELADO("cancelado");
 
     private final String statusPedido;

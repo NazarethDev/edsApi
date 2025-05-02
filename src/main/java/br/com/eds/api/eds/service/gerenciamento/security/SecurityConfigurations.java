@@ -1,4 +1,4 @@
-package br.com.eds.api.eds.service.security;
+package br.com.eds.api.eds.service.gerenciamento.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

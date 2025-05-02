@@ -1,6 +1,7 @@
 package br.com.eds.api.eds.model.impressao;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum MaterialImpressao {
@@ -26,7 +27,8 @@ public enum MaterialImpressao {
     MATERIAL19("Couché fosco 170g"),
     MATERIAL20("Reciclado 90g"),
     MATERIAL21("Reciclado 240g"),
-    MATERIAL22("Kraft 135g");
+    MATERIAL22("Kraft 135g"),
+    SEM_DEFINICAO("Material indefinido");
 
     private final String material;
 
@@ -44,9 +46,10 @@ public enum MaterialImpressao {
     }
 
     @JsonCreator
-    public static MaterialImpressao fromJson(String value){
+    public static MaterialImpressao fromJson(@JsonProperty("materialImpressao")String value){
+        System.out.println("Recebido material: " + value);
         for (MaterialImpressao m : values()){
-            if (m.getMaterial().equalsIgnoreCase(value)){
+            if (m.getMaterial().equalsIgnoreCase(value.trim())){
                 return m;
             }
         }

@@ -20,7 +20,7 @@ public class CriacaoDesignController {
     @PostMapping
     public ResponseEntity createDesign(
             @RequestPart("data") NovaCriacaoDesign design,
-            @RequestPart("arquivo") MultipartFile arquivo) throws IOException {
+            @RequestPart(value = "arquivo", required = false) MultipartFile arquivo) throws IOException {
         NovaCriacaoDesign novaCriacao = new NovaCriacaoDesign(
                 design.ideiasDesign(),
                 design.dadosImpressao(),
@@ -32,7 +32,7 @@ public class CriacaoDesignController {
 
     @PutMapping("/{id}")
     public ResponseEntity updateDesign(@PathVariable Long id,
-                                       @RequestPart("data") UpdateDesign design,
+                                       @RequestPart(required = false) UpdateDesign design,
                                        @RequestPart(value = "file",required = false) MultipartFile file) throws IOException {
         return designService.updateDesign(id, design, file);
     }

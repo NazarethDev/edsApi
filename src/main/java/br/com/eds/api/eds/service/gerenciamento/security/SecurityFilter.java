@@ -1,4 +1,4 @@
-package br.com.eds.api.eds.service.security;
+package br.com.eds.api.eds.service.gerenciamento.security;
 
 import br.com.eds.api.eds.repository.UsuarioRepository;
 import jakarta.servlet.FilterChain;
@@ -28,6 +28,7 @@ public class SecurityFilter extends OncePerRequestFilter {
 
         if (tokenJWT != null){
             var subject = tokenService.getSubject(tokenJWT);
+
             var usuario = usuarioRepository.findByEmail(subject);
 
             var authentication = new UsernamePasswordAuthenticationToken(usuario,null, usuario.getAuthorities());

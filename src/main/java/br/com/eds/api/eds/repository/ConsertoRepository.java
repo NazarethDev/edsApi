@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -15,7 +16,7 @@ public interface ConsertoRepository extends JpaRepository <Conserto, Long> {
     List<Conserto> findByCliente_EmailCliente(String emailCliente);
 
     @Query("SELECT c FROM Conserto c WHERE " +
-            "(:contatoCliente IS NULL OR c.cliente.contatoCliente = :contatoCliente) OR " +
+            "(:contatoCliente IS NULL OR c.cliente.contatoCliente = :contatoCliente) AND " +
             "(:emailCliente IS NULL OR c.cliente.emailCliente = :emailCliente)")
     List<Conserto> buscarPorContatoOuEmail(@Param("contatoCliente") String contatoCliente,
                                            @Param("emailCliente") String emailCliente);
@@ -50,5 +51,7 @@ public interface ConsertoRepository extends JpaRepository <Conserto, Long> {
     List<Object[]> contarDispositivosPorMes(@Param("mes") int mes, @Param("ano") int ano);
 
     List<Conserto> findByStatus(StatusServicos status);
+
+    List <Conserto> findByStatusAndDataSolicitacaoBetween(StatusServicos status, LocalDateTime dataInicio, LocalDateTime dataFim);
 
 }

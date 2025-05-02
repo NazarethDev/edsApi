@@ -1,0 +1,2 @@
+ALTER TABLE impressao
+MODIFY COLUMN unidades INT NOT NULL;

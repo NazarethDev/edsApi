@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -14,8 +15,10 @@ public interface CriacaoDesignRepository extends JpaRepository <CriacaoDesign,Lo
     List<CriacaoDesign> findByCliente_ContatoCliente(String contatoCliente);
     List<CriacaoDesign> findByCliente_EmailCliente(String emailCliente);
 
+    List<CriacaoDesign> findByStatusAndDataSolicitacaoBetween(StatusServicos status, LocalDateTime dataInicio, LocalDateTime dataFim);
+
     @Query("SELECT c FROM CriacaoDesign c WHERE " +
-            "(:contatoCliente IS NULL OR c.cliente.contatoCliente = :contatoCliente) OR " +
+            "(:contatoCliente IS NULL OR c.cliente.contatoCliente = :contatoCliente) AND " +
             "(:emailCliente IS NULL OR c.cliente.emailCliente = :emailCliente)")
     List<CriacaoDesign> buscarPorContatoOuEmail(@Param("contatoCliente") String contatoCliente,
                                            @Param("emailCliente") String emailCliente);

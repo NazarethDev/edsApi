@@ -1,5 +1,6 @@
 package br.com.eds.api.eds.repository;
 
+import br.com.eds.api.eds.model.criacaoDesign.CriacaoDesign;
 import br.com.eds.api.eds.model.gestao.managementUpdates.StatusServicos;
 import br.com.eds.api.eds.model.impressao.Impressao;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -7,16 +8,19 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
 public interface ImpressaoRepository extends JpaRepository <Impressao, Long> {
     List<Impressao> findByCliente_ContatoCliente(String contatoCliente);
-
     List<Impressao> findByCliente_EmailCliente(String emailCliente);
+    List<Impressao> findByStatusAndDataSolicitacaoBetween(StatusServicos status, LocalDateTime dataInicio, LocalDateTime dataFim);
+
+
 
     @Query("SELECT c FROM Impressao c WHERE " +
-            "(:contatoCliente IS NULL OR c.cliente.contatoCliente = :contatoCliente) OR " +
+            "(:contatoCliente IS NULL OR c.cliente.contatoCliente = :contatoCliente) AND " +
             "(:emailCliente IS NULL OR c.cliente.emailCliente = :emailCliente)")
     List<Impressao> buscarPorContatoOuEmail(@Param("contatoCliente") String contatoCliente,
                                            @Param("emailCliente") String emailCliente);

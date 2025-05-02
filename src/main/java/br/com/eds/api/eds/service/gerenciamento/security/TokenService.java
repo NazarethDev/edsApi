@@ -1,4 +1,4 @@
-package br.com.eds.api.eds.service.security;
+package br.com.eds.api.eds.service.gerenciamento.security;
 
 import br.com.eds.api.eds.model.gestao.user.Usuario;
 import com.auth0.jwt.JWT;
@@ -23,7 +23,7 @@ public class TokenService {
             var algoritmo = Algorithm.HMAC256(secret);
             return JWT.create()
                     .withIssuer("eds")
-                    .withSubject(usuario.getUsername())
+                    .withSubject(usuario.getEmail())
                     .withExpiresAt(expiresAt())
                     .sign(algoritmo);
         } catch (JWTCreationException exception){
@@ -45,7 +45,7 @@ public class TokenService {
     }
 
     private Instant expiresAt() {
-        return LocalDateTime.now().plusHours(3).toInstant(ZoneOffset.of("-03:00"));
+        return LocalDateTime.now().plusHours(8).toInstant(ZoneOffset.of("-03:00"));
     }
 }
 
