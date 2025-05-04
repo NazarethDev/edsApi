@@ -1,5 +1,6 @@
 package br.com.eds.api.eds.service;
 
+import br.com.eds.api.eds.model.gestao.managementUpdates.StatusServicos;
 import br.com.eds.api.eds.model.software.*;
 import br.com.eds.api.eds.repository.SoftwareRepository;
 import jakarta.persistence.EntityManager;
@@ -91,10 +92,14 @@ public class SoftwareService {
 
     @Transactional
     public ResponseEntity deleteRequest(Long id){
-            if (softwareRepository.existsById(id)){
-                softwareRepository.deleteById(id);
-                return ResponseEntity.noContent().build();
-        } else return ResponseEntity.notFound().build();
+        var servico = softwareRepository.findById(id);
+        if (servico.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        servico.get().setStatus(StatusServicos.CANCELADO);
+        softwareRepository.save(servico.get());
+
+        return ResponseEntity.noContent().build();
     }
 
 }

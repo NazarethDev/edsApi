@@ -2,7 +2,9 @@ package br.com.eds.api.eds.service;
 
 import br.com.eds.api.eds.model.conserto.Conserto;
 import br.com.eds.api.eds.model.criacaoDesign.CriacaoDesign;
+import br.com.eds.api.eds.model.criacaoDesign.CriacaoDesignResponse;
 import br.com.eds.api.eds.model.impressao.Impressao;
+import br.com.eds.api.eds.model.impressao.PrintResponse;
 import br.com.eds.api.eds.model.software.Software;
 import br.com.eds.api.eds.repository.ConsertoRepository;
 import br.com.eds.api.eds.repository.CriacaoDesignRepository;
@@ -42,18 +44,22 @@ public class SearchService {
         Set<Impressao> impressoes = new HashSet<>();
         Set<CriacaoDesign> criacoes = new HashSet<>();
 
+        // Buscar por emailCliente
         if (!isBlank(emailCliente)) {
             consertos.addAll(consertoRepository.findByCliente_EmailCliente(emailCliente));
             softwares.addAll(softwareRepository.findByCliente_EmailCliente(emailCliente));
-            impressoes.addAll(impressaoRepository.findByCliente_EmailCliente(emailCliente));
-            criacoes.addAll(criacaoDesignRepository.findByCliente_EmailCliente(emailCliente));
+            impressoes.addAll(impressaoRepository.findByClienteEmailAndTipo(emailCliente));
+            criacoes.addAll(criacaoDesignRepository.findByClienteEmailAndTipo(emailCliente));
+
         }
 
+        // Buscar por contatoCliente
         if (!isBlank(contatoCliente)) {
             consertos.addAll(consertoRepository.findByCliente_ContatoCliente(contatoCliente));
             softwares.addAll(softwareRepository.findByCliente_ContatoCliente(contatoCliente));
-            impressoes.addAll(impressaoRepository.findByCliente_ContatoCliente(contatoCliente));
-            criacoes.addAll(criacaoDesignRepository.findByCliente_ContatoCliente(contatoCliente));
+            impressoes.addAll(impressaoRepository.findByClienteContatoAndTipo(contatoCliente));
+            criacoes.addAll(criacaoDesignRepository.findByClienteContatoAndTipo(contatoCliente));
+
         }
 
         if (!consertos.isEmpty()) resultados.put("consertos", consertos);
@@ -67,4 +73,5 @@ public class SearchService {
     private boolean isBlank(String str) {
         return str == null || str.isBlank();
     }
+
 }

@@ -30,7 +30,7 @@ public class Domiciliar {
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate data;
 
-    private final String tipoEntidade = "emDomicilio";
+    private String tipoEntidade = "emDomicilio";
 
     @OneToOne(mappedBy = "domicilio")
     @JsonBackReference

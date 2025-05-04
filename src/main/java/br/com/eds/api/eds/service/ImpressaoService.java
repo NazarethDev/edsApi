@@ -1,5 +1,6 @@
 package br.com.eds.api.eds.service;
 
+import br.com.eds.api.eds.model.gestao.managementUpdates.StatusServicos;
 import br.com.eds.api.eds.model.impressao.*;
 import br.com.eds.api.eds.repository.ImpressaoRepository;
 import br.com.eds.api.eds.service.arquivo.ArquivoService;
@@ -72,12 +73,11 @@ public class ImpressaoService {
     public ResponseEntity deleteOrder(Long impressaoId){
         var impressao = impressaoRepository.findById(impressaoId);
         if (impressao.isEmpty()){
-            return ResponseEntity.badRequest().body("Não encontramos o número de pedido indicado :(");
+            return ResponseEntity.notFound().build();
         }
-        if (LocalDateTime.now().isAfter(impressao.get().getDataSolicitacao().plusHours(2))){
-            return ResponseEntity.badRequest().body("Não é possível cancelar o pedido depois de duas horas");
-        }
-        impressaoRepository.deleteById(impressaoId);
+        impressao.get().setStatus(StatusServicos.CANCELADO);
+        impressaoRepository.save(impressao.get());
+
         return ResponseEntity.noContent().build();
     }
 

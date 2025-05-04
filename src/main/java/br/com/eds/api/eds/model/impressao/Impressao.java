@@ -3,6 +3,7 @@ package br.com.eds.api.eds.model.impressao;
 import br.com.eds.api.eds.model.cliente.Cliente;
 import br.com.eds.api.eds.model.gestao.managementUpdates.StatusServicos;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -42,8 +43,6 @@ public class Impressao {
 
     @Enumerated(EnumType.STRING)
     private Produto produto;
-
-    private final String tipoEntidade = "impressao";
 
     private static final Set<Produto> PRODUTOS_SEM_MATERIAL = Set.of(
             Produto.CALENDARIO_1,
@@ -175,10 +174,6 @@ public class Impressao {
         this.status = status;
     }
 
-    public String getTipoEntidade() {
-        return tipoEntidade;
-    }
-
     public String getLadosImpressao() {
         return ladosImpressao;
     }
@@ -193,6 +188,12 @@ public class Impressao {
 
     public void setCoresImpressao(String coresImpressao) {
         this.coresImpressao = coresImpressao;
+    }
+
+    @JsonProperty("tipoEntidade")
+    @Transient
+    public String getTipoEntidade(){
+        return "impressao";
     }
 
 }

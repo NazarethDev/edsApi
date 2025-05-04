@@ -44,7 +44,7 @@ public class Software {
     @Column(name = "data_atualizacao")
     private LocalDateTime dataAtualizacao;
 
-    private final String tipoEntidade = "software";
+    private String tipoEntidade = "software";
 
     private String tempoUso;
 

@@ -23,7 +23,7 @@ public class Cliente {
     private LocalDateTime dataCadastro;
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dataAtualizacao;
-    private final String tipoEntidade = "cliente";
+    private String tipoEntidade = "cliente";
 
 
     public Cliente(){}

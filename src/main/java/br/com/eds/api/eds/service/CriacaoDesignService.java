@@ -1,6 +1,7 @@
 package br.com.eds.api.eds.service;
 
 import br.com.eds.api.eds.model.criacaoDesign.*;
+import br.com.eds.api.eds.model.gestao.managementUpdates.StatusServicos;
 import br.com.eds.api.eds.repository.CriacaoDesignRepository;
 import br.com.eds.api.eds.service.arquivo.ArquivoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,15 +63,12 @@ public class CriacaoDesignService {
 
     @Transactional
     public ResponseEntity deleteOrder (Long id) {
-        var criacaoDesign = criacaoDesignRepository.findById(id);
-        if (criacaoDesign.isEmpty()) {
+        var design = criacaoDesignRepository.findById(id);
+        if (design.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-        var design = criacaoDesign.get();
-        if (LocalDateTime.now().isAfter(design.getDataSolicitacao().plusHours(2))) {
-            return ResponseEntity.badRequest().body("Não é possível excluir o pedido depois de duas horas da solicitação do serviço");
-        }
-        criacaoDesignRepository.deleteById(id);
+        design.get().setStatus(StatusServicos.CANCELADO);
+        criacaoDesignRepository.save(design.get());
         return ResponseEntity.noContent().build();
     }
 

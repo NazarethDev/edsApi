@@ -44,7 +44,7 @@ public class Conserto {
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dataAtualizacao;
 
-    private final String tipoEntidade = "conserto";
+    private String tipoEntidade = "conserto";
 
     @OneToOne
     @JoinColumn(name = "domicilio_id")

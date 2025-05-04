@@ -15,7 +15,22 @@ import java.util.List;
 public interface ImpressaoRepository extends JpaRepository <Impressao, Long> {
     List<Impressao> findByCliente_ContatoCliente(String contatoCliente);
     List<Impressao> findByCliente_EmailCliente(String emailCliente);
-    List<Impressao> findByStatusAndDataSolicitacaoBetween(StatusServicos status, LocalDateTime dataInicio, LocalDateTime dataFim);
+
+    @Query("SELECT i FROM Impressao i WHERE i.cliente.emailCliente = :emailCliente AND TYPE(i) = Impressao")
+    List<Impressao> findByClienteEmailAndTipo(@Param("emailCliente") String emailCliente);
+
+    @Query("SELECT i FROM Impressao i WHERE i.cliente.contatoCliente = :contatoCliente AND TYPE(i) = Impressao")
+    List<Impressao> findByClienteContatoAndTipo(@Param("contatoCliente") String contatoCliente);
+
+    @Query("SELECT i FROM Impressao i WHERE TYPE(i) = Impressao AND i.status = :status AND i.dataSolicitacao BETWEEN :inicio AND :fim")
+    List<Impressao> findSomenteImpressoesPorStatusEPeriodo(
+            @Param("status") StatusServicos status,
+            @Param("inicio") LocalDateTime inicio,
+            @Param("fim") LocalDateTime fim
+    );
+
+
+    List<Impressao> findByCliente_EmailClienteOrCliente_ContatoCliente(String email, String contato);
 
 
 

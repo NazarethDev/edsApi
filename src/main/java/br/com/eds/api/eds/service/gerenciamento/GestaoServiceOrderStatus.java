@@ -47,13 +47,16 @@ public class GestaoServiceOrderStatus {
     }
 
     public StatusServicos convertToStatusPedido (String status){
-        var valorConvertido = StatusServicos.valueOf(String.valueOf(StatusServicos.valueOf(status.trim().toUpperCase().replace(" ", "_"))));
-        return valorConvertido;
+        try {
+            return StatusServicos.valueOf(status.trim().toUpperCase().replace(" ", "_"));
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Status inválido: " + status);
+        }
     }
 
     public ResponseEntity statusImpressao(String status, Integer mes, Integer ano){
         var searchDate = findStatusDate(mes, ano);
-        List<Impressao> impressoes = impressaoRepository.findByStatusAndDataSolicitacaoBetween(convertToStatusPedido(status), searchDate.getFirst(), searchDate.getSecond());
+        List<Impressao> impressoes = impressaoRepository.findSomenteImpressoesPorStatusEPeriodo(convertToStatusPedido(status), searchDate.getFirst(), searchDate.getSecond());
         return ResponseEntity.ok(impressoes);
     }
 
@@ -91,36 +94,45 @@ public class GestaoServiceOrderStatus {
     }
 
     @Transactional
-    public ResponseEntity updateStatus(Long id, String status){
+    public ResponseEntity updateStatus(String entidade, Long id, String status){
         StatusServicos novoStatus = convertToStatusPedido(status);
-        Optional<Impressao> impressao = impressaoRepository.findById(id);
-        if (impressao.isPresent() && impressao.get().getTipoEntidade().equalsIgnoreCase("impressao")) {
-            impressao.get().setStatus(novoStatus);
-            impressaoRepository.save(impressao.get());
-            return ResponseEntity.ok(impressao.get());
-        }
 
-        Optional<CriacaoDesign> design = criacaoDesignRepository.findById(id);
-        if (design.isPresent() && design.get().getTipoEntidade().equalsIgnoreCase("criacaodesign")) {
-            design.get().setStatus(novoStatus);
-            criacaoDesignRepository.save(design.get());
-            return ResponseEntity.ok(design.get());
-        }
+        switch (entidade.toLowerCase()) {
+            case "impressao":
+                return impressaoRepository.findById(id)
+                        .map(i -> {
+                            i.setStatus(novoStatus);
+                            impressaoRepository.save(i);
+                            return ResponseEntity.ok().build();
+                        }).orElse(ResponseEntity.notFound().build());
 
-        Optional<Conserto> conserto = consertoRepository.findById(id);
-        if (conserto.isPresent() && conserto.get().getTipoEntidade().equalsIgnoreCase("conserto")) {
-            conserto.get().setStatus(novoStatus);
-            consertoRepository.save(conserto.get());
-            return ResponseEntity.ok(conserto.get());
-        }
+            case "criacaodesign":
+                return criacaoDesignRepository.findById(id)
+                        .map(d -> {
+                            d.setStatus(novoStatus);
+                            criacaoDesignRepository.save(d);
+                            return ResponseEntity.ok().build();
+                        }).orElse(ResponseEntity.notFound().build());
 
-        Optional<Software> software = softwareRepository.findById(id);
-        if (software.isPresent() && software.get().getTipoEntidade().equalsIgnoreCase("software")) {
-            software.get().setStatus(novoStatus);
-            softwareRepository.save(software.get());
-            return ResponseEntity.ok(software.get());
-        }
+            case "conserto":
+                return consertoRepository.findById(id)
+                        .map(c -> {
+                            c.setStatus(novoStatus);
+                            consertoRepository.save(c);
+                            return ResponseEntity.ok().build();
+                        }).orElse(ResponseEntity.notFound().build());
 
-        return ResponseEntity.notFound().build();
+            case "software":
+                return softwareRepository.findById(id)
+                        .map(s -> {
+                            s.setStatus(novoStatus);
+                            softwareRepository.save(s);
+                            return ResponseEntity.ok().build();
+                        }).orElse(ResponseEntity.notFound().build());
+
+            default:
+                return ResponseEntity.badRequest().body("Tipo de entidade inválido.");
+        }
     }
+
 }

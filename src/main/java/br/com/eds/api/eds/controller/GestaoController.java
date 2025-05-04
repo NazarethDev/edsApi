@@ -1,6 +1,7 @@
 package br.com.eds.api.eds.controller;
 
 import br.com.eds.api.eds.model.gestao.est.DateRequest;
+import br.com.eds.api.eds.model.gestao.managementUpdates.StatusRecord;
 import br.com.eds.api.eds.model.software.TipoServicoSoftware;
 import br.com.eds.api.eds.service.gerenciamento.GestaoServiceEst;
 import br.com.eds.api.eds.service.gerenciamento.GestaoServiceOrderStatus;
@@ -80,10 +81,12 @@ public class GestaoController {
         return statusService.statusConserto(status, mes, ano);
     }
 
-    @PostMapping ("/changestatus")
-    public ResponseEntity updateOrderStatus(@RequestParam Long id,
-                                           @RequestParam String status){
-        return statusService.updateStatus(id, status);
+    @PutMapping("/changestatus/{entidade}/{id}")
+    public ResponseEntity updateOrderStatus(@PathVariable String entidade,
+                                            @PathVariable Long id,
+                                            @RequestBody StatusRecord status){
+        return statusService.updateStatus(entidade, id, status.status());
     }
+
 
 }

@@ -1,6 +1,7 @@
 package br.com.eds.api.eds.service;
 
 import br.com.eds.api.eds.model.conserto.*;
+import br.com.eds.api.eds.model.gestao.managementUpdates.StatusServicos;
 import br.com.eds.api.eds.repository.ConsertoRepository;
 import br.com.eds.api.eds.service.arquivo.ArquivoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,10 +63,13 @@ public class ConsertoService {
 
     @Transactional
     public ResponseEntity deleteOrder(Long id){
-        if (consertoRepository.existsById(id)){
-            consertoRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
-        } else return ResponseEntity.notFound().build();
+        var repair = consertoRepository.findById(id);
+        if (repair.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        repair.get().setStatus(StatusServicos.CANCELADO);
+        consertoRepository.save(repair.get());
+        return ResponseEntity.noContent().build();
     }
 
     public ResponseEntity showMyOrder(Long id, String contato, String email) {

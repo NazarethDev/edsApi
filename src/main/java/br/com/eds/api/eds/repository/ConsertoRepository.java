@@ -15,11 +15,8 @@ public interface ConsertoRepository extends JpaRepository <Conserto, Long> {
     List<Conserto> findByCliente_ContatoCliente(String contatoCliente);
     List<Conserto> findByCliente_EmailCliente(String emailCliente);
 
-    @Query("SELECT c FROM Conserto c WHERE " +
-            "(:contatoCliente IS NULL OR c.cliente.contatoCliente = :contatoCliente) AND " +
-            "(:emailCliente IS NULL OR c.cliente.emailCliente = :emailCliente)")
-    List<Conserto> buscarPorContatoOuEmail(@Param("contatoCliente") String contatoCliente,
-                                           @Param("emailCliente") String emailCliente);
+    List<Conserto> findByCliente_EmailClienteOrCliente_ContatoCliente(String email, String contato);
+
 
     @Query(value = "SELECT COUNT(*) FROM conserto WHERE cliente_id = :clienteId", nativeQuery = true)
     Integer contarSolicitacoesConserto(@Param("clienteId") Long clienteId);

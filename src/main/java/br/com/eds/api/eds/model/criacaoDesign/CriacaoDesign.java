@@ -3,6 +3,7 @@ package br.com.eds.api.eds.model.criacaoDesign;
 import br.com.eds.api.eds.model.cliente.Cliente;
 import br.com.eds.api.eds.model.impressao.Impressao;
 import br.com.eds.api.eds.model.impressao.NovaImpressao;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -13,7 +14,6 @@ import java.time.temporal.ChronoUnit;
 public class CriacaoDesign extends Impressao {
     private String ideiasDesign;
     private String arquivoReferencia;
-    private final String tipoEntidade = "criacaodesign";
 
 
     public CriacaoDesign(){}
@@ -61,4 +61,10 @@ public class CriacaoDesign extends Impressao {
         this.arquivoReferencia = arquivoReferencia;
     }
 
+    @Override
+    @Transient
+    @JsonProperty("tipoEntidade")
+    public String getTipoEntidade() {
+        return "criacaodesign";
+    }
 }

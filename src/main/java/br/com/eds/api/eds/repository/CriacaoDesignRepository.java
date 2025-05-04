@@ -15,13 +15,13 @@ public interface CriacaoDesignRepository extends JpaRepository <CriacaoDesign,Lo
     List<CriacaoDesign> findByCliente_ContatoCliente(String contatoCliente);
     List<CriacaoDesign> findByCliente_EmailCliente(String emailCliente);
 
-    List<CriacaoDesign> findByStatusAndDataSolicitacaoBetween(StatusServicos status, LocalDateTime dataInicio, LocalDateTime dataFim);
+    @Query("SELECT c FROM CriacaoDesign c WHERE c.cliente.emailCliente = :emailCliente AND TYPE(c) = CriacaoDesign")
+    List<CriacaoDesign> findByClienteEmailAndTipo(@Param("emailCliente") String emailCliente);
 
-    @Query("SELECT c FROM CriacaoDesign c WHERE " +
-            "(:contatoCliente IS NULL OR c.cliente.contatoCliente = :contatoCliente) AND " +
-            "(:emailCliente IS NULL OR c.cliente.emailCliente = :emailCliente)")
-    List<CriacaoDesign> buscarPorContatoOuEmail(@Param("contatoCliente") String contatoCliente,
-                                           @Param("emailCliente") String emailCliente);
+    @Query("SELECT c FROM CriacaoDesign c WHERE c.cliente.contatoCliente = :contatoCliente AND TYPE(c) = CriacaoDesign")
+    List<CriacaoDesign> findByClienteContatoAndTipo(@Param("contatoCliente") String contatoCliente);
+
+    List<CriacaoDesign> findByStatusAndDataSolicitacaoBetween(StatusServicos status, LocalDateTime dataInicio, LocalDateTime dataFim);
 
 
     @Query(value = "SELECT COUNT(*) FROM impressao WHERE cliente_id = :clienteId", nativeQuery = true)
