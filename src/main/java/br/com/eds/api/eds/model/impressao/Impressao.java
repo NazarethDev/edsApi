@@ -51,9 +51,9 @@ public class Impressao {
             Produto.CALENDARIO_4,
             Produto.CALENDARIO_5,
             Produto.CALDENDARIO_6,
-            Produto.CALENDÁRIO_7,
-            Produto.CALENDÁRIO_8,
-            Produto.CALENDÁRIO_9,
+            Produto.CALENDARIO_7,
+            Produto.CALENDARIO_8,
+            Produto.CALENDARIO_9,
             Produto.CALENDARIO_10
     );
 
@@ -67,7 +67,7 @@ public class Impressao {
         this.coresImpressao = novaImpressao.coresImpressao();
         this.produto = novaImpressao.produto();
 
-        this.materialImpressao = produtoDispensaMaterial(this.produto) ? null : novaImpressao.materialImpressao();
+        this.materialImpressao = novaImpressao.materialImpressao();
 
         this.arquivoImpressao = arquivo;
         this.dataSolicitacao = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
@@ -96,11 +96,6 @@ public class Impressao {
         }
         this.dataAtualizacao = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
     }
-
-    private boolean produtoDispensaMaterial(Produto produto) {
-        return PRODUTOS_SEM_MATERIAL.contains(produto);
-    }
-
 
     public Long getId() {
         return id;

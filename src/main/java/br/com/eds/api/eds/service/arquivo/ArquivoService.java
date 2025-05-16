@@ -30,7 +30,9 @@ public class ArquivoService {
 
         Files.copy(file.getInputStream(), caminhoArquivo, StandardCopyOption.REPLACE_EXISTING);
 
-        return caminhoArquivo.toString();
+        String relativePath = (isImpressao ? "impressao_design/" : (isConserto ? "conserto/" : "criacao_design/")) + nomeArquivo;
+
+        return "/download/" + relativePath;
     }
 
     public String getIMPRESSAO_DIR() {

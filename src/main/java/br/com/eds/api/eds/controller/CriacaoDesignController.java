@@ -32,7 +32,7 @@ public class CriacaoDesignController {
 
     @PutMapping("/{id}")
     public ResponseEntity updateDesign(@PathVariable Long id,
-                                       @RequestPart(required = false) UpdateDesign design,
+                                       @RequestPart( value = "data", required = false) UpdateDesign design,
                                        @RequestPart(value = "file",required = false) MultipartFile file) throws IOException {
         return designService.updateDesign(id, design, file);
     }

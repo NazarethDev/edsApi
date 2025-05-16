@@ -46,5 +46,13 @@ public interface CriacaoDesignRepository extends JpaRepository <CriacaoDesign,Lo
             "GROUP BY material_impressao ORDER BY COUNT(*) DESC LIMIT 1", nativeQuery = true)
     String encontrarMaterialMaisPedido(@Param("clienteId") Long clienteId);
 
-    List<CriacaoDesign> findByStatus(StatusServicos status);
+    @Query("""
+    SELECT c 
+    FROM CriacaoDesign c 
+    WHERE c.status = :status 
+      AND c.dataSolicitacao BETWEEN :startOfMonth AND :endOfMonth
+    """)
+    List<CriacaoDesign> findByStatusInCurrentMonth(@Param("status") StatusServicos status,
+                                                   @Param("startOfMonth") LocalDateTime startOfMonth,
+                                                   @Param("endOfMonth") LocalDateTime endOfMonth);
 }

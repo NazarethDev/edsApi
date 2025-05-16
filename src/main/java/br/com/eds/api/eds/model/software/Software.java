@@ -77,7 +77,6 @@ public class Software {
 
     public void updateService(UpdateSoftSer dados){
         this.dataAtualizacao = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
-        System.out.println("Data de atualização: " + this.dataAtualizacao);
         if (dados.detalhesServico() != null && !dados.detalhesServico().isEmpty()){
             this.detalhesServico = dados.detalhesServico();
         }
@@ -92,11 +91,7 @@ public class Software {
         }
         if (dados.fabricante() != null){
             this.fabricante = dados.fabricante();
-        }
-        if (dados.detalhesServico() != null && !detalhesDoServico.equals(this.detalhesDoServico)){
-            this.detalhesDoServico = dados.detalhesServico();
-        }
-    }
+        }}
 
     public Long getId() {
         return id;

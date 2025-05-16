@@ -41,6 +41,9 @@ public class CriacaoDesign extends Impressao {
             if (dadosAtualizados.novosDadosImpressao().unidades() != null && dadosAtualizados.novosDadosImpressao().unidades() != 0){
                 setUnidades(dadosAtualizados.novosDadosImpressao().unidades());
             }
+            if (dadosAtualizados.novosDadosImpressao().coresImpressao() != null && !dadosAtualizados.novosDadosImpressao().coresImpressao().isEmpty()){
+                setCoresImpressao(dadosAtualizados.novosDadosImpressao().coresImpressao());
+            }
         }
         this.setDataAtualizacao(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
     }

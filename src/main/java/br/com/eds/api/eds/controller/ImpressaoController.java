@@ -34,7 +34,7 @@ public class ImpressaoController {
     @PutMapping("/{id}")
     public ResponseEntity updatePrint(@PathVariable Long id,
                                       @RequestPart UpdatePrint dados,
-                                      @RequestPart MultipartFile file) throws IOException {
+                                      @RequestPart (required = false)MultipartFile file) throws IOException {
         return impressaoService.updatePrint(id, dados, file);
     }
 

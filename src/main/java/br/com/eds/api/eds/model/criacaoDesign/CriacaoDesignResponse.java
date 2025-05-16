@@ -14,6 +14,8 @@ public record CriacaoDesignResponse(
         Produto produto,
         StatusServicos status,
         Integer unidades,
+        String ladosImpressao,
+        String coresImpressao,
         @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
         LocalDateTime dataSolicitacao,
         @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
@@ -29,6 +31,8 @@ public record CriacaoDesignResponse(
                 criacaoDesign.getProduto(),
                 criacaoDesign.getStatus(),
                 criacaoDesign.getUnidades(),
+                criacaoDesign.getLadosImpressao(),
+                criacaoDesign.getCoresImpressao(),
                 criacaoDesign.getDataSolicitacao(),
                 criacaoDesign.getDataAtualizacao(),
                 criacaoDesign.getIdeiasDesign(),

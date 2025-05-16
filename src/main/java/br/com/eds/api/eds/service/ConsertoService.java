@@ -52,6 +52,10 @@ public class ConsertoService {
 
         var conserto = order.get();
 
+        if (conserto.getStatus() == StatusServicos.CANCELADO){
+            return ResponseEntity.badRequest().body("Não é possível atualizar serviço cancelado. Contate o administrador.");
+        }
+
         String file = arquivoService.salvarArquivo(arquivo, conserto.getArquivo(), false, true);
 
 

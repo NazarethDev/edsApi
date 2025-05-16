@@ -41,7 +41,7 @@ public class CriacaoDesignService {
     }
 
     @Transactional
-    public ResponseEntity<?> updateDesign(Long id,UpdateDesign dadosAtualizados, MultipartFile file) throws IOException {
+    public ResponseEntity<?> updateDesign(Long id, UpdateDesign dadosAtualizados, MultipartFile file) throws IOException {
         var design = criacaoDesignRepository.findById(id);
         if (design.isEmpty()){
             return ResponseEntity.notFound().build();
@@ -49,7 +49,11 @@ public class CriacaoDesignService {
 
         var criacaoDesign = design.get();
 
-        if (LocalDateTime.now().isAfter(criacaoDesign.getDataSolicitacao().plusHours(2))){
+        if(criacaoDesign.getStatus() == StatusServicos.CANCELADO){
+            return ResponseEntity.badRequest().body("Não é possível atualizar serviço cancelado. Contate o administrador.");
+        }
+
+        if (LocalDateTime.now().isAfter(criacaoDesign.getDataSolicitacao().plusHours(5))){
             return ResponseEntity.badRequest().body("Não é possível alterar o pedido depois de duas horas da solicitação do serviço");
         }
 

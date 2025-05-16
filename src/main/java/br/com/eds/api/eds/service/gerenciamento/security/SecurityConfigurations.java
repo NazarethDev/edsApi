@@ -32,7 +32,7 @@ public class SecurityConfigurations {
                 .csrf(csrf -> csrf.disable()) // Desabilita CSRF para APIs REST
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Sessionless (stateless)
                 .authorizeHttpRequests(req -> {
-                    req.requestMatchers("/user", "/design", "/software", "/conserto", "/print", "/search").permitAll(); // Acesso público
+                    req.requestMatchers("/user/**", "/design/**", "/software/**", "/conserto/**", "/print/**", "/search/**", "/download/**").permitAll();
                     req.anyRequest().authenticated(); // Requer autenticação para outros endpoints
                 })
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class) // Adicionando o filtro customizado

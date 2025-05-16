@@ -49,6 +49,9 @@ public class SoftwareService {
             return ResponseEntity.notFound().build();
         }
         var pedido = order.get();
+        if (pedido.getStatus() == StatusServicos.CANCELADO){
+            return ResponseEntity.badRequest().body("Não é possível atualizar serviço cancelado. Contate o administrador.");
+        }
         pedido.updateService(dados);
 
         softwareRepository.save(pedido);

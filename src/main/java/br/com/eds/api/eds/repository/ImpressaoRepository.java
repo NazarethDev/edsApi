@@ -1,6 +1,5 @@
 package br.com.eds.api.eds.repository;
 
-import br.com.eds.api.eds.model.criacaoDesign.CriacaoDesign;
 import br.com.eds.api.eds.model.gestao.managementUpdates.StatusServicos;
 import br.com.eds.api.eds.model.impressao.Impressao;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -53,8 +52,16 @@ public interface ImpressaoRepository extends JpaRepository <Impressao, Long> {
     """, nativeQuery = true)
     Integer calcularFrequenciaPedidos(@Param("clienteId") Long clienteId);
 
-    @Query("SELECT i FROM Impressao i WHERE TYPE(i) <> CriacaoDesign AND i.status = :status")
-    List<Impressao> findByStatusPrintStatus(@Param("status") StatusServicos status);
+    @Query("""
+    SELECT i 
+    FROM Impressao i 
+    WHERE TYPE(i) <> CriacaoDesign 
+      AND i.status = :status 
+      AND i.dataSolicitacao BETWEEN :startOfMonth AND :endOfMonth
+    """)
+    List<Impressao> findByStatusInCurrentMonth(@Param("status") StatusServicos status,
+                                               @Param("startOfMonth") LocalDateTime startOfMonth,
+                                               @Param("endOfMonth") LocalDateTime endOfMonth);
 
     @Query(value = "SELECT dimensao FROM impressao WHERE cliente_id = :clienteId " +
             "GROUP BY dimensao ORDER BY COUNT(*) DESC LIMIT 1", nativeQuery = true)

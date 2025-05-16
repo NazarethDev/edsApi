@@ -47,7 +47,15 @@ public interface ConsertoRepository extends JpaRepository <Conserto, Long> {
     """, nativeQuery = true)
     List<Object[]> contarDispositivosPorMes(@Param("mes") int mes, @Param("ano") int ano);
 
-    List<Conserto> findByStatus(StatusServicos status);
+    @Query("""
+    SELECT c 
+    FROM Conserto c 
+    WHERE c.status = :status 
+      AND c.dataSolicitacao BETWEEN :startOfMonth AND :endOfMonth
+    """)
+    List<Conserto> findByStatusInCurrentMonth(@Param("status") StatusServicos status,
+                                              @Param("startOfMonth") LocalDateTime startOfMonth,
+                                              @Param("endOfMonth") LocalDateTime endOfMonth);
 
     List <Conserto> findByStatusAndDataSolicitacaoBetween(StatusServicos status, LocalDateTime dataInicio, LocalDateTime dataFim);
 

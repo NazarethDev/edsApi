@@ -17,9 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.time.temporal.TemporalAdjusters;
+import java.util.*;
 
 @Service
 public class GestaoServiceOrderStatus {
@@ -78,20 +77,21 @@ public class GestaoServiceOrderStatus {
         return ResponseEntity.ok(software);
     }
 
-    public ResponseEntity allInSameState(String status) {
+    public ResponseEntity<Map<String, List<?>>> allInSameState(String status) {
         var statusEnum = convertToStatusPedido(status);
-        List<Object> todosPedidos = new ArrayList<>();
 
-        todosPedidos.addAll(impressaoRepository.findByStatusPrintStatus(statusEnum));
+        LocalDateTime startOfMonth = LocalDate.now().withDayOfMonth(1).atStartOfDay();
+        LocalDateTime endOfMonth = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth()).atTime(23, 59, 59);
 
-        todosPedidos.addAll(criacaoDesignRepository.findByStatus(statusEnum));
+        Map<String, List<?>> responseMap = new HashMap<>();
+        responseMap.put("impressoes", impressaoRepository.findByStatusInCurrentMonth(statusEnum, startOfMonth, endOfMonth));
+        responseMap.put("criacoesdesign", criacaoDesignRepository.findByStatusInCurrentMonth(statusEnum, startOfMonth, endOfMonth));
+        responseMap.put("consertos", consertoRepository.findByStatusInCurrentMonth(statusEnum, startOfMonth, endOfMonth));
+        responseMap.put("softwares", softwareRepository.findByStatusInCurrentMonth(statusEnum, startOfMonth, endOfMonth));
 
-        todosPedidos.addAll(consertoRepository.findByStatus(statusEnum));
-
-        todosPedidos.addAll(softwareRepository.findByStatus(statusEnum));
-
-        return ResponseEntity.ok(todosPedidos);
+        return ResponseEntity.ok(responseMap);
     }
+
 
     @Transactional
     public ResponseEntity updateStatus(String entidade, Long id, String status){

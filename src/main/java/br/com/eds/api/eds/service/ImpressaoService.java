@@ -57,12 +57,15 @@ public class ImpressaoService {
 
         var order = impressao.get();
 
+        if (order.getStatus() == StatusServicos.CANCELADO){
+            return ResponseEntity.badRequest().body("Não é possível atualizar serviço cancelado. Contate o administrador.");
+        }
+
         String novoArquivo = arquivoService.salvarArquivo(file, order.getArquivoImpressao(), true,false);
 
         if (LocalDateTime.now().isAfter(order.getDataSolicitacao().plusHours(2))){
             return ResponseEntity.badRequest().body("Não é possível alterar características do pedido após duas horas da solicitação :(");
         }
-
         order.updatePrint(dadosAtualizados,novoArquivo);
         impressaoRepository.save(order);
 
