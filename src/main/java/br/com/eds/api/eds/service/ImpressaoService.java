@@ -78,6 +78,10 @@ public class ImpressaoService {
         if (impressao.isEmpty()){
             return ResponseEntity.notFound().build();
         }
+        if (LocalDateTime.now().isAfter(impressao.get().getDataSolicitacao().plusHours(2))){
+            return ResponseEntity.badRequest().body("Não é possível cancelar uma impressão de pedido após duas horas da solicitação :(");
+        }
+
         impressao.get().setStatus(StatusServicos.CANCELADO);
         impressaoRepository.save(impressao.get());
 
