@@ -8,7 +8,6 @@ Para cumprir com este fim, algumas funcionalidades foram implementadas ao projet
 
 **1. Funcionalidades para clientes:**
 -
-
 - Envio de formulários em forma de solicitação de novos serviços - mesmo sem cadastro
 - Envio de arquivos como imagens e PDF's para serviços de design e consertos
 - Busca dentro da plataforma por envios de pedidos de orçamentos com base no telefone e email inserido na solicitação
@@ -36,7 +35,10 @@ Para cumprir com este fim, algumas funcionalidades foram implementadas ao projet
 ## Requisitos da aplicação
 
 Para garantir que a aplicação funcione em seu dispositivo, é necessário ter
-instalado o Java 17 (para compilação da aplicação) assim como o MySQL Server. 
+instalado o Java 17 (para compilação da aplicação) assim como o MySQL Server, assim como um banco de dados criado e acessível para que a aplicação
+possa usá-lo de acordo com os scripts SQL que ela possui. Você pode configurar o nome do banco de dados para que seja de acordo com o criado em seu servidor
+no arquivo application.properties no atritubo `spring.datasource.url` do programa Java, onde é necessário que se indique no lugar do nome do banco de dados onde se encontra o 
+nome do banco de dados atualm seja inserido o nome do banco de dados que foi criado em seu servidor.
 
 ## Tecnologias usadas no projeto
 
@@ -116,7 +118,7 @@ Note que tanto nessa como em outras requisições put não é possível atualiza
 3. **Leitura dos conserto**
 A leitura dos dados por parte dos usuários em geral pode ser realizada de duas diferentes maneiras a depender da estrutura em que deseja apresentar os dados:
 - Apresentando apenas os dados do conserto, por meio da requisição:
-  http://localhost:8080/conserto?contato=40028922
+  http://localhost:8080/conserto?contato={contatoCliente}
 Onde o parâmetro para a busaca pode ser tanto contato quanto email ou id do conserto. A resposta desta requisição é:
 ````json lines
 [
@@ -151,7 +153,7 @@ Onde o parâmetro para a busaca pode ser tanto contato quanto email ou id do con
 ````
 - Apresentando os dados de conserto junto com outros pedidos de diversos pedidos que o cliente possa vir a ter no sistema, tanto dessa entidade quanto de outras,
 através da requisição:
-  http://localhost:8080/search?contato=40028922
+  http://localhost:8080/search?contato={contatoCliente}
 Pode ser usado tanto o parâmetro contato quanto email na busca. O objeto devolvido será dessa maneira:
 ````json lines
 {
@@ -317,7 +319,7 @@ com o JSON tendo o corpo:
 
 2. **Leitura de objetos da entidade software**
 Assim como os consertos, estes objetos podem ser vistos em dois contextos gerais
-- Retorna apenas o serviço de software em específico, usando o link http://localhost:8080/software?id=3, onde a busca pode ser feita
+- Retorna apenas o serviço de software em específico, usando o link http://localhost:8080/software?id={id}, onde a busca pode ser feita
 através do id (como no exemplo), telefone ou email inserido. A resposta esperada retorna apenas este tipo de objeto:
 ````json lines
 {
@@ -519,7 +521,7 @@ processo a solicitação corretamente, ambos são obrigatórios para uma reuisi�
 ````
 2. **Leitura dos objetos da entidade Impressão**
 Assim como anteriormente, pode-se encontrar os objetos de impressão individualmente ou entre outros serviços que o mesmo cliente solicitou.
-- Apenas impressões, podem ser obtidas no link http://localhost:8080/print?contato=40028922, onde pode ser o parâmetro o id do objeto, contato ou email do cliente.A resposta é:
+- Apenas impressões, podem ser obtidas no link http://localhost:8080/print?contato={contatoCliente}, onde pode ser o parâmetro o id do objeto, contato ou email do cliente.A resposta é:
 ````json lines
 [
 	{
@@ -564,7 +566,7 @@ Assim como anteriormente, pode-se encontrar os objetos de impressão individualm
 	},
 ]
 ````
-- Para serviços que o cliente pode ter feito, como indicado anteriormente, use o link http://localhost:8080/search?contato=40028922
+- Para serviços que o cliente pode ter feito, como indicado anteriormente, use o link http://localhost:8080/search?contato={contatoCliente}
   onde a busca pode usar tanto o parâmetro contato ou email. Esta é a reposta da API:
 ````json lines
 {
@@ -734,8 +736,8 @@ A estrutura do Json deve ser semelhante a esta:
 }
 ````
 2. **Leitura de dados de Criação de Design**
-Semelhantemete as outras entidades, a busca pode ser feita tanto por meio do link http://localhost:8080/search?contato=40028922 que pode encontrar todos os objetos
-do cliente através do email ou contato do cliente, ou através do link http://localhost:8080/design?id=2, que pode usar como parêmetro email, contato ou id do serviço de de criação de design.
+Semelhantemete as outras entidades, a busca pode ser feita tanto por meio do link http://localhost:8080/search?contato={contatoCliente} que pode encontrar todos os objetos
+do cliente através do email ou contato do cliente, ou através do link http://localhost:8080/design?id={id}, que pode usar como parêmetro email, contato ou id do serviço de de criação de design.
 O objeto devolvido da requisição get é:
 ````json lines
 {
@@ -790,8 +792,9 @@ Foi implementada um lógica específica ao programa que garante que desde que um
 As informações recebidas são tratadas através do método saveDomicilar() contido no programa, e é executado sempre que as citadas requisições post são feitas.
 
 ### Recursos para usuários a nível de gestão 
-Os usuários a nível de gestão da aplicação devem ter seus acessos - login e senha - cadastrados manualmente no sistema. Recursos para cadastro de email e senha para login não foram disponibilizados no ciclo CRUD da aplicaçãp, 
+Os usuários a nível de gestão da aplicação devem ter seus acessos - login e senha - cadastrados manualmente no sistema. Recursos para cadastro de email e senha para login não foram disponibilizados no ciclo CRUD da aplicação, 
 a fim de preservar a integridade dos acessos a mais informações da aplicação. Como indicado, o recurso adotado para o login e autenticação é o JWT, juntamente com o Spring Security e Auth0. A criptografia para adotada para adotada para a aplicação é a BCrypt.
+Sendo assim, o cadastro de novos usuários de gestão da aplicação deve ser feito manualmente de maneira direta no banco de dados - tanto o login quanto a senha.
 
 Pensando-se ainda na camada de segurança da aplicação, algumas requisições necessitam do envio de um Bearer Token gerado a partir da autenticação através de login e senha pela aplicação para que sejam bem sucedidas.
 As requisições que precisam de um token são estritamente ligadas a gestão de status da ssolicitações dos clientes, 
@@ -845,10 +848,12 @@ Vale ressaltar que esses recursos estarão plenamente disponpiveis apenas para o
 
 
 ## Contato do desenvolvedor:
-[LinkedIn](https://www.linkedin.com/in/lorrannazareth/) do desenvolvedor. 
+[LinkedIn](https://www.linkedin.com/in/lorrannazareth/)  do desenvolvedor.
 
-[Email acadêmico](lorran.nazareth@gmail.com) do desenvolvedor.
+Email acadêmico do desenvolvedor: lorran.nazareth@gmail.com
 
-[Email comercial](lorranbarrosnazareth) do desenvolvedor.
+Email comercial do desenvolvedor: lorranbarrosnazareth
+
+Caso queira discutir o projeto ou outros assuntos relacionados, sinta-se a vontade para entrar em contato!
 
 
