@@ -852,7 +852,7 @@ Vale ressaltar que esses recursos estarão plenamente disponpiveis apenas para o
 
 Email acadêmico do desenvolvedor: lorran.nazareth@gmail.com
 
-Email comercial do desenvolvedor: lorranbarrosnazareth
+Email comercial do desenvolvedor: lorranbarrosnazareth@gmail.com
 
 Caso queira discutir o projeto ou outros assuntos relacionados, sinta-se a vontade para entrar em contato!
 
